@@ -6,23 +6,28 @@
  <providers>
   <jms-provider connection-factory="ConnectionFactory"
    name="JMS">
-   <jms-bus busid="transformEsbChannel">
-    <jms-message-filter dest-name="queue/transform_Request_esb"
+   <jms-bus busid="loginEsbChannel">
+    <jms-message-filter dest-name="queue/login_Request_esb"
      dest-type="QUEUE" />
    </jms-bus>
   </jms-provider>
  </providers>
  <services>
-  <service category="Objects_in_Messages_Service"
-   description="Object in Messages: Use this service to invoke the service"
+  <service category="Login_Service"
+   description="Login Service: Use this service to login a user"
    name="send">
    <listeners>
-    <jms-listener busidref="transformEsbChannel" name="ESB-Listener" />
-   </listeners>
+    <jms-listener busidref="loginEsbChannel" name="ESB-Listener" />
+   </listeners> 
    <actions>
-    <action class="data.MyListenerAction" name="transformaction"
-     process="transform" />
-   </actions> 
+    <action name="soapui-client-action"  
+    class="org.jboss.soa.esb.actions.soap.SOAPClient">  
+    <property name="wsdl"  
+     value="http://127.0.0.1:8080/PhasebookWS/LoginUser?wsdl" />  
+    <property name="SOAPAction" value="login"/>
+    <property name="responseAsOgnlMap" value="true" />      
+   </action>   
+   </actions>
   </service>
  </services>
 </jbossesb>
