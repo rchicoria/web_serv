@@ -56,7 +56,7 @@ public class LoginUserForm extends HttpServlet {
 			MethodsService cs = new MethodsService();
 			Methods m = cs.getMethodsPort();
 			
-			int id =  Integer.parseInt(m.authenticate(email, password)); 
+			int id =  m.loginUser(email, password); 
 			if(id!=-1){
 				session.setAttribute("id", id);
 				session.setAttribute("password", password);

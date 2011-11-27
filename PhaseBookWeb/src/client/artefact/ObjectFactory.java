@@ -24,8 +24,10 @@ import javax.xml.namespace.QName;
 @XmlRegistry
 public class ObjectFactory {
 
-    private final static QName _AuthenticateResponse_QNAME = new QName("http://main/", "authenticateResponse");
-    private final static QName _Authenticate_QNAME = new QName("http://main/", "authenticate");
+    private final static QName _LoginUser_QNAME = new QName("http://main/", "loginUser");
+    private final static QName _CreateUserResponse_QNAME = new QName("http://main/", "createUserResponse");
+    private final static QName _LoginUserResponse_QNAME = new QName("http://main/", "loginUserResponse");
+    private final static QName _CreateUser_QNAME = new QName("http://main/", "createUser");
 
     /**
      * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: client.artefact
@@ -35,37 +37,71 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link AuthenticateResponse }
+     * Create an instance of {@link CreateUser }
      * 
      */
-    public AuthenticateResponse createAuthenticateResponse() {
-        return new AuthenticateResponse();
+    public CreateUser createCreateUser() {
+        return new CreateUser();
     }
 
     /**
-     * Create an instance of {@link Authenticate }
+     * Create an instance of {@link LoginUserResponse }
      * 
      */
-    public Authenticate createAuthenticate() {
-        return new Authenticate();
+    public LoginUserResponse createLoginUserResponse() {
+        return new LoginUserResponse();
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link AuthenticateResponse }{@code >}}
+     * Create an instance of {@link CreateUserResponse }
      * 
      */
-    @XmlElementDecl(namespace = "http://main/", name = "authenticateResponse")
-    public JAXBElement<AuthenticateResponse> createAuthenticateResponse(AuthenticateResponse value) {
-        return new JAXBElement<AuthenticateResponse>(_AuthenticateResponse_QNAME, AuthenticateResponse.class, null, value);
+    public CreateUserResponse createCreateUserResponse() {
+        return new CreateUserResponse();
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link Authenticate }{@code >}}
+     * Create an instance of {@link LoginUser }
      * 
      */
-    @XmlElementDecl(namespace = "http://main/", name = "authenticate")
-    public JAXBElement<Authenticate> createAuthenticate(Authenticate value) {
-        return new JAXBElement<Authenticate>(_Authenticate_QNAME, Authenticate.class, null, value);
+    public LoginUser createLoginUser() {
+        return new LoginUser();
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link LoginUser }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://main/", name = "loginUser")
+    public JAXBElement<LoginUser> createLoginUser(LoginUser value) {
+        return new JAXBElement<LoginUser>(_LoginUser_QNAME, LoginUser.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link CreateUserResponse }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://main/", name = "createUserResponse")
+    public JAXBElement<CreateUserResponse> createCreateUserResponse(CreateUserResponse value) {
+        return new JAXBElement<CreateUserResponse>(_CreateUserResponse_QNAME, CreateUserResponse.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link LoginUserResponse }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://main/", name = "loginUserResponse")
+    public JAXBElement<LoginUserResponse> createLoginUserResponse(LoginUserResponse value) {
+        return new JAXBElement<LoginUserResponse>(_LoginUserResponse_QNAME, LoginUserResponse.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link CreateUser }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://main/", name = "createUser")
+    public JAXBElement<CreateUser> createCreateUser(CreateUser value) {
+        return new JAXBElement<CreateUser>(_CreateUser_QNAME, CreateUser.class, null, value);
     }
 
 }

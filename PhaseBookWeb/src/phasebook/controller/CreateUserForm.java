@@ -9,6 +9,9 @@ import javax.naming.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
 
+import client.artefact.Methods;
+import client.artefact.MethodsService;
+
 import phasebook.user.PhasebookUserRemote;
 
 /**
@@ -59,8 +62,12 @@ public class CreateUserForm extends HttpServlet {
 			} else {
 				password1 = Utils.byteArrayToHexString(Utils.computeHash(password1 + "salt"
 						+ email));
+				
+				MethodsService cs = new MethodsService();
+				Methods m = cs.getMethodsPort();
+				
+				int id =  m.createUser(name, email, password1); 
 
-				int id = user.create(name, email, password1);
 				if (id == -1) {
 					session.setAttribute("error", "That email adress is already taken");
 					session.setAttribute("name", name);

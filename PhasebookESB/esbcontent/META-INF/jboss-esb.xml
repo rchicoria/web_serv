@@ -6,27 +6,47 @@
  <providers>
   <jms-provider connection-factory="ConnectionFactory"
    name="JMS">
-   <jms-bus busid="loginEsbChannel">
-    <jms-message-filter dest-name="queue/login_Request_esb"
+   <jms-bus busid="loginUserEsbChannel">
+    <jms-message-filter dest-name="queue/login_user_Request_esb"
+     dest-type="QUEUE" />
+   </jms-bus>
+   <jms-bus busid="createUserEsbChannel">
+    <jms-message-filter dest-name="queue/create_user_Request_esb"
      dest-type="QUEUE" />
    </jms-bus>
   </jms-provider>
  </providers>
  <services>
-  <service category="Login_Service"
-   description="Login Service: Use this service to login a user"
+  <service category="Login_User_Service"
+   description="Login User Service: Use this service to login a user"
    name="send">
    <listeners>
-    <jms-listener busidref="loginEsbChannel" name="ESB-Listener" />
+    <jms-listener busidref="loginUserEsbChannel" name="ESB-Listener" />
    </listeners> 
    <actions>
     <action name="soapui-client-action"  
     class="org.jboss.soa.esb.actions.soap.SOAPClient">  
-    <property name="wsdl"  
-     value="http://127.0.0.1:8080/PhasebookWS/LoginUser?wsdl" />  
-    <property name="SOAPAction" value="login"/>
-    <property name="responseAsOgnlMap" value="true" />      
-   </action>   
+     <property name="wsdl"  
+     value="http://127.0.0.1:8080/PhasebookWS/Users?wsdl" />  
+     <property name="SOAPAction" value="loginUser"/>
+     <property name="responseAsOgnlMap" value="true" />      
+    </action>   
+   </actions>
+  </service>
+  <service category="Create_User_Service"
+   description="Create User Service: Use this service to create a user"
+   name="send">
+   <listeners>
+    <jms-listener busidref="createUserEsbChannel" name="ESB-Listener" />
+   </listeners> 
+   <actions>
+    <action name="soapui-client-action"  
+    class="org.jboss.soa.esb.actions.soap.SOAPClient">  
+     <property name="wsdl"  
+     value="http://127.0.0.1:8080/PhasebookWS/Users?wsdl" />  
+     <property name="SOAPAction" value="createUser"/>
+     <property name="responseAsOgnlMap" value="true" />      
+    </action>   
    </actions>
   </service>
  </services>

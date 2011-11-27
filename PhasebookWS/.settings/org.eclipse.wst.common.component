@@ -3,7 +3,7 @@
     <wb-module deploy-name="PhasebookWS">
         <wb-resource deploy-path="/" source-path="/WebContent"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
-        <property name="context-root" value="PhasebookWS"/>
         <property name="java-output-path" value="/PhasebookWS/build/classes"/>
+        <property name="context-root" value="PhasebookWS"/>
     </wb-module>
 </project-modules>

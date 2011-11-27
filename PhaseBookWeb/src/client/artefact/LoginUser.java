@@ -7,12 +7,12 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java class for authenticate complex type.
+ * <p>Java class for loginUser complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="authenticate">
+ * &lt;complexType name="loginUser">
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
@@ -27,11 +27,11 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "authenticate", propOrder = {
+@XmlType(name = "loginUser", propOrder = {
     "arg0",
     "arg1"
 })
-public class Authenticate {
+public class LoginUser {
 
     protected String arg0;
     protected String arg1;
