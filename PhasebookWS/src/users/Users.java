@@ -3,18 +3,18 @@ import javax.ejb.EJB;
 import javax.jws.*;
 import phasebook.user.*;
 
-@WebService(name = "LoginUser", targetNamespace = "http://PhasebookWS/LoginUser")  
+@WebService(name = "User", targetNamespace = "http://PhasebookWS/User")  
 public class Users  
 {  
 	@EJB(mappedName = "PhasebookUserBean/remote")
 	PhasebookUserRemote user;
 	
-	@WebMethod  
+	@WebMethod
 	public int loginUser(@WebParam(name = "email") String email, 
 			@WebParam(name = "password") String password)  
 	{ 
 		int id = user.login(email, password);
-	    return id;
+        return id;
 	}
 	
 	@WebMethod

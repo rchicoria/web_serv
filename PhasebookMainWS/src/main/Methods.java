@@ -25,8 +25,8 @@ public class Methods {
 	
 		Message esbMessage = MessageFactory.getInstance().getMessage();
 		HashMap requestMap = new HashMap();
-		requestMap.put("loginUser.email",email);
-		requestMap.put("loginUser.password",password);
+		requestMap.put("email",email);
+		requestMap.put("password",password);
 		esbMessage.getBody().add(requestMap);
 		
 		Message retMessage = null;
@@ -35,9 +35,8 @@ public class Methods {
 		try {
 			si = new ServiceInvoker("Login_User_Service", "send");
 			retMessage = si.deliverSync(esbMessage, 10000L);
-			Map responseMsg = (Map) retMessage.getBody().get(Body.DEFAULT_LOCATION);
-			//System.out.println("****************"+(String) responseMsg.get("loginResponse.return")+"***************");
-			return Integer.parseInt((String)responseMsg.get("loginUserResponse.return"));
+			int id = ((Integer)retMessage.getBody().get(Body.DEFAULT_LOCATION)).intValue();
+			return id;
 		} catch (MessageDeliverException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
