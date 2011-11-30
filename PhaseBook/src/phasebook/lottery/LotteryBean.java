@@ -8,7 +8,11 @@ import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
-import javax.ejb.*;
+import javax.ejb.SessionContext;
+import javax.ejb.Stateless;
+import javax.ejb.Timeout;
+import javax.ejb.Timer;
+import javax.ejb.TimerService;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.persistence.EntityManager;
@@ -21,8 +25,9 @@ import javax.persistence.Query;
 
 import phasebook.auth.Auth;
 import phasebook.external.lottery.ExternalLotteryRemote;
-import phasebook.lotterybet.*;
-import phasebook.user.*;
+import phasebook.lotterybet.LotteryBet;
+import phasebook.lotterybet.LotteryBetBean;
+import phasebook.user.PhasebookUser;
 
 @Stateless
 public class LotteryBean implements LotteryRemote {

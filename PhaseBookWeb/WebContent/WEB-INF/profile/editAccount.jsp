@@ -1,6 +1,7 @@
 <%@ page import="phasebook.controller.*"%>
 <%@ page import="phasebook.user.*" %>
 <%@ page import="phasebook.post.*" %>
+<%@ page import="phasebook.photo.*" %>
 <%@ page import="java.util.*" %>
 
 <%
@@ -58,17 +59,18 @@
 			<td class="label">Profile picture</td>
 			<td>
 				<div style="width: 200px; height: 250px; overflow: auto; border: 1px solid black; padding: 6px">
-					<p><input type="radio" name="avatar" id="0" value="0" <% if (user.getPhoto()==null) { %>checked<% } %>> <label for="0">No photo</label></p>
+					<p><input type="radio" name="avatar" id="0" value="0" <% if (user.getPhotoId()==-1) { %>checked<% } %>> <label for="0">No photo</label></p>
 					<%
 						List<Post> posts = userBean.getUserReceivedPosts(userId,
 								session.getAttribute("id"), session.getAttribute("password"));
 						for (int i=posts.size()-1; i>=0; i--) {
-							if (posts.get(i).getPhoto()!=null && posts.get(i).getDeletedAt()==null) {
-								String photoURL = Utils.MAIN_PATH+userId.toString()+"/"+posts.get(i).getPhoto().getName();
-								int photoID = posts.get(i).getPhoto().getId();
+							if (posts.get(i).getPhotoId()!=-1 && posts.get(i).getDeletedAt()==null) {
+								PhotoRemote photoBean = Utils.getPhotoBean();
+								String photoURL = Utils.MAIN_PATH+userId.toString()+"/"+photoBean.getPhotoById(""+posts.get(i).getPhotoId(), session.getAttribute("id"), session.getAttribute("password")).getName();
+								int photoID = posts.get(i).getPhotoId();
 					%>
 								<p>
-									<input type="radio" name="avatar" id="<%= photoID %>" value="<%= photoID %>" <% if (user.getPhoto() != null && user.getPhoto().getId()==photoID) { %>checked<% } %>>
+									<input type="radio" name="avatar" id="<%= photoID %>" value="<%= photoID %>" <% if (user.getPhotoId()==photoID) { %>checked<% } %>>
 									<label for="<%= photoID %>"><%= Utils.img(photoURL) %></label>
 								</p>
 					<%

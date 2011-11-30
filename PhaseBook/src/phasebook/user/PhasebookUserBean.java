@@ -76,7 +76,6 @@ public class PhasebookUserBean implements PhasebookUserRemote {
 	{
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("PhaseBook");
 		EntityManager em = emf.createEntityManager();
-		
 		try {
 			int returnValue = -1;
 			Query q = em.createQuery("SELECT u FROM PhasebookUser u " +
@@ -117,9 +116,9 @@ public class PhasebookUserBean implements PhasebookUserRemote {
 		
 		try{
 			Query q = em.createQuery("SELECT u FROM Post u " +
-					"WHERE u.toUser LIKE :user AND " +
+					"WHERE u.toUserId = :user AND " +
 					"u.deletedAt is NULL");
-			q.setParameter("user",user);
+			q.setParameter("user",user.getId());
 			
 			em.clear();
 			emf.close();
@@ -144,9 +143,9 @@ public class PhasebookUserBean implements PhasebookUserRemote {
 		
 		try{
 			Query q = em.createQuery("SELECT u FROM Post u " +
-					"WHERE u.toUser LIKE :user AND " +
+					"WHERE u.toUserId = :user AND " +
 					"u.private_ = :private_ AND u.deletedAt is NULL");
-			q.setParameter("user",user);
+			q.setParameter("user",user.getId());
 			q.setParameter("private_",false);
 			
 			em.clear();
@@ -240,7 +239,7 @@ public class PhasebookUserBean implements PhasebookUserRemote {
 		EntityTransaction tx = em.getTransaction();
 		
 		tx.begin();
-    	Post post = new Post(from, to, text, privacy);
+    	Post post = new Post(from.getId(), to.getId(), text, privacy);
 		em.persist(post);
 		em.refresh(post);
 		tx.commit();
@@ -260,11 +259,12 @@ public class PhasebookUserBean implements PhasebookUserRemote {
 		EntityTransaction tx = em.getTransaction();
 		
 		tx.begin();
+		//TODO isto ainda depende das photos
 		Photo photo = new Photo(photoLink); 
 		em.persist(photo);
 		em.refresh(photo);
 		
-    	Post post = new Post(from, to, text, photo, privacy);
+    	Post post = new Post(from.getId(), to.getId(), text, photo.getId(), privacy);
 		em.persist(post);
 		em.refresh(post);
 		
@@ -285,6 +285,7 @@ public class PhasebookUserBean implements PhasebookUserRemote {
 		EntityTransaction tx = em.getTransaction();
 		
 		tx.begin();
+		//TODO isto ainda depende das photos
 		Photo photo = new Photo(photoLink); 
 		em.persist(photo);
 		em.refresh(photo);
@@ -314,7 +315,7 @@ public class PhasebookUserBean implements PhasebookUserRemote {
 		emf.close();
 	}
 	
-	public void setProfilePicture(PhasebookUser user, Photo photo,
+	public void setProfilePicture(PhasebookUser user, int photo_id,
 			Object authId, Object authPass)
 	{
 		if (Auth.authenticate(authId, authPass))
@@ -325,7 +326,7 @@ public class PhasebookUserBean implements PhasebookUserRemote {
 		
 		tx.begin();
 		em.merge(user);
-		user.setPhoto(photo);
+		user.setPhotoId(photo_id);
 		em.merge(user);
 		tx.commit();
 		em.close();
@@ -394,7 +395,14 @@ public class PhasebookUserBean implements PhasebookUserRemote {
 		PhasebookUser user = getUserById(id, authId, authPass);
 		user.setName(name);
 		PhotoBean photoEJB = new PhotoBean();
-		user.setPhoto(photoEJB.getPhotoById(photo, authId, authPass));
+		int photoId = -1;
+		try {
+			photoId = Integer.parseInt(photo);
+		}
+		catch (NumberFormatException e) {
+			photoId = -1;
+		}
+		user.setPhotoId(photoId);
 		if (password != null && password.length() > 0)
 			user.setPassword(password);
 		em.merge(user);
@@ -413,8 +421,8 @@ public class PhasebookUserBean implements PhasebookUserRemote {
 		
 		List<?> posts = null;
 		
-		Query q = em.createQuery("SELECT u FROM Post u WHERE u.toUser = :user AND u.read_ = :status AND u.deletedAt = NULL");
-		q.setParameter("user",user);
+		Query q = em.createQuery("SELECT u FROM Post u WHERE u.toUserId = :user AND u.read_ = :status AND u.deletedAt = NULL");
+		q.setParameter("user",user.getId());
 		q.setParameter("status",false);
 		
 		int result = q.getResultList().size();
@@ -423,11 +431,11 @@ public class PhasebookUserBean implements PhasebookUserRemote {
 		return result;
 	}
 	
-	public Photo getUserPhoto(PhasebookUser user,
+	public int getUserPhotoId(PhasebookUser user,
 			Object authId, Object authPass)
 	{
 		if (Auth.authenticate(authId, authPass))
-			return null;
+			return -1;
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("PhaseBook");
 		EntityManager em = emf.createEntityManager();
 		
@@ -436,6 +444,6 @@ public class PhasebookUserBean implements PhasebookUserRemote {
 		em.close();
 		emf.close();
 		
-		return user.getPhoto();
+		return user.getPhotoId();
 	}
 }

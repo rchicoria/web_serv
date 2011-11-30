@@ -31,9 +31,12 @@ private static final long serialVersionUID = 1L;
 	@Column(name="DELETED_AT")
 	private Timestamp deletedAt;
 	
-	@OneToOne
+	/*@OneToOne
 	@JoinColumn(name="PHOTO_ID", referencedColumnName = "PHOTO_ID")
-	private Photo photo;
+	private Photo photo;*/
+	
+	@Column(name="PHOTO_ID")
+	private int photo_id = -1;
 	
 	@ElementCollection
 	@OneToMany(cascade=CascadeType.ALL, mappedBy = "hostUser") 
@@ -47,13 +50,13 @@ private static final long serialVersionUID = 1L;
 	@OneToMany(cascade=CascadeType.ALL, mappedBy = "user")
 	private List<LotteryBet> lotteryBets = new ArrayList<LotteryBet>();
 	
-	@ElementCollection  
+	/*@ElementCollection  
 	@OneToMany(cascade=CascadeType.ALL, mappedBy = "fromUser")
 	private List<Post> sentPosts = new ArrayList<Post>();
 	
 	@ElementCollection
 	@OneToMany(cascade=CascadeType.ALL, mappedBy = "toUser")
-	private List<Post> receivedPosts = new ArrayList<Post>();
+	private List<Post> receivedPosts = new ArrayList<Post>();*/
 	
 	public PhasebookUser()
 	{
@@ -167,7 +170,7 @@ private static final long serialVersionUID = 1L;
 		this.lotteryBets = lotteryBets;
 	}
 
-	public List<Post> getReceivedPosts() {
+	/*public List<Post> getReceivedPosts() {
 		return receivedPosts;
 	}
 
@@ -181,17 +184,17 @@ private static final long serialVersionUID = 1L;
 
 	public void setSentPosts(List<Post> sentPosts) {
 		this.sentPosts = sentPosts;
-	}
+	}*/
 	
 	public boolean equals(PhasebookUser user) {
 		return user.getId() == this.getId();
 	}
 
-	public Photo getPhoto() {
-		return photo;
+	public int getPhotoId() {
+		return photo_id;
 	}
 
-	public void setPhoto(Photo photo) {
-		this.photo = photo;
+	public void setPhotoId(int photo_id) {
+		this.photo_id = photo_id;
 	}
 }

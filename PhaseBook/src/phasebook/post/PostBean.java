@@ -19,7 +19,7 @@ import phasebook.user.PhasebookUser;
 @Stateless
 public class PostBean implements PostRemote {
 	
-	public void readUnreadPosts(PhasebookUser entry,
+	public void readUnreadPosts(int entry_id,
 			Object authId, Object authPass)
 	{
 		if (Auth.authenticate(authId, authPass))
@@ -29,8 +29,8 @@ public class PostBean implements PostRemote {
 		
 		List<?> result = null;
 		
-		Query q = em.createQuery("SELECT u FROM Post u WHERE u.toUser = :user AND u.read_ = :status");
-		q.setParameter("user",entry);
+		Query q = em.createQuery("SELECT u FROM Post u WHERE u.toUserId = :user AND u.read_ = :status");
+		q.setParameter("user",entry_id);
 		q.setParameter("status",false);
 		
 		try
@@ -93,7 +93,7 @@ public class PostBean implements PostRemote {
 		}		
 	}
 	
-	public Object getUnreadPosts(PhasebookUser entry,
+	public Object getUnreadPosts(int entry_id,
 			Object authId, Object authPass)
 	{
 		if (Auth.authenticate(authId, authPass))
@@ -103,9 +103,9 @@ public class PostBean implements PostRemote {
 		
 		List<Object> result = null;
 		
-		Query q = em.createQuery("SELECT u FROM Post u WHERE u.fromUser != :me AND u.toUser = :user AND u.read_ = :readStatus");
-		q.setParameter("me",entry);
-		q.setParameter("user",entry);
+		Query q = em.createQuery("SELECT u FROM Post u WHERE u.fromUserId != :me AND u.toUserId = :user AND u.read_ = :readStatus");
+		q.setParameter("me",entry_id);
+		q.setParameter("user",entry_id);
 		q.setParameter("readStatus", false);
 		
 		result=(List<Object>) q.getResultList();

@@ -2,6 +2,7 @@
 <%@ page import="javax.naming.*" %>
 <%@ page import="phasebook.user.*" %>
 <%@ page import="phasebook.post.*" %>
+<%@ page import="phasebook.photo.*" %>
 <%@ page import="phasebook.friendship.*" %>
 <%@ page import="java.util.*" %>
 
@@ -65,8 +66,9 @@
 <%
 	for (int i=posts.size()-1; i>=0; i--) {
 %>
-	<% if (posts.get(i).getPhoto()!=null && posts.get(i).getDeletedAt()==null){ 
-		String photoURL = Utils.MAIN_PATH+userId.toString()+"/"+posts.get(i).getPhoto().getName();
+	<% if (posts.get(i).getPhotoId()!=-1 && posts.get(i).getDeletedAt()==null){
+		PhotoRemote photoBean = Utils.getPhotoBean();
+		String photoURL = Utils.MAIN_PATH+userId.toString()+"/"+photoBean.getPhotoById(""+posts.get(i).getPhotoId(), session.getAttribute("id"), session.getAttribute("password")).getName();
 	%>
 		<span style="margin: 15px"><%= Utils.aAbsolute(photoURL, Utils.img(photoURL)) %></span>
 	<% } %>

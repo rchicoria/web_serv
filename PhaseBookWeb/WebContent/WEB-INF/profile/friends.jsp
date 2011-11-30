@@ -1,5 +1,6 @@
 <%@ page import="phasebook.controller.*"%>
 <%@ page import="phasebook.user.*" %>
+<%@ page import="phasebook.photo.*" %>
 <%@ page import="java.util.List" %>
 
 <%
@@ -24,8 +25,9 @@
 		<table width="100%">
 			<tr>
 				<td width="60">
-					<% if (friend.getPhoto()!=null){ 
-						String photoURL = Utils.MAIN_PATH + friend.getId() + "/"+friend.getPhoto().getName();
+					<% if (friend.getPhotoId()!=-1){
+						PhotoRemote photoBean = Utils.getPhotoBean();
+						String photoURL = Utils.MAIN_PATH + friend.getId() + "/"+photoBean.getPhotoById(""+friend.getPhotoId(), session.getAttribute("id"), session.getAttribute("password")).getName();
 					%>
 						<%= Utils.a("user&id="+friend.getId(), Utils.smallImg(photoURL)) %>
 					<% } %>
