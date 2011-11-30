@@ -45,7 +45,7 @@
 <%
 	}
 	for (int i=posts.size()-1; i>=0; i--) {
-		if(posts.get(i).getDeletedAt()==null){
+		if(posts.get(i).getDeletedAt()==null) {
 			PhasebookUser sender = userBean.getUserById(posts.get(i).getFromUserId(), session.getAttribute("id"), session.getAttribute("password"));
 %>
 	<table width="100%">
