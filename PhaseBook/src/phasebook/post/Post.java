@@ -46,9 +46,12 @@ public class Post implements Serializable{
 	@Column(name="DELETED_AT")
 	private Timestamp deletedAt;
 	
-	@OneToOne
+	/*@OneToOne
 	@JoinColumn(name="PHOTO_ID", referencedColumnName = "PHOTO_ID")
-	private Photo photo;
+	private Photo photo;*/
+	
+	@Column(name="PHOTO_ID")
+	private int photo_id;
 	
 	@Column(name="TEXT")
 	private String text;
@@ -70,13 +73,13 @@ public class Post implements Serializable{
 			this.private_ = true;
 	}
 	
-	public Post(PhasebookUser from, PhasebookUser to, String text, Photo photo, String privacy)
+	public Post(PhasebookUser from, PhasebookUser to, String text, int photo_id, String privacy)
 	{
 		super();
 		this.fromUser = from;
 		this.toUser = to;
 		this.text = text;
-		this.photo = photo;
+		this.photo_id = photo_id;
 		if (privacy.compareTo("0")==0)
 			this.private_ = false;
 		else
@@ -148,12 +151,12 @@ public class Post implements Serializable{
 		this.text = text;
 	}
 
-	public Photo getPhoto() {
-		return photo;
+	public int getPhotoId() {
+		return photo_id;
 	}
 
-	public void setPhoto(Photo photo) {
-		this.photo = photo;
+	public void setPhotoId(int photo_id) {
+		this.photo_id = photo_id;
 	}
 	
 	

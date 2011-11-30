@@ -8,6 +8,7 @@ import javax.naming.NamingException;
 
 import phasebook.auth.Auth;
 import phasebook.friendship.FriendshipRemote;
+import phasebook.photo.PhotoRemote;
 import phasebook.post.PostRemote;
 import phasebook.lottery.LotteryRemote;
 import phasebook.lotterybet.LotteryBetRemote;
@@ -58,6 +59,18 @@ public class Utils {
 		try {
 			ctx = new InitialContext();
 			return (PhasebookUserRemote) ctx.lookup("PhasebookUserBean/remote");
+		} catch (NamingException e) {
+			return null;
+		}
+	}
+	
+	//Get photo bean
+	public static PhotoRemote getPhotoBean()
+	{
+		InitialContext ctx = null;
+		try {
+			ctx = new InitialContext();
+			return (PhotoRemote) ctx.lookup("PhotoBean/remote");
 		} catch (NamingException e) {
 			return null;
 		}

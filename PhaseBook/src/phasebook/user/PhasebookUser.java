@@ -31,9 +31,12 @@ private static final long serialVersionUID = 1L;
 	@Column(name="DELETED_AT")
 	private Timestamp deletedAt;
 	
-	@OneToOne
+	/*@OneToOne
 	@JoinColumn(name="PHOTO_ID", referencedColumnName = "PHOTO_ID")
-	private Photo photo;
+	private Photo photo;*/
+	
+	@Column(name="PHOTO_ID")
+	private int photo_id = -1;
 	
 	@ElementCollection
 	@OneToMany(cascade=CascadeType.ALL, mappedBy = "hostUser") 
@@ -187,11 +190,11 @@ private static final long serialVersionUID = 1L;
 		return user.getId() == this.getId();
 	}
 
-	public Photo getPhoto() {
-		return photo;
+	public int getPhotoId() {
+		return photo_id;
 	}
 
-	public void setPhoto(Photo photo) {
-		this.photo = photo;
+	public void setPhotoId(int photo_id) {
+		this.photo_id = photo_id;
 	}
 }

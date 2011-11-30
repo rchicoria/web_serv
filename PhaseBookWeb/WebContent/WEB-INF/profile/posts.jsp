@@ -1,6 +1,7 @@
 <%@ page import="phasebook.controller.*"%>
 <%@ page import="phasebook.post.*" %>
 <%@ page import="phasebook.user.*" %>
+<%@ page import="phasebook.photo.*" %>
 <%@ page import="java.util.*" %>
 
 <%
@@ -50,8 +51,9 @@
 	<table width="100%">
 		<tr>
 			<td width="60" style="vertical-align: top">
-				<% if (sender.getPhoto()!=null){ 
-					String photoURL = Utils.MAIN_PATH + sender.getId() + "/"+sender.getPhoto().getName();
+				<% if (sender.getPhotoId()!=-1){
+					PhotoRemote photoBean = Utils.getPhotoBean();
+					String photoURL = Utils.MAIN_PATH + sender.getId() + "/"+photoBean.getPhotoById(""+sender.getPhotoId(), session.getAttribute("id"), session.getAttribute("password")).getName();
 				%>
 					<%= Utils.a("user&id="+sender.getId(), Utils.smallImg(photoURL)) %>
 				<% } %>
@@ -67,8 +69,9 @@
 	
 				<b class="user"><%= Utils.a("user&id="+sender.getId(), Utils.text(sender.getName())) %></b>
 				<% if (posts.get(i).isPrivate_()) { %><i>(private)</i><% } %><br />
-				<% if (posts.get(i).getPhoto()!=null){ 
-					String photoURL = Utils.MAIN_PATH+userId.toString()+"/"+posts.get(i).getPhoto().getName();
+				<% if (posts.get(i).getPhotoId()!=-1){
+					PhotoRemote photoBean = Utils.getPhotoBean();
+					String photoURL = Utils.MAIN_PATH+userId.toString()+"/"+photoBean.getPhotoById(""+posts.get(i).getPhotoId(), session.getAttribute("id"), session.getAttribute("password")).getName();
 				%>
 					<br /> <%= Utils.aAbsolute(photoURL, Utils.img(photoURL)) %>
 				<%} %>

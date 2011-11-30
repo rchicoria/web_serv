@@ -123,7 +123,7 @@ public class AddPhotoForm extends HttpServlet {
 						item.write(file);
 						Photo photo = userBean.addPhoto(time+ext,
 								session.getAttribute("id"), session.getAttribute("password"));
-						userBean.setProfilePicture(user, photo,
+						userBean.setProfilePicture(user, photo.getId(),
 								session.getAttribute("id"), session.getAttribute("password"));
 						response.sendRedirect(Utils.url(""));
 					}

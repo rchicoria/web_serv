@@ -2,6 +2,7 @@
 <%@ page import="javax.naming.*" %>
 <%@ page import="java.util.List" %>
 <%@ page import="phasebook.user.*" %>
+<%@ page import="phasebook.photo.*" %>
 
 <% 
 	PhasebookUserRemote userBean = Utils.getUserBean();
@@ -25,8 +26,9 @@
 		<table width="100%">
 			<tr>
 				<td width="60">
-					<% if (user.getPhoto()!=null){ 
-						String photoURL = Utils.MAIN_PATH + user.getId() + "/"+user.getPhoto().getName();
+					<% if (user.getPhotoId()!=-1){
+						PhotoRemote photoBean = Utils.getPhotoBean();
+						String photoURL = Utils.MAIN_PATH + user.getId() + "/"+photoBean.getPhotoById(""+user.getPhotoId(), session.getAttribute("id"), session.getAttribute("password")).getName();
 					%>
 						<%= Utils.a("user&id="+user.getId(), Utils.smallImg(photoURL)) %>
 					<% } %>

@@ -58,11 +58,11 @@ public class RemovePostForm extends HttpServlet {
 					session.getAttribute("id"), session.getAttribute("password"));
 			
 			if (myPost.getPostById(post,
-					session.getAttribute("id"), session.getAttribute("password")).getPhoto() != null && user.getPhoto() != null)
+					session.getAttribute("id"), session.getAttribute("password")).getPhotoId() != -1 && user.getPhotoId() != -1)
 			{
-				if(user.getPhoto().getId() == myPost.getPostById(post,
-						session.getAttribute("id"), session.getAttribute("password")).getPhoto().getId())
-					myUser.setProfilePicture(user, null,
+				if(user.getPhotoId() == myPost.getPostById(post,
+						session.getAttribute("id"), session.getAttribute("password")).getPhotoId())
+					myUser.setProfilePicture(user, -1,
 							session.getAttribute("id"), session.getAttribute("password"));
 			}
 			response.sendRedirect(Utils.url("user&id="+myUser.getUserById(userId,

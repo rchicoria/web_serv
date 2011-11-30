@@ -3,6 +3,7 @@
 <%@ page import="phasebook.post.*" %>
 <%@ page import="phasebook.lotterybet.*" %>
 <%@ page import="phasebook.friendship.*" %>
+<%@ page import="phasebook.photo.*" %>
 <%@ page import="java.util.*" %>
 <%@ page import="java.text.*" %>
 
@@ -31,8 +32,9 @@
 	<table width="100%">
 		<tr>
 			<td width="60" style="vertical-align: top">
-				<% if (user.getPhoto()!=null){ 
-					String photoURL = Utils.MAIN_PATH + user.getId() + "/"+user.getPhoto().getName();
+				<% if (user.getPhotoId()!=-1){
+					PhotoRemote photoBean = Utils.getPhotoBean();
+					String photoURL = Utils.MAIN_PATH + user.getId() + "/"+photoBean.getPhotoById(""+user.getPhotoId(), session.getAttribute("id"), session.getAttribute("password")).getName();
 				%>
 					<%= Utils.a("user&id="+user.getId(), Utils.smallImg(photoURL)) %>
 				<% } %>
@@ -40,8 +42,9 @@
 			<td>
 				<b class="user"><%= Utils.a("user&id="+user.getId(), Utils.text(user.getName())) %></b>
 				<% if (posts.get(i).isPrivate_()) { %><i>(private)</i><% } %><br />
-				<% if (posts.get(i).getPhoto()!=null){ 
-					String photoURL = Utils.MAIN_PATH+me.getId()+"/"+posts.get(i).getPhoto().getName();
+				<% if (posts.get(i).getPhotoId()!=-1){
+					PhotoRemote photoBean = Utils.getPhotoBean();
+					String photoURL = Utils.MAIN_PATH+me.getId()+"/"+photoBean.getPhotoById(""+posts.get(i).getPhotoId(), session.getAttribute("id"), session.getAttribute("password")).getName();
 				%>
 					<br /> <%= Utils.aAbsolute(photoURL, Utils.img(photoURL)) %>
 				<%} %>
@@ -87,8 +90,9 @@
 	<table width="100%">
 		<tr>
 			<td width="60">
-				<% if (user.getPhoto()!=null){ 
-					String photoURL = Utils.MAIN_PATH + user.getId() + "/"+user.getPhoto().getName();
+				<% if (user.getPhotoId()!=-1){
+					PhotoRemote photoBean = Utils.getPhotoBean();
+					String photoURL = Utils.MAIN_PATH + user.getId() + "/"+photoBean.getPhotoById(""+user.getPhotoId(), session.getAttribute("id"), session.getAttribute("password")).getName();
 				%>
 					<%= Utils.a("user&id="+user.getId(), Utils.smallImg(photoURL)) %>
 				<% } %>
@@ -114,8 +118,9 @@
 	<table width="100%">
 		<tr>
 			<td width="60">
-				<% if (user.getPhoto()!=null){ 
-					String photoURL = Utils.MAIN_PATH + user.getId() + "/"+user.getPhoto().getName();
+				<% if (user.getPhotoId()!=-1){ 
+					PhotoRemote photoBean = Utils.getPhotoBean();
+					String photoURL = Utils.MAIN_PATH + user.getId() + "/"+photoBean.getPhotoById(""+user.getPhotoId(), session.getAttribute("id"), session.getAttribute("password")).getName();
 				%>
 					<%= Utils.a("user&id="+user.getId(), Utils.smallImg(photoURL)) %>
 				<% } %>
