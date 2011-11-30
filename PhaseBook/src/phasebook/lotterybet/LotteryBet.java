@@ -44,9 +44,18 @@ public class LotteryBet implements Serializable {
 	@Column(name="READ_")
 	private boolean read_;
 	
-	@ManyToOne
+	/*@ManyToOne
 	@JoinColumn(name="LOTTERY_ID", referencedColumnName="LOTTERY_ID")
-	private Lottery lottery;
+	private Lottery lottery;*/
+	
+	@Column(name="LOTTERY_ID")
+	private int lotteryId = -1;
+	
+	@Column(name="LOTTERY_NUMBER")
+	private int lotteryNumber;
+	
+	@Column(name="LOTTERY_DATE")
+	private Timestamp lotteryDate = new Timestamp(new Date().getTime());
 	
 	public LotteryBet()
 	{
@@ -99,12 +108,12 @@ public class LotteryBet implements Serializable {
 		this.createdAT = createdAT;
 	}
 
-	public Lottery getLottery() {
-		return lottery;
+	public int getLotteryId() {
+		return lotteryId;
 	}
 
-	public void setLottery(Lottery lottery) {
-		this.lottery = lottery;
+	public void setLotteryId(int lotteryId) {
+		this.lotteryId = lotteryId;
 	}
 
 	public float getValueWon() {
@@ -121,6 +130,22 @@ public class LotteryBet implements Serializable {
 
 	public void setRead_(boolean read_) {
 		this.read_ = read_;
+	}
+
+	public Timestamp getLotteryDate() {
+		return lotteryDate;
+	}
+
+	public void setLotteryDate(Timestamp lotteryDate) {
+		this.lotteryDate = lotteryDate;
+	}
+
+	public int getLotteryNumber() {
+		return lotteryNumber;
+	}
+
+	public void setLotteryNumber(int lotteryNumber) {
+		this.lotteryNumber = lotteryNumber;
 	}
 	
 	

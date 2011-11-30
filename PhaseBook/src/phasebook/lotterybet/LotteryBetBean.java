@@ -40,7 +40,9 @@ public class LotteryBetBean implements LotteryBetRemote {
 			bet.setBetValue(1);
 			bet.setValueWon(-1);
 			bet.setUser(user);
-			bet.setLottery(lottery);
+			bet.setLotteryId(lottery.getId());
+			bet.setLotteryNumber(lottery.getLotteryNumber());
+			bet.setLotteryDate(lottery.getLotteryDate());
 			em.persist(bet);
 			em.refresh(bet);
 			tx.commit();
@@ -108,13 +110,14 @@ public class LotteryBetBean implements LotteryBetRemote {
 		return bets;
 	}
 	
-	public void updateBet(LotteryBet bet, float won) {
+	public void updateBet(LotteryBet bet, float won, int lotteryNumber) {
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("PhaseBook");
 		EntityManager em = emf.createEntityManager();
 		EntityTransaction tx = em.getTransaction();
 		
 		tx.begin();
 		bet.setValueWon((int)won);
+		bet.setLotteryNumber(lotteryNumber);
 		em.merge(bet);
 		tx.commit();
 		em.close();

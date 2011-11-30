@@ -64,15 +64,15 @@
 	for (int i=bets.size()-1; i>=0; i--) {
 		LotteryBet bet = bets.get(i);
 %>
-	<% if (bet.getBetNumber() == bet.getLottery().getLotteryNumber()) { %><b><% } %>
+	<% if (bet.getBetNumber() == bet.getLotteryNumber()) { %><b><% } %>
 	Number <%= bet.getBetNumber() %> at
 	<%
 		DateFormat dateFormat = new SimpleDateFormat("HH:mm - dd/MM/yyyy");
-		String date = dateFormat.format(bet.getLottery().getLotteryDate().getTime());
+		String date = dateFormat.format(bet.getLotteryDate().getTime());
 	%>
 	<%= date %>
-	(number <%= bet.getLottery().getLotteryNumber() %> won)
-	<% if (bet.getBetNumber() == bet.getLottery().getLotteryNumber()) { %>
+	(number <%= bet.getLotteryNumber() %> won)
+	<% if (bet.getBetNumber() == bet.getLotteryNumber()) { %>
 		 - You won <%= bet.getValueWon() %> L&euro;!</b>
 	<% } %><br />
 <% }} %>

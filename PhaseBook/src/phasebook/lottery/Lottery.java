@@ -32,8 +32,8 @@ public class Lottery implements Serializable {
 	@Column(name="LOTTERY_DATE")
 	private Timestamp lotteryDate = new Timestamp(new Date().getTime());
 	
-	@ElementCollection  
-	private List<LotteryBet> lotteryBets = new ArrayList<LotteryBet>();
+	/*@ElementCollection  
+	private List<LotteryBet> lotteryBets = new ArrayList<LotteryBet>();*/
 	
 	public Lottery()
 	{
@@ -46,7 +46,7 @@ public class Lottery implements Serializable {
 		this.id=id;
 	}
 
-	protected int getId() {
+	public int getId() {
 		return id;
 	}
 
@@ -70,14 +70,14 @@ public class Lottery implements Serializable {
 		this.lotteryDate = lotteryDate;
 	}
 
-	@OneToMany(cascade=CascadeType.ALL, mappedBy="lottery")
+	/*@OneToMany(cascade=CascadeType.ALL, mappedBy="lottery")
 	public List<LotteryBet> getLotteryBets() {
 		return lotteryBets;
 	}
 	
 	public void setLotteryBets(List<LotteryBet> lotteryBets) {
 		this.lotteryBets = lotteryBets;
-	}
+	}*/
 	
 	
 }
