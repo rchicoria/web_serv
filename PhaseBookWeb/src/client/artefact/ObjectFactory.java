@@ -37,11 +37,27 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link AuthInfo }
+     * 
+     */
+    public AuthInfo createAuthInfo() {
+        return new AuthInfo();
+    }
+
+    /**
      * Create an instance of {@link CreateUser }
      * 
      */
     public CreateUser createCreateUser() {
         return new CreateUser();
+    }
+
+    /**
+     * Create an instance of {@link LoginUser }
+     * 
+     */
+    public LoginUser createLoginUser() {
+        return new LoginUser();
     }
 
     /**
@@ -58,14 +74,6 @@ public class ObjectFactory {
      */
     public CreateUserResponse createCreateUserResponse() {
         return new CreateUserResponse();
-    }
-
-    /**
-     * Create an instance of {@link LoginUser }
-     * 
-     */
-    public LoginUser createLoginUser() {
-        return new LoginUser();
     }
 
     /**

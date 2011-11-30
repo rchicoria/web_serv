@@ -2,6 +2,7 @@ package phasebook.controller;
 
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -9,9 +10,7 @@ import javax.naming.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
 
-import client.artefact.Methods;
-import client.artefact.MethodsService;
-
+import client.artefact.*;
 import phasebook.post.PostRemote;
 import phasebook.user.PhasebookUserRemote;
 
@@ -56,10 +55,19 @@ public class LoginUserForm extends HttpServlet {
 			MethodsService cs = new MethodsService();
 			Methods m = cs.getMethodsPort();
 			
-			int id =  m.loginUser(email, password); 
+			long current = (new Date()).getTime();
+			
+			AuthInfo object =  m.loginUser(email, password, current);
+			int id = object.getId();
+			String token = object.getToken();
+			long expiration = object.getExpiration();
+			
 			if(id!=-1){
 				session.setAttribute("id", id);
 				session.setAttribute("password", password);
+				session.setAttribute("current", current);
+				session.setAttribute("expiration", expiration);
+				session.setAttribute("token", token);
 				response.sendRedirect(Utils.url(""));
 			}
 			else

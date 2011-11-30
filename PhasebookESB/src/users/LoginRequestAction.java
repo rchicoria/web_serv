@@ -39,10 +39,12 @@ public class LoginRequestAction extends AbstractActionLifecycle
 	     Map requestMsg = ((Map)message.getBody().get(Body.DEFAULT_LOCATION));
 	     String email = (String)requestMsg.get("email");
 	     String password = (String)requestMsg.get("password");
+	     long current = ((Long)requestMsg.get("current")).longValue();
 	 
 	     Map send = new HashMap();
 	     send.put("loginUser.email", email);
 	     send.put("loginUser.password", password);
+	     send.put("loginUser.current", current);
 	     message.getBody().add(send);
 	     
 	     return message;  

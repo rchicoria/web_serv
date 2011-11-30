@@ -25,39 +25,45 @@ public interface Methods {
 
     /**
      * 
+     * @param arg3
      * @param arg2
      * @param arg1
      * @param arg0
      * @return
-     *     returns int
+     *     returns client.artefact.AuthInfo
      */
     @WebMethod
     @WebResult(targetNamespace = "")
     @RequestWrapper(localName = "createUser", targetNamespace = "http://main/", className = "client.artefact.CreateUser")
     @ResponseWrapper(localName = "createUserResponse", targetNamespace = "http://main/", className = "client.artefact.CreateUserResponse")
-    public int createUser(
+    public AuthInfo createUser(
         @WebParam(name = "arg0", targetNamespace = "")
         String arg0,
         @WebParam(name = "arg1", targetNamespace = "")
         String arg1,
         @WebParam(name = "arg2", targetNamespace = "")
-        String arg2);
+        String arg2,
+        @WebParam(name = "arg3", targetNamespace = "")
+        long arg3);
 
     /**
      * 
+     * @param arg2
      * @param arg1
      * @param arg0
      * @return
-     *     returns int
+     *     returns client.artefact.AuthInfo
      */
     @WebMethod
     @WebResult(targetNamespace = "")
     @RequestWrapper(localName = "loginUser", targetNamespace = "http://main/", className = "client.artefact.LoginUser")
     @ResponseWrapper(localName = "loginUserResponse", targetNamespace = "http://main/", className = "client.artefact.LoginUserResponse")
-    public int loginUser(
+    public AuthInfo loginUser(
         @WebParam(name = "arg0", targetNamespace = "")
         String arg0,
         @WebParam(name = "arg1", targetNamespace = "")
-        String arg1);
+        String arg1,
+        @WebParam(name = "arg2", targetNamespace = "")
+        long arg2);
 
 }

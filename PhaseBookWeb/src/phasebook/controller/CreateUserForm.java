@@ -2,6 +2,7 @@ package phasebook.controller;
 
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
+import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -9,9 +10,7 @@ import javax.naming.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
 
-import client.artefact.Methods;
-import client.artefact.MethodsService;
-
+import client.artefact.*;
 import phasebook.user.PhasebookUserRemote;
 
 /**
@@ -52,6 +51,7 @@ public class CreateUserForm extends HttpServlet {
 			String email = request.getParameter("email");
 			String password1 = request.getParameter("password1");
 			String password2 = request.getParameter("password2");
+			long current = (new Date()).getTime();
 
 			String error = formValidation(name, email, password1, password2);
 			if (error != null) {
@@ -66,8 +66,12 @@ public class CreateUserForm extends HttpServlet {
 				MethodsService cs = new MethodsService();
 				Methods m = cs.getMethodsPort();
 				
-				int id =  m.createUser(name, email, password1); 
+				AuthInfo object =  m.createUser(name, email, password1, current); 
 
+				int id = object.getId();
+				String token = object.getToken();
+				long expiration = object.getExpiration();
+				
 				if (id == -1) {
 					session.setAttribute("error", "That email adress is already taken");
 					session.setAttribute("name", name);
@@ -77,6 +81,9 @@ public class CreateUserForm extends HttpServlet {
 				else {
 					session.setAttribute("id", id);
 					session.setAttribute("password", password1);
+					session.setAttribute("current", current);
+					session.setAttribute("expiration", expiration);
+					session.setAttribute("token", token);
 					response.sendRedirect(Utils.url(""));
 				}
 			}
