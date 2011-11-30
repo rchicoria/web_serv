@@ -1,6 +1,13 @@
 package main;
+import info.AuthInfo;
+
+import java.util.Date;
+import java.util.Dictionary;
 import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.Map;
+
+import java.sql.Timestamp;
 
 import javax.jws.WebMethod;
 import javax.jws.WebService;
@@ -19,7 +26,7 @@ import org.jboss.soa.esb.services.registry.RegistryException;
 public class Methods {
 	
 	@WebMethod
-	public int loginUser(String email, String password) {
+	public AuthInfo loginUser(String email, String password, long current) {
 		// Setting the ConnectionFactory such that it will use scout
 		System.setProperty("javax.xml.registry.ConnectionFactoryClass","org.apache.ws.scout.registry.ConnectionFactoryImpl");
 	
@@ -27,6 +34,7 @@ public class Methods {
 		HashMap requestMap = new HashMap();
 		requestMap.put("email",email);
 		requestMap.put("password",password);
+		requestMap.put("current",current);
 		esbMessage.getBody().add(requestMap);
 		
 		Message retMessage = null;
@@ -35,8 +43,10 @@ public class Methods {
 		try {
 			si = new ServiceInvoker("Login_User_Service", "send");
 			retMessage = si.deliverSync(esbMessage, 10000L);
-			int id = ((Integer)retMessage.getBody().get(Body.DEFAULT_LOCATION)).intValue();
-			return id;
+			HashMap map = (HashMap)retMessage.getBody().get(Body.DEFAULT_LOCATION);
+			AuthInfo temp = new AuthInfo(Integer.parseInt((String)map.get("id")), (String)map.get("token"), 
+				Long.parseLong((String)map.get("expiration")));
+			return temp;
 		} catch (MessageDeliverException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -47,19 +57,21 @@ public class Methods {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return -1;
+		return null;
 	}
 	
 	@WebMethod
-	public int createUser(String name, String email, String password) {
+	public AuthInfo createUser(String name, String email, String password, long current) {
 		// Setting the ConnectionFactory such that it will use scout
 		System.setProperty("javax.xml.registry.ConnectionFactoryClass","org.apache.ws.scout.registry.ConnectionFactoryImpl");
 	
 		Message esbMessage = MessageFactory.getInstance().getMessage();
 		HashMap requestMap = new HashMap();
-		requestMap.put("createUser.name",name);
-		requestMap.put("createUser.email",email);
-		requestMap.put("createUser.password",password);
+		
+		requestMap.put("name",name);
+		requestMap.put("email",email);
+		requestMap.put("password",password);
+		requestMap.put("current", current);
 		esbMessage.getBody().add(requestMap);
 		
 		Message retMessage = null;
@@ -68,9 +80,11 @@ public class Methods {
 		try {
 			si = new ServiceInvoker("Create_User_Service", "send");
 			retMessage = si.deliverSync(esbMessage, 10000L);
-			Map responseMsg = (Map) retMessage.getBody().get(Body.DEFAULT_LOCATION);
+			HashMap map = (HashMap)retMessage.getBody().get(Body.DEFAULT_LOCATION);
 			//System.out.println("****************"+(String) responseMsg.get("loginResponse.return")+"***************");
-			return Integer.parseInt((String)responseMsg.get("createUserResponse.return"));
+			AuthInfo temp = new AuthInfo(Integer.parseInt((String)map.get("id")), (String)map.get("token"), 
+				Long.parseLong((String)map.get("expiration")));
+			return temp;
 		} catch (MessageDeliverException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -81,6 +95,6 @@ public class Methods {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return -1;
+		return null;
 	}
 }

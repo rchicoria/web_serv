@@ -46,13 +46,19 @@
     <jms-listener busidref="createUserEsbChannel" name="ESB-Listener" />
    </listeners> 
    <actions>
+   	<action name="request-mapper"  
+    class="users.CreateUserRequestAction">
+    </action>    
     <action name="soapui-client-action"  
     class="org.jboss.soa.esb.actions.soap.SOAPClient">  
      <property name="wsdl"  
      value="http://127.0.0.1:8080/PhasebookWS/Users?wsdl" />  
      <property name="SOAPAction" value="createUser"/>
      <property name="responseAsOgnlMap" value="true" />      
-    </action>   
+    </action>
+    <action name="response-mapper"  
+    class="users.CreateUserResponseAction">                
+	</action>  
    </actions>
   </service>
  </services>

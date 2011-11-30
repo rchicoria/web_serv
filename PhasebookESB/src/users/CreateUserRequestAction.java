@@ -20,32 +20,36 @@ import java.util.*;
 * (C) 2005-2006,
 * @author JBoss Inc.
 */
-
-
 import org.jboss.soa.esb.actions.AbstractActionLifecycle;
 import org.jboss.soa.esb.helpers.ConfigTree;
 import org.jboss.soa.esb.message.Body;
 import org.jboss.soa.esb.message.Message;
 
-public class LoginResponseAction extends AbstractActionLifecycle
+public class CreateUserRequestAction extends AbstractActionLifecycle
 {
 
-	protected ConfigTree _config;
-
-	public LoginResponseAction(ConfigTree config) {
-		_config = config;
-	}
-
-	public Message process(Message message) {
-	  
-		Map responseMsg = (Map) message.getBody().get(Body.DEFAULT_LOCATION);
-		HashMap map = new HashMap();
-		map.put("id", responseMsg.get("loginUserResponse[0]"));
-		map.put("token", responseMsg.get("loginUserResponse[1]"));
-		map.put("expiration", responseMsg.get("loginUserResponse[2]"));
-		message.getBody().add(map);
-		System.out.println(message.getBody().get(Body.DEFAULT_LOCATION));
-		return message;  
-	}
+	 protected ConfigTree _config;
+	
+	 public CreateUserRequestAction(ConfigTree config) {
+		 _config = config;
+	 }
+	
+	 public Message process(Message message) {
+		  
+	     Map requestMsg = ((Map)message.getBody().get(Body.DEFAULT_LOCATION));
+	     String name = (String)requestMsg.get("name");
+	     String email = (String)requestMsg.get("email");
+	     String password = (String)requestMsg.get("password");
+	     long current = ((Long)requestMsg.get("current")).longValue();
+	 
+	     Map send = new HashMap();
+	     send.put("createUser.name", name);
+	     send.put("createUser.email", email);
+	     send.put("createUser.password", password);
+	     send.put("createUser.current", current);
+	     message.getBody().add(send);
+	     
+	     return message;  
+	 }
 
 }
