@@ -158,7 +158,7 @@ public class Utils {
 		if (Auth.authenticate(authId, authPass))
 			return -1;
 		int count = 0;
-		count += ((List<Object>)getPostBean().getUnreadPosts(user,
+		count += ((List<Object>)getPostBean().getUnreadPosts(user.getId(),
 				authId, authPass)).size();
 		count += ((List<Object>)getLotteryBetBean().checkUnreadBetResults(user,
 				authId, authPass)).size();

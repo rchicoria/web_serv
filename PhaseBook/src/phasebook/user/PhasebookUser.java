@@ -50,13 +50,13 @@ private static final long serialVersionUID = 1L;
 	@OneToMany(cascade=CascadeType.ALL, mappedBy = "user")
 	private List<LotteryBet> lotteryBets = new ArrayList<LotteryBet>();
 	
-	@ElementCollection  
+	/*@ElementCollection  
 	@OneToMany(cascade=CascadeType.ALL, mappedBy = "fromUser")
 	private List<Post> sentPosts = new ArrayList<Post>();
 	
 	@ElementCollection
 	@OneToMany(cascade=CascadeType.ALL, mappedBy = "toUser")
-	private List<Post> receivedPosts = new ArrayList<Post>();
+	private List<Post> receivedPosts = new ArrayList<Post>();*/
 	
 	public PhasebookUser()
 	{
@@ -170,7 +170,7 @@ private static final long serialVersionUID = 1L;
 		this.lotteryBets = lotteryBets;
 	}
 
-	public List<Post> getReceivedPosts() {
+	/*public List<Post> getReceivedPosts() {
 		return receivedPosts;
 	}
 
@@ -184,7 +184,7 @@ private static final long serialVersionUID = 1L;
 
 	public void setSentPosts(List<Post> sentPosts) {
 		this.sentPosts = sentPosts;
-	}
+	}*/
 	
 	public boolean equals(PhasebookUser user) {
 		return user.getId() == this.getId();

@@ -20,14 +20,14 @@
 <%
 	}
 	else {
-	List<Post> posts = (List<Post>)Utils.getPostBean().getUnreadPosts(me,
+	List<Post> posts = (List<Post>)Utils.getPostBean().getUnreadPosts(me.getId(),
 			session.getAttribute("id"), session.getAttribute("password"));
 	if (posts.size() > 0) {
 %>
 <h2>New posts</h2>
 <%
 	for (int i=posts.size()-1; i>=0; i--) {
-		PhasebookUser user = posts.get(i).getFromUser();
+		PhasebookUser user = userBean.getUserById(posts.get(i).getFromUserId(),session.getAttribute("id"), session.getAttribute("password"));
 %>
 	<table width="100%">
 		<tr>
@@ -134,7 +134,7 @@
 <% }} %>
 
 <%
-	Utils.getPostBean().readUnreadPosts(me,
+	Utils.getPostBean().readUnreadPosts(me.getId(),
 			session.getAttribute("id"), session.getAttribute("password"));
 	Utils.getLotteryBetBean().readUnreadBets(me,
 			session.getAttribute("id"), session.getAttribute("password"));

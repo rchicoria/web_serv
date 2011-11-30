@@ -116,9 +116,9 @@ public class PhasebookUserBean implements PhasebookUserRemote {
 		
 		try{
 			Query q = em.createQuery("SELECT u FROM Post u " +
-					"WHERE u.toUser LIKE :user AND " +
+					"WHERE u.toUserId = :user AND " +
 					"u.deletedAt is NULL");
-			q.setParameter("user",user);
+			q.setParameter("user",user.getId());
 			
 			em.clear();
 			emf.close();
@@ -143,9 +143,9 @@ public class PhasebookUserBean implements PhasebookUserRemote {
 		
 		try{
 			Query q = em.createQuery("SELECT u FROM Post u " +
-					"WHERE u.toUser LIKE :user AND " +
+					"WHERE u.toUserId = :user AND " +
 					"u.private_ = :private_ AND u.deletedAt is NULL");
-			q.setParameter("user",user);
+			q.setParameter("user",user.getId());
 			q.setParameter("private_",false);
 			
 			em.clear();
@@ -239,7 +239,7 @@ public class PhasebookUserBean implements PhasebookUserRemote {
 		EntityTransaction tx = em.getTransaction();
 		
 		tx.begin();
-    	Post post = new Post(from, to, text, privacy);
+    	Post post = new Post(from.getId(), to.getId(), text, privacy);
 		em.persist(post);
 		em.refresh(post);
 		tx.commit();
@@ -264,7 +264,7 @@ public class PhasebookUserBean implements PhasebookUserRemote {
 		em.persist(photo);
 		em.refresh(photo);
 		
-    	Post post = new Post(from, to, text, photo.getId(), privacy);
+    	Post post = new Post(from.getId(), to.getId(), text, photo.getId(), privacy);
 		em.persist(post);
 		em.refresh(post);
 		
@@ -421,8 +421,8 @@ public class PhasebookUserBean implements PhasebookUserRemote {
 		
 		List<?> posts = null;
 		
-		Query q = em.createQuery("SELECT u FROM Post u WHERE u.toUser = :user AND u.read_ = :status AND u.deletedAt = NULL");
-		q.setParameter("user",user);
+		Query q = em.createQuery("SELECT u FROM Post u WHERE u.toUserId = :user AND u.read_ = :status AND u.deletedAt = NULL");
+		q.setParameter("user",user.getId());
 		q.setParameter("status",false);
 		
 		int result = q.getResultList().size();
