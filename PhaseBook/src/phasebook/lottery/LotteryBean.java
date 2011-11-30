@@ -127,7 +127,7 @@ public class LotteryBean implements LotteryRemote {
 		for (int i=0; i<bets.size(); i++) {
 			LotteryBet bet = (LotteryBet)bets.get(i);
 			if (bet.getBetNumber() == number){
-				giveMoney(bet.getUser().getId());
+				giveMoney(bet.getUserId());
 				betEJB.updateBet(bet, MONEYWIN, lottery.getLotteryNumber());
 			}
 			else {

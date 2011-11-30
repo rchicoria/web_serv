@@ -160,7 +160,7 @@ public class Utils {
 		int count = 0;
 		count += ((List<Object>)getPostBean().getUnreadPosts(user.getId(),
 				authId, authPass)).size();
-		count += ((List<Object>)getLotteryBetBean().checkUnreadBetResults(user,
+		count += ((List<Object>)getLotteryBetBean().checkUnreadBetResults(user.getId(),
 				authId, authPass)).size();
 		count += ((List<Object>)getFriendshipBean().getNewFriendshipInvites(user,
 				authId, authPass)).size();

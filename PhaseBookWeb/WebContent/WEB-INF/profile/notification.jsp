@@ -55,7 +55,7 @@
 <% }} %>
 
 <%
-	List<LotteryBet> bets = (List<LotteryBet>)Utils.getLotteryBetBean().checkUnreadBetResults(me,
+	List<LotteryBet> bets = (List<LotteryBet>)Utils.getLotteryBetBean().checkUnreadBetResults(me.getId(),
 			session.getAttribute("id"), session.getAttribute("password"));
 	if (bets.size() > 0) {
 %>
@@ -136,7 +136,7 @@
 <%
 	Utils.getPostBean().readUnreadPosts(me.getId(),
 			session.getAttribute("id"), session.getAttribute("password"));
-	Utils.getLotteryBetBean().readUnreadBets(me,
+	Utils.getLotteryBetBean().readUnreadBets(me.getId(),
 			session.getAttribute("id"), session.getAttribute("password"));
 	Utils.getFriendshipBean().readUnreadFriendshipAcceptances(me,
 			session.getAttribute("id"), session.getAttribute("password"));

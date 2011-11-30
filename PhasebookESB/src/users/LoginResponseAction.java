@@ -39,6 +39,7 @@ public class LoginResponseAction extends AbstractActionLifecycle
 	public Message process(Message message) {
 	  
 		Map responseMsg = (Map) message.getBody().get(Body.DEFAULT_LOCATION);
+		System.out.println(message.getBody().get(Body.DEFAULT_LOCATION));
 		HashMap map = new HashMap();
 		map.put("id", responseMsg.get("loginUserResponse[0]"));
 		map.put("token", responseMsg.get("loginUserResponse[1]"));

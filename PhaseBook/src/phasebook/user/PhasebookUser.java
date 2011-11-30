@@ -46,9 +46,9 @@ private static final long serialVersionUID = 1L;
 	@OneToMany(cascade=CascadeType.ALL, mappedBy = "invitedUser")
 	private List<Friendship> receivedInvites = new ArrayList<Friendship>();
 	
-	@ElementCollection
+	/*@ElementCollection
 	@OneToMany(cascade=CascadeType.ALL, mappedBy = "user")
-	private List<LotteryBet> lotteryBets = new ArrayList<LotteryBet>();
+	private List<LotteryBet> lotteryBets = new ArrayList<LotteryBet>();*/
 	
 	/*@ElementCollection  
 	@OneToMany(cascade=CascadeType.ALL, mappedBy = "fromUser")
@@ -162,13 +162,13 @@ private static final long serialVersionUID = 1L;
 		this.receivedInvites = receivedInvites;
 	}
 
-	public List<LotteryBet> getLotteryBets() {
+	/*public List<LotteryBet> getLotteryBets() {
 		return lotteryBets;
 	}
 
 	public void setLotteryBets(List<LotteryBet> lotteryBets) {
 		this.lotteryBets = lotteryBets;
-	}
+	}*/
 
 	/*public List<Post> getReceivedPosts() {
 		return receivedPosts;

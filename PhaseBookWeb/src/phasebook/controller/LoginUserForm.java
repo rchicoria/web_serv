@@ -59,6 +59,7 @@ public class LoginUserForm extends HttpServlet {
 			
 			AuthInfo object =  m.loginUser(email, password, current);
 			int id = object.getId();
+			System.out.println("\n\n\n\n*********************"+id);
 			String token = object.getToken();
 			long expiration = object.getExpiration();
 			
