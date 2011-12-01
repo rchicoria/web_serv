@@ -25,8 +25,10 @@ import javax.xml.namespace.QName;
 public class ObjectFactory {
 
     private final static QName _LoginUser_QNAME = new QName("http://main/", "loginUser");
+    private final static QName _GetPosts_QNAME = new QName("http://main/", "getPosts");
     private final static QName _CreateUserResponse_QNAME = new QName("http://main/", "createUserResponse");
     private final static QName _LoginUserResponse_QNAME = new QName("http://main/", "loginUserResponse");
+    private final static QName _GetPostsResponse_QNAME = new QName("http://main/", "getPostsResponse");
     private final static QName _CreateUser_QNAME = new QName("http://main/", "createUser");
 
     /**
@@ -34,14 +36,6 @@ public class ObjectFactory {
      * 
      */
     public ObjectFactory() {
-    }
-
-    /**
-     * Create an instance of {@link AuthInfo }
-     * 
-     */
-    public AuthInfo createAuthInfo() {
-        return new AuthInfo();
     }
 
     /**
@@ -61,19 +55,43 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link LoginUserResponse }
-     * 
-     */
-    public LoginUserResponse createLoginUserResponse() {
-        return new LoginUserResponse();
-    }
-
-    /**
      * Create an instance of {@link CreateUserResponse }
      * 
      */
     public CreateUserResponse createCreateUserResponse() {
         return new CreateUserResponse();
+    }
+
+    /**
+     * Create an instance of {@link AuthInfo }
+     * 
+     */
+    public AuthInfo createAuthInfo() {
+        return new AuthInfo();
+    }
+
+    /**
+     * Create an instance of {@link GetPosts }
+     * 
+     */
+    public GetPosts createGetPosts() {
+        return new GetPosts();
+    }
+
+    /**
+     * Create an instance of {@link GetPostsResponse }
+     * 
+     */
+    public GetPostsResponse createGetPostsResponse() {
+        return new GetPostsResponse();
+    }
+
+    /**
+     * Create an instance of {@link LoginUserResponse }
+     * 
+     */
+    public LoginUserResponse createLoginUserResponse() {
+        return new LoginUserResponse();
     }
 
     /**
@@ -83,6 +101,15 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://main/", name = "loginUser")
     public JAXBElement<LoginUser> createLoginUser(LoginUser value) {
         return new JAXBElement<LoginUser>(_LoginUser_QNAME, LoginUser.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link GetPosts }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://main/", name = "getPosts")
+    public JAXBElement<GetPosts> createGetPosts(GetPosts value) {
+        return new JAXBElement<GetPosts>(_GetPosts_QNAME, GetPosts.class, null, value);
     }
 
     /**
@@ -101,6 +128,15 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://main/", name = "loginUserResponse")
     public JAXBElement<LoginUserResponse> createLoginUserResponse(LoginUserResponse value) {
         return new JAXBElement<LoginUserResponse>(_LoginUserResponse_QNAME, LoginUserResponse.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link GetPostsResponse }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://main/", name = "getPostsResponse")
+    public JAXBElement<GetPostsResponse> createGetPostsResponse(GetPostsResponse value) {
+        return new JAXBElement<GetPostsResponse>(_GetPostsResponse_QNAME, GetPostsResponse.class, null, value);
     }
 
     /**

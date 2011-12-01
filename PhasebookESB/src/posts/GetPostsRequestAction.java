@@ -1,4 +1,4 @@
-package users;
+package posts;
 import java.util.*;
 /*
 * JBoss, Home of Professional Open Source
@@ -20,31 +20,36 @@ import java.util.*;
 * (C) 2005-2006,
 * @author JBoss Inc.
 */
-
-
 import org.jboss.soa.esb.actions.AbstractActionLifecycle;
 import org.jboss.soa.esb.helpers.ConfigTree;
 import org.jboss.soa.esb.message.Body;
 import org.jboss.soa.esb.message.Message;
 
-public class LoginResponseAction extends AbstractActionLifecycle
+public class GetPostsRequestAction extends AbstractActionLifecycle
 {
 
-	protected ConfigTree _config;
-
-	public LoginResponseAction(ConfigTree config) {
-		_config = config;
-	}
-
-	public Message process(Message message) {
-	  
-		Map responseMsg = (Map) message.getBody().get(Body.DEFAULT_LOCATION);
-		HashMap map = new HashMap();
-		map.put("id", responseMsg.get("loginUserResponse[0]"));
-		map.put("token", responseMsg.get("loginUserResponse[1]"));
-		map.put("expiration", responseMsg.get("loginUserResponse[2]"));
-		message.getBody().add(map);
-		return message;  
-	}
+	 protected ConfigTree _config;
+	
+	 public GetPostsRequestAction(ConfigTree config) {
+		 _config = config;
+	 }
+	
+	 public Message process(Message message) {
+		  
+	     Map requestMsg = ((Map)message.getBody().get(Body.DEFAULT_LOCATION));
+	     int userId = ((Integer)requestMsg.get("userId")).intValue();
+	     String token = (String)requestMsg.get("token");
+	     long current = ((Long)requestMsg.get("current")).longValue();
+	     long expiration = ((Long)requestMsg.get("expiration")).longValue();
+	 
+	     Map send = new HashMap();
+	     send.put("getPosts.userId", userId);
+	     send.put("getPosts.token", token);
+	     send.put("getPosts.current", current);
+	     send.put("getPosts.expiration", expiration);
+	     message.getBody().add(send);
+	     
+	     return message;  
+	 }
 
 }

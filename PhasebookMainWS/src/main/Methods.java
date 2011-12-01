@@ -1,11 +1,7 @@
 package main;
 import info.AuthInfo;
 
-import java.util.Date;
-import java.util.Dictionary;
-import java.util.HashMap;
-import java.util.Hashtable;
-import java.util.Map;
+import java.util.*;
 
 import java.sql.Timestamp;
 
@@ -96,5 +92,42 @@ public class Methods {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	@WebMethod
+	public void getPosts(int userId, String token, long expiration, long current){
+		// Setting the ConnectionFactory such that it will use scout
+		System.setProperty("javax.xml.registry.ConnectionFactoryClass","org.apache.ws.scout.registry.ConnectionFactoryImpl");
+
+		Message esbMessage = MessageFactory.getInstance().getMessage();
+		HashMap requestMap = new HashMap();
+		
+		requestMap.put("userId", userId);
+		requestMap.put("token", token);
+		requestMap.put("expiration", expiration);
+		requestMap.put("current", current);
+		
+		esbMessage.getBody().add(requestMap);
+		
+		Message retMessage = null;
+		
+		ServiceInvoker si;
+		try {
+			si = new ServiceInvoker("Get_Posts_Service", "send");
+			retMessage = si.deliverSync(esbMessage, 10000L);
+			
+			//Ir buscar os posts de um User
+			//List posts = (List)retMessage.getBody().get(Body.DEFAULT_LOCATION);
+			
+		} catch (MessageDeliverException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (FaultMessageException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (RegistryException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

@@ -14,8 +14,13 @@
     <jms-message-filter dest-name="queue/create_user_Request_esb"
      dest-type="QUEUE" />
    </jms-bus>
+   <jms-bus busid="getPostsEsbChannel">
+    <jms-message-filter dest-name="queue/get_posts_Request_esb"
+     dest-type="QUEUE" />
+   </jms-bus>
   </jms-provider>
  </providers>
+ 
  <services>
   <service category="Login_User_Service"
    description="Login User Service: Use this service to login a user"
@@ -39,6 +44,7 @@
 	</action>  
    </actions>
   </service>
+  
   <service category="Create_User_Service"
    description="Create User Service: Use this service to create a user"
    name="send">
@@ -59,6 +65,33 @@
     <action name="response-mapper"  
     class="users.CreateUserResponseAction">                
 	</action>  
+   </actions>
+  </service>
+  
+  <service category="Get_Posts_Service"
+   description="Get Posts Service: Use this service to user posts"
+   name="send">
+   <listeners>
+    <jms-listener busidref="getPostsEsbChannel" name="ESB-Listener" />
+   </listeners> 
+   <actions>
+   
+   	<action name="request-mapper"  
+    class="posts.GetPostsRequestAction">
+    </action>    
+    
+    <action name="soapui-client-action"  
+    class="org.jboss.soa.esb.actions.soap.SOAPClient">  
+     <property name="wsdl"  
+     value="http://127.0.0.1:8080/PhasebookWS/Posts?wsdl" />  
+     <property name="SOAPAction" value="getPosts"/>
+     <property name="responseAsOgnlMap" value="true" />      
+    </action>
+    
+    <action name="response-mapper"  
+    class="posts.GetPostsResponseAction">                
+	</action>  
+   
    </actions>
   </service>
  </services>

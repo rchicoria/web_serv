@@ -1,7 +1,9 @@
 package phasebook.user;
 
 import java.security.NoSuchAlgorithmException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 
 import java.util.List;
 import java.util.regex.Matcher;
@@ -117,8 +119,9 @@ public class PhasebookUserBean implements PhasebookUserRemote {
 		try{
 			Query q = em.createQuery("SELECT u FROM Post u " +
 					"WHERE u.toUserId = :user AND " +
-					"u.deletedAt is NULL");
+					"u.deletedAt = :min ");
 			q.setParameter("user",user.getId());
+			q.setParameter("min", new Timestamp(0));
 			
 			em.clear();
 			emf.close();

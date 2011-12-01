@@ -48,6 +48,26 @@ public interface Methods {
 
     /**
      * 
+     * @param arg3
+     * @param arg2
+     * @param arg1
+     * @param arg0
+     */
+    @WebMethod
+    @RequestWrapper(localName = "getPosts", targetNamespace = "http://main/", className = "client.artefact.GetPosts")
+    @ResponseWrapper(localName = "getPostsResponse", targetNamespace = "http://main/", className = "client.artefact.GetPostsResponse")
+    public void getPosts(
+        @WebParam(name = "arg0", targetNamespace = "")
+        int arg0,
+        @WebParam(name = "arg1", targetNamespace = "")
+        String arg1,
+        @WebParam(name = "arg2", targetNamespace = "")
+        long arg2,
+        @WebParam(name = "arg3", targetNamespace = "")
+        long arg3);
+
+    /**
+     * 
      * @param arg2
      * @param arg1
      * @param arg0

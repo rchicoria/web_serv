@@ -1,4 +1,4 @@
-package users;
+package posts;
 import java.util.*;
 /*
 * JBoss, Home of Professional Open Source
@@ -27,23 +27,27 @@ import org.jboss.soa.esb.helpers.ConfigTree;
 import org.jboss.soa.esb.message.Body;
 import org.jboss.soa.esb.message.Message;
 
-public class LoginResponseAction extends AbstractActionLifecycle
+public class GetPostsResponseAction extends AbstractActionLifecycle
 {
 
 	protected ConfigTree _config;
 
-	public LoginResponseAction(ConfigTree config) {
+	public GetPostsResponseAction(ConfigTree config) {
 		_config = config;
 	}
 
 	public Message process(Message message) {
 	  
 		Map responseMsg = (Map) message.getBody().get(Body.DEFAULT_LOCATION);
+		System.out.println("GET POSTS RESPONSE"+message.getBody().get(Body.DEFAULT_LOCATION));
 		HashMap map = new HashMap();
-		map.put("id", responseMsg.get("loginUserResponse[0]"));
-		map.put("token", responseMsg.get("loginUserResponse[1]"));
-		map.put("expiration", responseMsg.get("loginUserResponse[2]"));
-		message.getBody().add(map);
+		Iterator it = responseMsg.keySet().iterator();
+//		while(it.hasNext()){
+//			
+//			System.out.println(it.next());
+//		}
+		//message.getBody().add(map);
+		//System.out.println(message.getBody().get(Body.DEFAULT_LOCATION));
 		return message;  
 	}
 

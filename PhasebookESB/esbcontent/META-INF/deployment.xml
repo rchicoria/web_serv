@@ -2,4 +2,10 @@
 <jbossesb-deployment>
  <jmsQueue>login_user_Request_esb</jmsQueue>
  <jmsQueue>login_user_Request_esb_reply</jmsQueue>
+ 
+ <jmsQueue>create_user_Request_esb</jmsQueue>
+ <jmsQueue>create_user_Request_esb_reply</jmsQueue>
+ 
+ <jmsQueue>get_posts_Request_esb</jmsQueue>
+ <jmsQueue>get_posts_Request_esb_reply</jmsQueue>
 </jbossesb-deployment>

@@ -27,7 +27,7 @@ public class Photo implements Serializable{
 	private Timestamp createdAt = new Timestamp(new Date().getTime());
 	
 	@Column(name="DELETED_AT")
-	private Timestamp deletedAt;
+	private Timestamp deletedAt = new Timestamp(0);
 	
 	@Column(name="LABEL")
 	private String label;
