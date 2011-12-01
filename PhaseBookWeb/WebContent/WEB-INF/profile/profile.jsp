@@ -54,7 +54,7 @@
 
 </form>
 
-<table width="100%">
+<table style="width: 100%">
 	<tr>
 		<td width="120">
 			<% if (userBean.getUserPhotoId(user,
@@ -97,7 +97,7 @@
 <form enctype="multipart/form-data" method="POST" action="CreatePostForm" style="padding: 0 50px 0 50px;">
 	<textarea id="post" name="post" placeholder="What's on your mind?"></textarea>
 	<input type="hidden" name="toUser" value="<%= userId.toString() %>"/>
-	<table width="100%">
+	<table style="width: 100%">
 		<tr>
 			<td>
 				Upload image: <input type="file" name="file1">

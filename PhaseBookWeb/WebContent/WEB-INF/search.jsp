@@ -6,7 +6,7 @@
 
 <% 
 	PhasebookUserRemote userBean = Utils.getUserBean();
-	List users = userBean.getUsersFromSearch(request.getParameter("search"),
+	List<?> users = userBean.getUsersFromSearch(request.getParameter("search"),
 			session.getAttribute("id"), session.getAttribute("password"));
 %>
 
@@ -23,7 +23,7 @@
 	{
 		PhasebookUser user = (PhasebookUser) users.get(i);
 %>
-		<table width="100%">
+		<table style="width: 100%">
 			<tr>
 				<td width="60">
 					<% if (user.getPhotoId()!=-1){

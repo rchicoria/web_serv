@@ -35,16 +35,16 @@
 		}
 	}
 	
-	String post = "";
+	String posttext = "";
 	String privacy = "0";
 	try {
-		post = session.getAttribute("post").toString();
+		posttext = session.getAttribute("post").toString();
 		session.removeAttribute("post");
 		privacy = session.getAttribute("privacy").toString();
 		session.removeAttribute("privacy");
 	} catch (Exception e) {}
 	
-	List<Post> posts = null;
+	List<?> posts = null;
 	if (Utils.getFriendshipBean().friendshipStatus(me.getId(), user.getId(),
 			session.getAttribute("id"), session.getAttribute("password")) == 3 || me.equals(user) )
 		posts = userBean.getUserReceivedPosts(userId,
@@ -65,10 +65,11 @@
 <div id="images">
 <%
 	for (int i=posts.size()-1; i>=0; i--) {
+		Post post = (Post) posts.get(i);
 %>
-	<% if (posts.get(i).getPhotoId()!=-1 && posts.get(i).getDeletedAt()==null){
+	<% if (post.getPhotoId()!=-1 && post.getDeletedAt()==null){
 		PhotoRemote photoBean = Utils.getPhotoBean();
-		String photoURL = Utils.MAIN_PATH+userId.toString()+"/"+photoBean.getPhotoById(""+posts.get(i).getPhotoId(), session.getAttribute("id"), session.getAttribute("password")).getName();
+		String photoURL = Utils.MAIN_PATH+userId.toString()+"/"+photoBean.getPhotoById(""+post.getPhotoId(), session.getAttribute("id"), session.getAttribute("password")).getName();
 	%>
 		<span style="margin: 15px"><%= Utils.aAbsolute(photoURL, Utils.img(photoURL)) %></span>
 	<% } %>

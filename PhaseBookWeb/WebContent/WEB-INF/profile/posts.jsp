@@ -30,7 +30,7 @@
 		}
 	}
 
-	List<Post> posts = null;
+	List<?> posts = null;
 	if (Utils.getFriendshipBean().friendshipStatus(me.getId(), user.getId(),
 			session.getAttribute("id"), session.getAttribute("password")) == 3 || me.equals(user) )
 		posts = userBean.getUserReceivedPosts(userId,
@@ -45,9 +45,10 @@
 <%
 	}
 	for (int i=posts.size()-1; i>=0; i--) {
-		PhasebookUser sender = userBean.getUserById(posts.get(i).getFromUserId(), session.getAttribute("id"), session.getAttribute("password"));
+		Post post = (Post) posts.get(i);
+		PhasebookUser sender = userBean.getUserById(post.getFromUserId(), session.getAttribute("id"), session.getAttribute("password"));
 %>
-	<table width="100%">
+	<table style="width: 100%">
 		<tr>
 			<td width="60" style="vertical-align: top">
 				<% if (sender.getPhotoId()!=-1){
@@ -60,21 +61,21 @@
 			<td>
 				<% if (me.equals(user)) { %>
 				<form method="POST" action="RemovePostForm">
-				<input type="hidden" name="postId" value="<%= posts.get(i).getId() %>"/>
+				<input type="hidden" name="postId" value="<%= post.getId() %>"/>
 				<input type="hidden" name="userId" value="<%= userId %>"/>
 				<input type="submit" value="x" name="B0" style="float: right; font-size: 80%; background: white; color: #444; border: 1px solid #444; padding: 3px; font-weight: normal">
 				</form>
 				<% } %>
 	
 				<b class="user"><%= Utils.a("user&id="+sender.getId(), Utils.text(sender.getName())) %></b>
-				<% if (posts.get(i).isPrivate_()) { %><i>(private)</i><% } %><br />
-				<% if (posts.get(i).getPhotoId()!=-1){
+				<% if (post.isPrivate_()) { %><i>(private)</i><% } %><br />
+				<% if (post.getPhotoId()!=-1){
 					PhotoRemote photoBean = Utils.getPhotoBean();
-					String photoURL = Utils.MAIN_PATH+userId.toString()+"/"+photoBean.getPhotoById(""+posts.get(i).getPhotoId(), session.getAttribute("id"), session.getAttribute("password")).getName();
+					String photoURL = Utils.MAIN_PATH+userId.toString()+"/"+photoBean.getPhotoById(""+post.getPhotoId(), session.getAttribute("id"), session.getAttribute("password")).getName();
 				%>
 					<br /> <%= Utils.aAbsolute(photoURL, Utils.img(photoURL)) %>
 				<%} %>
-				<br /><%= Utils.text(posts.get(i).getText()) %>
+				<br /><%= Utils.text(post.getText()) %>
 			</td>
 		</tr>
 	</table>

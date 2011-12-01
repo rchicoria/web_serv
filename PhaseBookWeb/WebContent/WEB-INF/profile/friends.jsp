@@ -12,9 +12,9 @@
 	} catch (Exception e) {
 		id = session.getAttribute("id").toString();
 	}
-	PhasebookUserRemote user = Utils.getUserBean();
-	FriendshipRemote friendship = Utils.getFriendshipBean();
-	List<Friendship> friends = friendship.getUserFriendships(Integer.parseInt(id),
+	PhasebookUserRemote userBean = Utils.getUserBean();
+	FriendshipRemote friendshipBean = Utils.getFriendshipBean();
+	List<?> friends = friendshipBean.getUserFriendships(Integer.parseInt(id),
 			session.getAttribute("id"), session.getAttribute("password"));
 	if (friends.size() == 0) {
 %>
@@ -23,13 +23,14 @@
 	}
 	else for (int i=0; i<friends.size(); i++) {
 		PhasebookUser friend;
-		if (friends.get(i).getHostUserId() != Integer.parseInt(id))
-			friend = user.getUserById(friends.get(i).getHostUserId(), session.getAttribute("id"), session.getAttribute("password"));
+		Friendship friendship = (Friendship) friends.get(i);
+		if (friendship.getHostUserId() != Integer.parseInt(id))
+			friend = userBean.getUserById(friendship.getHostUserId(), session.getAttribute("id"), session.getAttribute("password"));
 		else
-			friend = user.getUserById(friends.get(i).getInvitedUserId(), session.getAttribute("id"), session.getAttribute("password"));
+			friend = userBean.getUserById(friendship.getInvitedUserId(), session.getAttribute("id"), session.getAttribute("password"));
 		
 %>
-		<table width="100%">
+		<table style="width: 100%">
 			<tr>
 				<td width="60">
 					<% if (friend.getPhotoId()!=-1){

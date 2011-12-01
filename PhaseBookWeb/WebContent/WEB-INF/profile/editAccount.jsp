@@ -61,13 +61,14 @@
 				<div style="width: 200px; height: 250px; overflow: auto; border: 1px solid black; padding: 6px">
 					<p><input type="radio" name="avatar" id="-1" value="-1" <% if (user.getPhotoId()==-1) { %>checked<% } %>> <label for="0">No photo</label></p>
 					<%
-						List<Post> posts = userBean.getUserReceivedPosts(userId,
+						List<?> posts = userBean.getUserReceivedPosts(userId,
 								session.getAttribute("id"), session.getAttribute("password"));
 						for (int i=posts.size()-1; i>=0; i--) {
-							if (posts.get(i).getPhotoId()!=-1 && posts.get(i).getDeletedAt()==null) {
+							Post post = (Post) posts.get(i);
+							if (post.getPhotoId()!=-1 && post.getDeletedAt()==null) {
 								PhotoRemote photoBean = Utils.getPhotoBean();
-								String photoURL = Utils.MAIN_PATH+userId.toString()+"/"+photoBean.getPhotoById(""+posts.get(i).getPhotoId(), session.getAttribute("id"), session.getAttribute("password")).getName();
-								int photoID = posts.get(i).getPhotoId();
+								String photoURL = Utils.MAIN_PATH+userId.toString()+"/"+photoBean.getPhotoById(""+post.getPhotoId(), session.getAttribute("id"), session.getAttribute("password")).getName();
+								int photoID = post.getPhotoId();
 					%>
 								<p>
 									<input type="radio" name="avatar" id="<%= photoID %>" value="<%= photoID %>" <% if (user.getPhotoId()==photoID) { %>checked<% } %>>
