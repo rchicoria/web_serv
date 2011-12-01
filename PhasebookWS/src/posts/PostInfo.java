@@ -1,6 +1,8 @@
 package posts;
 
 public class PostInfo {
+
+	private int id;
 	private int fromUserId;
 	private int toUserId;
 	private boolean private_;
@@ -69,8 +71,7 @@ public class PostInfo {
 	public void setPhoto_id(int photo_id) {
 		this.photo_id = photo_id;
 	}
-
-	private int id;
+	
 	public boolean isRead_() {
 		return read_;
 	}

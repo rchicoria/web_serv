@@ -1,4 +1,4 @@
-package posts;
+package users;
 import java.util.*;
 /*
 * JBoss, Home of Professional Open Source
@@ -27,12 +27,12 @@ import org.jboss.soa.esb.helpers.ConfigTree;
 import org.jboss.soa.esb.message.Body;
 import org.jboss.soa.esb.message.Message;
 
-public class GetPostsResponseAction extends AbstractActionLifecycle
+public class GetUsersResponseAction extends AbstractActionLifecycle
 {
 
 	protected ConfigTree _config;
 
-	public GetPostsResponseAction(ConfigTree config) {
+	public GetUsersResponseAction(ConfigTree config) {
 		_config = config;
 	}
 
@@ -44,16 +44,17 @@ public class GetPostsResponseAction extends AbstractActionLifecycle
 		Iterator it = responseMsg.keySet().iterator();
 		List<HashMap<String, Object>> list = new ArrayList<HashMap<String, Object>>();
 		while(it.hasNext()){
-			HashMap<String, Object> post = new HashMap<String, Object>();
-			post.put("fromUserId", responseMsg.get(it.next()));
-			post.put("id", responseMsg.get(it.next()));
-			post.put("photoId", responseMsg.get(it.next()));
-			post.put("private", responseMsg.get(it.next()));
-			post.put("read", responseMsg.get(it.next()));
-			post.put("text", responseMsg.get(it.next()));
-			post.put("toUserId", responseMsg.get(it.next()));
+			/*HashMap<String, Object> post = new HashMap<String, Object>();
+			post.put("fromUserId", it.next());
+			post.put("id", it.next());
+			post.put("photoId", it.next());
+			post.put("private", it.next());
+			post.put("read", it.next());
+			post.put("text", it.next());
+			post.put("toUserId", it.next());
 			System.out.println(post);
-			list.add(post);
+			list.add(post);*/
+			System.out.println(it.next());
 		}
 		message.getBody().add(list);
 		//message.getBody().add(map);

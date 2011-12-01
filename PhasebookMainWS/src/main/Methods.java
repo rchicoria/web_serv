@@ -115,13 +115,28 @@ public class Methods {
 		Message retMessage = null;
 		
 		ServiceInvoker si;
+		List<HashMap<String, Object>> posts;
+		// Get user posts
 		try {
 			si = new ServiceInvoker("Get_Posts_Service", "send");
 			retMessage = si.deliverSync(esbMessage, 10000L);
-			
-			//Ir buscar os posts de um User
-			//List posts = (List)retMessage.getBody().get(Body.DEFAULT_LOCATION);
-			
+			posts = (List<HashMap<String, Object>>)retMessage.getBody().get(Body.DEFAULT_LOCATION);
+		} catch (MessageDeliverException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (FaultMessageException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (RegistryException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		// Get list of users
+		try {
+			si = new ServiceInvoker("Get_Users_Service", "send");
+			retMessage = si.deliverSync(esbMessage, 10000L);
+			List<HashMap<String, Object>> users = (List<HashMap<String, Object>>)retMessage.getBody().get(Body.DEFAULT_LOCATION);
+			System.out.println(users);
 		} catch (MessageDeliverException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
