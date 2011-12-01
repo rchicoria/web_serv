@@ -8,10 +8,10 @@ public class LotteryMain {
 	private static String pass = "thispassword";
 	
 	/*
-	 * Should only be run to start the internal lottery service if it's not already running
+	 * Should be run to start the internal lottery service if it's not already running
 	 */
 	public static void main(String[] args) throws Exception {  
-		Hashtable ht = new Hashtable();
+		Hashtable<String, String> ht = new Hashtable<String, String>();
 		ht.put(InitialContext.INITIAL_CONTEXT_FACTORY,"org.jnp.interfaces.NamingContextFactory");
 		ht.put(InitialContext.PROVIDER_URL,"jnp://localhost:1099");
 		ht.put(InitialContext.URL_PKG_PREFIXES,"org.jboss.naming:org.jnp.interfaces");

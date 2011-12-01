@@ -11,8 +11,6 @@ import javax.persistence.NonUniqueResultException;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 
-import phasebook.post.Post;
-import phasebook.user.PhasebookUser;
 import phasebook.user.PhasebookUserBean;
 import phasebook.auth.Auth;
 import phasebook.email.*;
@@ -41,7 +39,6 @@ public class FriendshipBean implements FriendshipRemote {
 			return -1;
 	}
 
-	@SuppressWarnings("finally")
 	public Friendship searchFriendship(int user_a_id, int user_b_id,
 			Object authId, Object authPass)
 	{
@@ -75,8 +72,8 @@ public class FriendshipBean implements FriendshipRemote {
 		{
 			em.close();
 			emf.close();
-			return result;
 		}
+		return result;
 		
 	}
 
@@ -101,7 +98,7 @@ public class FriendshipBean implements FriendshipRemote {
 		emf.close();
 	}
 	
-	public Object getNewFriendshipInvites(int userId,
+	public List<?> getNewFriendshipInvites(int userId,
 			Object authId, Object authPass)
 	{
 		if (Auth.authenticate(authId, authPass))
@@ -128,12 +125,12 @@ public class FriendshipBean implements FriendshipRemote {
 		{
 			em.close();
 			emf.close();
-			return result;
 		}
+		return result;
 		
 	}
 	
-	public Object getNewFriendshipAcceptances(int userId,
+	public List<?> getNewFriendshipAcceptances(int userId,
 			Object authId, Object authPass)
 	{
 		if (Auth.authenticate(authId, authPass))
@@ -161,8 +158,8 @@ public class FriendshipBean implements FriendshipRemote {
 		{
 			em.close();
 			emf.close();
-			return result;
 		}
+		return result;
 		
 	}
 	
@@ -265,7 +262,7 @@ public class FriendshipBean implements FriendshipRemote {
 		emf.close();
 	}
 	
-	public List getUserFriendships(int userId,
+	public List<?> getUserFriendships(int userId,
 			Object authId, Object authPass)
 	{
 		if (Auth.authenticate(authId, authPass))
@@ -292,8 +289,8 @@ public class FriendshipBean implements FriendshipRemote {
 		{
 			em.close();
 			emf.close();
-			return (List) result;
 		}
+		return result;
 	}
 
 }

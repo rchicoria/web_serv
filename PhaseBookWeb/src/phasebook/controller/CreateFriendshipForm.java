@@ -10,8 +10,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import phasebook.friendship.FriendshipRemote;
-import phasebook.user.PhasebookUser;
-import phasebook.user.PhasebookUserRemote;
 
 /**
  * Servlet implementation class CreatePostForm

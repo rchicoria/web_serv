@@ -14,7 +14,6 @@ import javax.persistence.Persistence;
 import javax.persistence.Query;
 
 import phasebook.auth.Auth;
-import phasebook.user.PhasebookUser;
 
 @Stateless
 public class PostBean implements PostRemote {
@@ -93,7 +92,7 @@ public class PostBean implements PostRemote {
 		}		
 	}
 	
-	public Object getUnreadPosts(int entry_id,
+	public List<?> getUnreadPosts(int entry_id,
 			Object authId, Object authPass)
 	{
 		if (Auth.authenticate(authId, authPass))
@@ -101,14 +100,12 @@ public class PostBean implements PostRemote {
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("PhaseBook");
 		EntityManager em = emf.createEntityManager();
 		
-		List<Object> result = null;
-		
 		Query q = em.createQuery("SELECT u FROM Post u WHERE u.fromUserId != :me AND u.toUserId = :user AND u.read_ = :readStatus");
 		q.setParameter("me",entry_id);
 		q.setParameter("user",entry_id);
 		q.setParameter("readStatus", false);
 		
-		result=(List<Object>) q.getResultList();
+		List<?> result = q.getResultList();
 
 		em.close();
 		emf.close();

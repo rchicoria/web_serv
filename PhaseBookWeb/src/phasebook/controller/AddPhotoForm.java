@@ -2,11 +2,8 @@ package phasebook.controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.Iterator;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -22,7 +19,6 @@ import org.apache.tomcat.util.http.fileupload.FileUploadException;
 import org.apache.tomcat.util.http.fileupload.disk.DiskFileItemFactory;
 import org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload;
 
-import phasebook.photo.Photo;
 import phasebook.user.PhasebookUser;
 import phasebook.user.PhasebookUserRemote;
 
@@ -121,9 +117,9 @@ public class AddPhotoForm extends HttpServlet {
 						long time = System.currentTimeMillis();
 						File file = new File(destinationDir, time+ext );
 						item.write(file);
-						Photo photo = userBean.addPhoto(time+ext,
+						int photoId = Utils.getPhotoBean().addPhoto(time+ext,
 								session.getAttribute("id"), session.getAttribute("password"));
-						userBean.setProfilePicture(user, photo.getId(),
+						userBean.setProfilePicture(user, photoId,
 								session.getAttribute("id"), session.getAttribute("password"));
 						response.sendRedirect(Utils.url(""));
 					}

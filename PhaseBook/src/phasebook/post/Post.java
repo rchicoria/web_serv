@@ -9,13 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
-
-import phasebook.photo.Photo;
-import phasebook.user.PhasebookUser;
-
 
 @Entity
 public class Post implements Serializable{
@@ -25,14 +19,6 @@ public class Post implements Serializable{
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="POST_ID")
 	private int id;
-	
-	/*@ManyToOne
-	@JoinColumn(name="FROM_USER", referencedColumnName = "PHASEBOOK_USER_ID")
-	private PhasebookUser fromUser;
-	
-	@ManyToOne
-	@JoinColumn(name="TO_USER", referencedColumnName = "PHASEBOOK_USER_ID")
-	private PhasebookUser toUser;*/
 	
 	@Column(name="FROM_USER")
 	private int fromUserId;
@@ -51,10 +37,6 @@ public class Post implements Serializable{
 	
 	@Column(name="DELETED_AT")
 	private Timestamp deletedAt;
-	
-	/*@OneToOne
-	@JoinColumn(name="PHOTO_ID", referencedColumnName = "PHOTO_ID")
-	private Photo photo;*/
 	
 	@Column(name="PHOTO_ID")
 	private int photo_id = -1;
@@ -164,6 +146,5 @@ public class Post implements Serializable{
 	public void setPhotoId(int photo_id) {
 		this.photo_id = photo_id;
 	}
-	
 	
 }

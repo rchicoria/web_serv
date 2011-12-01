@@ -1,13 +1,11 @@
 package phasebook.user;
 
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -17,9 +15,7 @@ import javax.persistence.NonUniqueResultException;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 
-import phasebook.friendship.Friendship;
 import phasebook.photo.Photo;
-import phasebook.photo.PhotoBean;
 import phasebook.post.Post;
 import phasebook.auth.Auth;
 import phasebook.email.*;
@@ -47,7 +43,7 @@ public class PhasebookUserBean implements PhasebookUserRemote {
 			Query q = em.createQuery("SELECT u FROM PhasebookUser u " +
 						"WHERE u.email LIKE :email");
 			q.setParameter("email",email);
-			PhasebookUser user = ((PhasebookUser)q.getSingleResult());
+			q.getSingleResult();
 			em.close();
 			emf.close();
 			return -1;
@@ -77,7 +73,6 @@ public class PhasebookUserBean implements PhasebookUserRemote {
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("PhaseBook");
 		EntityManager em = emf.createEntityManager();
 		try {
-			int returnValue = -1;
 			Query q = em.createQuery("SELECT u FROM PhasebookUser u " +
 						"WHERE u.email LIKE :email AND " +
 						"u.password LIKE :password");
@@ -105,7 +100,7 @@ public class PhasebookUserBean implements PhasebookUserRemote {
 		}
 	}
 	
-	public List<Post> getUserReceivedPosts(Object userId,
+	public List<?> getUserReceivedPosts(Object userId,
 			Object authId, Object authPass)
 	{
 		if (Auth.authenticate(authId, authPass))
@@ -132,7 +127,7 @@ public class PhasebookUserBean implements PhasebookUserRemote {
 		}
 	}
 	
-	public List getUserPublicPosts(Object userId,
+	public List<?> getUserPublicPosts(Object userId,
 			Object authId, Object authPass)
 	{
 		if (Auth.authenticate(authId, authPass))
@@ -187,13 +182,12 @@ public class PhasebookUserBean implements PhasebookUserRemote {
 		}
 	}
 	
-	public List getUsersFromSearch(Object search,
+	public List<PhasebookUser> getUsersFromSearch(Object search,
 			Object authId, Object authPass)
 	{
 		if (Auth.authenticate(authId, authPass))
 			return null;
-		List users = new ArrayList();
-		List results = new ArrayList();
+		List<PhasebookUser> results = new ArrayList<PhasebookUser>();
 		String s = search.toString().toLowerCase();
 
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("PhaseBook");
@@ -201,13 +195,13 @@ public class PhasebookUserBean implements PhasebookUserRemote {
 
 		try {
 			Query q = em.createQuery("SELECT u FROM PhasebookUser u ");
-			users = q.getResultList();
+			List<?> users = q.getResultList();
 			if (s != null)
 			{
 				Pattern pattern = Pattern.compile(s);
 				for (int i=0; i<users.size(); i++)
 				{
-					PhasebookUser user = (PhasebookUser)users.get(i);
+					PhasebookUser user = (PhasebookUser) users.get(i);
 					boolean found = false;
 					Matcher matcher = pattern.matcher(user.getName().toLowerCase());
 					if (matcher.find())
@@ -225,7 +219,7 @@ public class PhasebookUserBean implements PhasebookUserRemote {
 		} catch (Exception e) {
 			em.close();
 			emf.close();
-			return users;
+			return new ArrayList<PhasebookUser>();
 		}
 	}
 	
@@ -273,27 +267,6 @@ public class PhasebookUserBean implements PhasebookUserRemote {
 			EmailUtils.postSent(to, from, text, photo, getNUnreadUserPosts(to, authId, authPass));
 		em.close();
 		emf.close();
-	}
-	
-	public Photo addPhoto(String photoLink,
-			Object authId, Object authPass)
-	{
-		if (Auth.authenticate(authId, authPass))
-			return null;
-		EntityManagerFactory emf = Persistence.createEntityManagerFactory("PhaseBook");
-		EntityManager em = emf.createEntityManager();
-		EntityTransaction tx = em.getTransaction();
-		
-		tx.begin();
-		//TODO isto ainda depende das photos
-		Photo photo = new Photo(photoLink); 
-		em.persist(photo);
-		em.refresh(photo);
-
-		tx.commit();
-		em.close();
-		emf.close();
-		return photo;
 	}
 	
 	public void setProfilePicture(PhasebookUser user, int photo_id,
@@ -345,7 +318,6 @@ public class PhasebookUserBean implements PhasebookUserRemote {
 		tx.begin();
 		PhasebookUser user = getUserById(id, authId, authPass);
 		user.setName(name);
-		PhotoBean photoEJB = new PhotoBean();
 		int photoId = -1;
 		try {
 			photoId = Integer.parseInt(photo);
@@ -371,8 +343,6 @@ public class PhasebookUserBean implements PhasebookUserRemote {
 			return -1;
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("PhaseBook");
 		EntityManager em = emf.createEntityManager();
-		
-		List<?> posts = null;
 		
 		Query q = em.createQuery("SELECT u FROM Post u WHERE u.toUserId = :user AND u.read_ = :status AND u.deletedAt = NULL");
 		q.setParameter("user",user.getId());

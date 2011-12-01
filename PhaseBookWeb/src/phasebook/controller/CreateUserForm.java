@@ -1,17 +1,14 @@
 package phasebook.controller;
 
 import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.naming.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
 
 import client.artefact.*;
-import phasebook.user.PhasebookUserRemote;
 
 /**
  * Servlet implementation class CreateUserForm
@@ -40,57 +37,47 @@ public class CreateUserForm extends HttpServlet {
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		
-		InitialContext ctx = null;
 		HttpSession session = request.getSession();
-		try {
-			ctx = new InitialContext();
-			PhasebookUserRemote user;
-			user = (PhasebookUserRemote) ctx.lookup("PhasebookUserBean/remote");
+		
+		String name = request.getParameter("name");
+		String email = request.getParameter("email");
+		String password1 = request.getParameter("password1");
+		String password2 = request.getParameter("password2");
+		long current = (new Date()).getTime();
 
-			String name = request.getParameter("name");
-			String email = request.getParameter("email");
-			String password1 = request.getParameter("password1");
-			String password2 = request.getParameter("password2");
-			long current = (new Date()).getTime();
+		String error = formValidation(name, email, password1, password2);
+		if (error != null) {
+			session.setAttribute("error", error);
+			session.setAttribute("name", name);
+			session.setAttribute("email", email);
+			response.sendRedirect(Utils.url("register"));
+		} else {
+			password1 = Utils.byteArrayToHexString(Utils.computeHash(password1 + "salt"
+					+ email));
+			
+			MethodsService cs = new MethodsService();
+			Methods m = cs.getMethodsPort();
+			
+			AuthInfo object =  m.createUser(name, email, password1, current); 
 
-			String error = formValidation(name, email, password1, password2);
-			if (error != null) {
-				session.setAttribute("error", error);
+			int id = object.getId();
+			String token = object.getToken();
+			long expiration = object.getExpiration();
+			
+			if (id == -1) {
+				session.setAttribute("error", "That email adress is already taken");
 				session.setAttribute("name", name);
 				session.setAttribute("email", email);
 				response.sendRedirect(Utils.url("register"));
-			} else {
-				password1 = Utils.byteArrayToHexString(Utils.computeHash(password1 + "salt"
-						+ email));
-				
-				MethodsService cs = new MethodsService();
-				Methods m = cs.getMethodsPort();
-				
-				AuthInfo object =  m.createUser(name, email, password1, current); 
-
-				int id = object.getId();
-				String token = object.getToken();
-				long expiration = object.getExpiration();
-				
-				if (id == -1) {
-					session.setAttribute("error", "That email adress is already taken");
-					session.setAttribute("name", name);
-					session.setAttribute("email", email);
-					response.sendRedirect(Utils.url("register"));
-				}
-				else {
-					session.setAttribute("id", id);
-					session.setAttribute("password", password1);
-					session.setAttribute("current", current);
-					session.setAttribute("expiration", expiration);
-					session.setAttribute("token", token);
-					response.sendRedirect(Utils.url(""));
-				}
 			}
-		} catch (NamingException e) {
-			e.printStackTrace();
-			session.setAttribute("error", "The submited data is incorrect");
-			response.sendRedirect(Utils.url("register"));
+			else {
+				session.setAttribute("id", id);
+				session.setAttribute("password", password1);
+				session.setAttribute("current", current);
+				session.setAttribute("expiration", expiration);
+				session.setAttribute("token", token);
+				response.sendRedirect(Utils.url(""));
+			}
 		}
 
 	}

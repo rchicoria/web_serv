@@ -3,12 +3,12 @@ package phasebook.photo;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
 import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
 import javax.persistence.Persistence;
 
 import phasebook.auth.Auth;
-import phasebook.user.PhasebookUser;
 
 /**
  * Session Bean implementation class PhotoBean
@@ -48,6 +48,26 @@ public class PhotoBean implements PhotoRemote {
 			emf.close();
 			return null;
 		}
+	}
+	
+	public int addPhoto(String photoLink,
+			Object authId, Object authPass)
+	{
+		if (Auth.authenticate(authId, authPass))
+			return -1;
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory("PhaseBook");
+		EntityManager em = emf.createEntityManager();
+		EntityTransaction tx = em.getTransaction();
+		
+		tx.begin();
+		Photo photo = new Photo(photoLink); 
+		em.persist(photo);
+		em.refresh(photo);
+
+		tx.commit();
+		em.close();
+		emf.close();
+		return photo.getId();
 	}
 
 }
