@@ -1,6 +1,7 @@
 <%@ page import="phasebook.controller.*"%>
 <%@ page import="phasebook.user.*" %>
 <%@ page import="phasebook.photo.*" %>
+<%@ page import="phasebook.friendship.*" %>
 <%@ page import="java.util.List" %>
 
 <%
@@ -12,7 +13,8 @@
 		id = session.getAttribute("id").toString();
 	}
 	PhasebookUserRemote user = Utils.getUserBean();
-	List<PhasebookUser> friends = user.getUserFriendships(id,
+	FriendshipRemote friendship = Utils.getFriendshipBean();
+	List<Friendship> friends = friendship.getUserFriendships(Integer.parseInt(id),
 			session.getAttribute("id"), session.getAttribute("password"));
 	if (friends.size() == 0) {
 %>
@@ -20,7 +22,12 @@
 <%
 	}
 	else for (int i=0; i<friends.size(); i++) {
-		PhasebookUser friend = friends.get(i);
+		PhasebookUser friend;
+		if (friends.get(i).getHostUserId() != Integer.parseInt(id))
+			friend = user.getUserById(friends.get(i).getHostUserId(), session.getAttribute("id"), session.getAttribute("password"));
+		else
+			friend = user.getUserById(friends.get(i).getInvitedUserId(), session.getAttribute("id"), session.getAttribute("password"));
+		
 %>
 		<table width="100%">
 			<tr>

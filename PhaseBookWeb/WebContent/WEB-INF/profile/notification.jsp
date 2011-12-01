@@ -13,7 +13,7 @@
 	PhasebookUserRemote userBean = Utils.getUserBean();
 	PhasebookUser me = userBean.getUserById(session.getAttribute("id"),
 			session.getAttribute("id"), session.getAttribute("password"));
-	if (Utils.getNumberNotifications(me,
+	if (Utils.getNumberNotifications(me.getId(),
 			session.getAttribute("id"), session.getAttribute("password")) == 0) {
 %>
 		There are no new notifications.
@@ -78,14 +78,14 @@
 <% }} %>
 
 <%
-	List<Friendship> requests = (List<Friendship>)Utils.getFriendshipBean().getNewFriendshipInvites(me,
+	List<Friendship> requests = (List<Friendship>)Utils.getFriendshipBean().getNewFriendshipInvites(me.getId(),
 			session.getAttribute("id"), session.getAttribute("password"));
 	if (requests.size() > 0) {
 %>
 <h2>New friendship requests</h2>
 <%
 	for (int i=requests.size()-1; i>=0; i--) {
-		PhasebookUser user = requests.get(i).getHostUser();
+		PhasebookUser user = userBean.getUserById(requests.get(i).getHostUserId(), session.getAttribute("id"), session.getAttribute("password"));
 %>
 	<table width="100%">
 		<tr>
@@ -106,14 +106,14 @@
 <% }} %>
 
 <%
-	List<Friendship> confirmations = (List<Friendship>)Utils.getFriendshipBean().getNewFriendshipAcceptances(me,
+	List<Friendship> confirmations = (List<Friendship>)Utils.getFriendshipBean().getNewFriendshipAcceptances(me.getId(),
 			session.getAttribute("id"), session.getAttribute("password"));
 	if (confirmations.size() > 0) {
 %>
 <h2>New friendship confirmations</h2>
 <%
 	for (int i=confirmations.size()-1; i>=0; i--) {
-		PhasebookUser user = confirmations.get(i).getInvitedUser();
+		PhasebookUser user = userBean.getUserById(confirmations.get(i).getInvitedUserId(), session.getAttribute("id"), session.getAttribute("password"));
 %>
 	<table width="100%">
 		<tr>
@@ -138,7 +138,7 @@
 			session.getAttribute("id"), session.getAttribute("password"));
 	Utils.getLotteryBetBean().readUnreadBets(me.getId(),
 			session.getAttribute("id"), session.getAttribute("password"));
-	Utils.getFriendshipBean().readUnreadFriendshipAcceptances(me,
+	Utils.getFriendshipBean().readUnreadFriendshipAcceptances(me.getId(),
 			session.getAttribute("id"), session.getAttribute("password"));
 	}
 %>

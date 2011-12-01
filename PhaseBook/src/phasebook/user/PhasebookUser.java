@@ -38,13 +38,13 @@ private static final long serialVersionUID = 1L;
 	@Column(name="PHOTO_ID")
 	private int photo_id = -1;
 	
-	@ElementCollection
+	/*@ElementCollection
 	@OneToMany(cascade=CascadeType.ALL, mappedBy = "hostUser") 
 	private List<Friendship> sentInvites = new ArrayList<Friendship>();
 	
 	@ElementCollection
 	@OneToMany(cascade=CascadeType.ALL, mappedBy = "invitedUser")
-	private List<Friendship> receivedInvites = new ArrayList<Friendship>();
+	private List<Friendship> receivedInvites = new ArrayList<Friendship>();*/
 	
 	/*@ElementCollection
 	@OneToMany(cascade=CascadeType.ALL, mappedBy = "user")
@@ -146,7 +146,7 @@ private static final long serialVersionUID = 1L;
 		return serialVersionUID;
 	}
 
-	public List<Friendship> getSentInvites() {
+	/*public List<Friendship> getSentInvites() {
 		return sentInvites;
 	}
 
@@ -160,7 +160,7 @@ private static final long serialVersionUID = 1L;
 
 	public void setReceivedInvites(List<Friendship> receivedInvites) {
 		this.receivedInvites = receivedInvites;
-	}
+	}*/
 
 	/*public List<LotteryBet> getLotteryBets() {
 		return lotteryBets;

@@ -296,25 +296,6 @@ public class PhasebookUserBean implements PhasebookUserRemote {
 		return photo;
 	}
 	
-	public void invite(PhasebookUser hostUser, PhasebookUser invitedUser,
-			Object authId, Object authPass)
-	{
-		if (Auth.authenticate(authId, authPass))
-			return;
-		EntityManagerFactory emf = Persistence.createEntityManagerFactory("PhaseBook");
-		EntityManager em = emf.createEntityManager();
-		EntityTransaction tx = em.getTransaction();
-		
-		tx.begin();
-    	Friendship fship = new Friendship(hostUser, invitedUser);
-		em.persist(fship);
-		em.refresh(fship);
-		tx.commit();
-		EmailUtils.sentInvite(hostUser, invitedUser);
-		em.close();
-		emf.close();
-	}
-	
 	public void setProfilePicture(PhasebookUser user, int photo_id,
 			Object authId, Object authPass)
 	{
@@ -352,36 +333,6 @@ public class PhasebookUserBean implements PhasebookUserRemote {
 		emf.close();
 	}
 	
-	public List<PhasebookUser> getUserFriendships(String id,
-			Object authId, Object authPass)
-	{
-		if (Auth.authenticate(authId, authPass))
-			return null;
-		EntityManagerFactory emf = Persistence.createEntityManagerFactory("PhaseBook");
-		EntityManager em = emf.createEntityManager();
-		PhasebookUser user = em.find(PhasebookUser.class, Integer.parseInt(id.toString()));
-		em.persist(user);
-		em.refresh(user);
-		List friends1 = user.getReceivedInvites();
-		List friends2 = user.getSentInvites();
-		List<PhasebookUser> friends = new ArrayList<PhasebookUser>();
-		for (int i=0; i<friends1.size(); i++){
-			Friendship friendship = (Friendship) friends1.get(i);
-			em.persist(friendship);
-			if (friendship.isAccepted_())
-				friends.add(friendship.getHostUser());
-		}
-		for (int i=0; i<friends2.size(); i++){
-			Friendship friendship = (Friendship) friends2.get(i);
-			em.persist(friendship);
-			if (friendship.isAccepted_())
-				friends.add(friendship.getInvitedUser());
-		}
-		em.close();
-		emf.close();
-		return friends;
-	}
-	
 	public void editAccount(Object id, String name, String photo, String password,
 			Object authId, Object authPass)
 	{
@@ -398,6 +349,8 @@ public class PhasebookUserBean implements PhasebookUserRemote {
 		int photoId = -1;
 		try {
 			photoId = Integer.parseInt(photo);
+			if (photoId < 1)
+				photoId = -1;
 		}
 		catch (NumberFormatException e) {
 			photoId = -1;

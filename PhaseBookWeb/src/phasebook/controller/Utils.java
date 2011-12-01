@@ -152,19 +152,19 @@ public class Utils {
 	}
 	
 	// Get the number of notifications
-	public static int getNumberNotifications(PhasebookUser user,
+	public static int getNumberNotifications(int userId,
 			Object authId, Object authPass)
 	{
 		if (Auth.authenticate(authId, authPass))
 			return -1;
 		int count = 0;
-		count += ((List<Object>)getPostBean().getUnreadPosts(user.getId(),
+		count += ((List<Object>)getPostBean().getUnreadPosts(userId,
 				authId, authPass)).size();
-		count += ((List<Object>)getLotteryBetBean().checkUnreadBetResults(user.getId(),
+		count += ((List<Object>)getLotteryBetBean().checkUnreadBetResults(userId,
 				authId, authPass)).size();
-		count += ((List<Object>)getFriendshipBean().getNewFriendshipInvites(user,
+		count += ((List<Object>)getFriendshipBean().getNewFriendshipInvites(userId,
 				authId, authPass)).size();
-		count += ((List<Object>)getFriendshipBean().getNewFriendshipAcceptances(user,
+		count += ((List<Object>)getFriendshipBean().getNewFriendshipAcceptances(userId,
 				authId, authPass)).size();
 		return count;
 	}

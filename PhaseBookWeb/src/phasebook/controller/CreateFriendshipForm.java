@@ -47,16 +47,10 @@ public class CreateFriendshipForm extends HttpServlet {
 		{
 			try {
 				ctx = new InitialContext();
-				PhasebookUserRemote userBean;
-				userBean = (PhasebookUserRemote) ctx.lookup("PhasebookUserBean/remote");
-				
-				PhasebookUser fromUser = userBean.getUserById(session.getAttribute("id"),
-						session.getAttribute("id"), session.getAttribute("password"));
-				PhasebookUser toUser = userBean.getUserById(request.getParameter("toUser"),
-						session.getAttribute("id"), session.getAttribute("password"));
+				FriendshipRemote friendshipBean = (FriendshipRemote) ctx.lookup("FriendshipBean/remote");
 	
-	
-				userBean.invite(fromUser, toUser,
+				friendshipBean.invite(Integer.parseInt(session.getAttribute("id").toString()),
+						Integer.parseInt(request.getParameter("toUser").toString()),
 						session.getAttribute("id"), session.getAttribute("password"));
 				response.sendRedirect("?p=user&id="+request.getParameter("toUser").toString());
 				
@@ -71,17 +65,10 @@ public class CreateFriendshipForm extends HttpServlet {
 		{
 			try {
 				ctx = new InitialContext();
-				PhasebookUserRemote userBean;
-				FriendshipRemote friendshipBean;
-				userBean = (PhasebookUserRemote) ctx.lookup("PhasebookUserBean/remote");
-				friendshipBean = (FriendshipRemote) ctx.lookup("FriendshipBean/remote");
-				
-				PhasebookUser fromUser = userBean.getUserById(session.getAttribute("id"),
-						session.getAttribute("id"), session.getAttribute("password"));
-				PhasebookUser toUser = userBean.getUserById(request.getParameter("toUser"),
-						session.getAttribute("id"), session.getAttribute("password"));
+				FriendshipRemote friendshipBean = (FriendshipRemote) ctx.lookup("FriendshipBean/remote");
 	
-				friendshipBean.acceptFriendship(toUser,fromUser,
+				friendshipBean.acceptFriendship(Integer.parseInt(request.getParameter("toUser").toString()),
+						Integer.parseInt(session.getAttribute("id").toString()),
 						session.getAttribute("id"), session.getAttribute("password"));
 				response.sendRedirect("?p=user&id="+request.getParameter("toUser").toString());
 				
@@ -93,5 +80,4 @@ public class CreateFriendshipForm extends HttpServlet {
 			}
 		}
 	}
-
 }

@@ -46,11 +46,9 @@
 				<td id="menupopupheader" width="150" style="text-align:right; color:white" onmouseover="showPopup()" onmouseout="hidePopup()">
 					<%
 						String notifications = "";
-						if (Utils.getNumberNotifications(Utils.getUserBean().getUserById(session.getAttribute("id"),
-								session.getAttribute("id"), session.getAttribute("password")),
+						if (Utils.getNumberNotifications(Integer.parseInt(session.getAttribute("id").toString()),
 								session.getAttribute("id"), session.getAttribute("password"))>0)
-							notifications = " (" + Utils.getNumberNotifications(Utils.getUserBean().getUserById(session.getAttribute("id"),
-									session.getAttribute("id"), session.getAttribute("password")),
+							notifications = " (" + Utils.getNumberNotifications(Integer.parseInt(session.getAttribute("id").toString()),
 									session.getAttribute("id"), session.getAttribute("password")) + ")";
 					%>
 					<%= Utils.text(Utils.getUserBean().getUserById(session.getAttribute("id"),
