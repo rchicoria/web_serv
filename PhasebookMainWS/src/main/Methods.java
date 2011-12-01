@@ -32,6 +32,7 @@ public class Methods {
 		requestMap.put("password",password);
 		requestMap.put("current",current);
 		esbMessage.getBody().add(requestMap);
+		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"+current);
 		
 		Message retMessage = null;
 	
@@ -40,6 +41,8 @@ public class Methods {
 			si = new ServiceInvoker("Login_User_Service", "send");
 			retMessage = si.deliverSync(esbMessage, 10000L);
 			HashMap map = (HashMap)retMessage.getBody().get(Body.DEFAULT_LOCATION);
+			System.out.println("****************"+retMessage.getBody().get(Body.DEFAULT_LOCATION)+"***************");
+
 			AuthInfo temp = new AuthInfo(Integer.parseInt((String)map.get("id")), (String)map.get("token"), 
 				Long.parseLong((String)map.get("expiration")));
 			return temp;
@@ -70,6 +73,7 @@ public class Methods {
 		requestMap.put("current", current);
 		esbMessage.getBody().add(requestMap);
 		
+		
 		Message retMessage = null;
 	
 		ServiceInvoker si;
@@ -77,7 +81,6 @@ public class Methods {
 			si = new ServiceInvoker("Create_User_Service", "send");
 			retMessage = si.deliverSync(esbMessage, 10000L);
 			HashMap map = (HashMap)retMessage.getBody().get(Body.DEFAULT_LOCATION);
-			//System.out.println("****************"+(String) responseMsg.get("loginResponse.return")+"***************");
 			AuthInfo temp = new AuthInfo(Integer.parseInt((String)map.get("id")), (String)map.get("token"), 
 				Long.parseLong((String)map.get("expiration")));
 			return temp;

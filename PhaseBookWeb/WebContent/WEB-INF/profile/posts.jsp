@@ -31,7 +31,7 @@
 	}
 
 	List<Post> posts = null;
-	if (Utils.getFriendshipBean().friendshipStatus(me, user,
+	if (Utils.getFriendshipBean().friendshipStatus(me.getId(), user.getId(),
 			session.getAttribute("id"), session.getAttribute("password")) == 3 || me.equals(user) )
 		posts = userBean.getUserReceivedPosts(userId,
 				session.getAttribute("id"), session.getAttribute("password"));

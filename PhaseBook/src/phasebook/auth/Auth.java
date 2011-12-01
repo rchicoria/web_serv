@@ -7,8 +7,6 @@ import javax.persistence.NonUniqueResultException;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 
-import phasebook.user.PhasebookUser;
-
 public class Auth {
 	
 	public static boolean authenticate(Object id, Object password)

@@ -13,8 +13,6 @@ import javax.persistence.Query;
 
 import phasebook.auth.Auth;
 import phasebook.lottery.*;
-import phasebook.post.Post;
-import phasebook.user.*;
 
 @Stateless
 public class LotteryBetBean implements LotteryBetRemote {
@@ -24,8 +22,6 @@ public class LotteryBetBean implements LotteryBetRemote {
 	{
 		if (Auth.authenticate(authId, authPass))
 			return false;
-		PhasebookUserBean userEJB = new PhasebookUserBean();
-		PhasebookUser user = userEJB.getUserById(id, authId, authPass);
 		LotteryBean lotteryEJB = new LotteryBean();
 		Lottery lottery = lotteryEJB.getCurrentDraw();
 		
@@ -39,8 +35,10 @@ public class LotteryBetBean implements LotteryBetRemote {
 			bet.setBetNumber(number);
 			bet.setBetValue(1);
 			bet.setValueWon(-1);
-			bet.setUser(user);
-			bet.setLottery(lottery);
+			bet.setUserId(Integer.parseInt(id.toString()));
+			bet.setLotteryId(lottery.getId());
+			bet.setLotteryNumber(lottery.getLotteryNumber());
+			bet.setLotteryDate(lottery.getLotteryDate());
 			em.persist(bet);
 			em.refresh(bet);
 			tx.commit();
@@ -73,12 +71,10 @@ public class LotteryBetBean implements LotteryBetRemote {
 	{
 		if (Auth.authenticate(authId, authPass))
 			return null;
-		PhasebookUserBean userEJB = new PhasebookUserBean();
-		PhasebookUser user = userEJB.getUserById(id, authId, authPass);
-		List<LotteryBet> allBets = user.getLotteryBets();
+		List<?> allBets = getAllBetsFromUser(Integer.parseInt(id.toString()));
 		List<LotteryBet> theseBets = new ArrayList<LotteryBet>();
 		for (int i=0; i<allBets.size(); i++) {
-			LotteryBet bet = allBets.get(i);
+			LotteryBet bet = (LotteryBet)allBets.get(i);
 			if ((old && bet.getValueWon() > -1) ||
 					(!old && bet.getValueWon() == -1))
 				theseBets.add(bet);
@@ -86,42 +82,55 @@ public class LotteryBetBean implements LotteryBetRemote {
 		return theseBets;
 	}
 	
-	public List getAllBets() {
+	public List<?> getAllBetsFromUser(int userId) {
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory("PhaseBook");
+		EntityManager em = emf.createEntityManager();
+		
+		Query q = em.createQuery("SELECT u FROM LotteryBet u WHERE u.userId = :user");
+		q.setParameter("user", userId);
+		List<?> bets = q.getResultList();
+		em.close();
+		emf.close();
+		return (List<?>) bets;
+	}
+	
+	public List<?> getAllBets() {
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("PhaseBook");
 		EntityManager em = emf.createEntityManager();
 		
 		Query q = em.createQuery("SELECT u FROM LotteryBet u ");
-		List bets = q.getResultList();
+		List<?> bets = q.getResultList();
 		em.close();
 		emf.close();
 		return bets;
 	}
 	
-	public List getAllCurrentBets() {
+	public List<?> getAllCurrentBets() {
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("PhaseBook");
 		EntityManager em = emf.createEntityManager();
 		
 		Query q = em.createQuery("SELECT u FROM LotteryBet u WHERE u.valueWon = -1");
-		List bets = q.getResultList();
+		List<?> bets = q.getResultList();
 		em.close();
 		emf.close();
 		return bets;
 	}
 	
-	public void updateBet(LotteryBet bet, float won) {
+	public void updateBet(LotteryBet bet, float won, int lotteryNumber) {
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("PhaseBook");
 		EntityManager em = emf.createEntityManager();
 		EntityTransaction tx = em.getTransaction();
 		
 		tx.begin();
 		bet.setValueWon((int)won);
+		bet.setLotteryNumber(lotteryNumber);
 		em.merge(bet);
 		tx.commit();
 		em.close();
 		emf.close();
 	}
 	
-	public Object checkUnreadBetResults(PhasebookUser entry,
+	public List<?> checkUnreadBetResults(int user_id,
 			Object authId, Object authPass)
 	{
 		if (Auth.authenticate(authId, authPass))
@@ -129,8 +138,8 @@ public class LotteryBetBean implements LotteryBetRemote {
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("PhaseBook");
 		EntityManager em = emf.createEntityManager();
 		
-		Query q = em.createQuery("SELECT u FROM LotteryBet u WHERE u.user = :user AND u.read_ = :readStatus AND u.valueWon > -1");
-		q.setParameter("user", entry);
+		Query q = em.createQuery("SELECT u FROM LotteryBet u WHERE u.userId = :user AND u.read_ = :readStatus AND u.valueWon > -1");
+		q.setParameter("user", user_id);
 		q.setParameter("readStatus", false);
 		List<?> bets = q.getResultList();
 		em.close();
@@ -138,7 +147,7 @@ public class LotteryBetBean implements LotteryBetRemote {
 		return bets;
 	}
 	
-	public void readUnreadBets(PhasebookUser entry,
+	public void readUnreadBets(int user_id,
 			Object authId, Object authPass)
 	{
 		if (Auth.authenticate(authId, authPass))
@@ -148,8 +157,8 @@ public class LotteryBetBean implements LotteryBetRemote {
 		
 		List<?> result = null;
 		
-		Query q = em.createQuery("SELECT u FROM LotteryBet u WHERE u.user = :user AND u.read_ = :readStatus AND u.valueWon > -1");
-		q.setParameter("user", entry);
+		Query q = em.createQuery("SELECT u FROM LotteryBet u WHERE u.userId = :user AND u.read_ = :readStatus AND u.valueWon > -1");
+		q.setParameter("user", user_id);
 		q.setParameter("readStatus", false);
 		
 		try

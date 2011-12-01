@@ -27,7 +27,7 @@
 					session.getAttribute("id"), session.getAttribute("password")).getName();
 			user = userBean.getUserById(userId,
 					session.getAttribute("id"), session.getAttribute("password"));
-			relationshipType = Utils.getFriendshipBean().friendshipStatus(me,user,
+			relationshipType = Utils.getFriendshipBean().friendshipStatus(me.getId(),user.getId(),
 					session.getAttribute("id"), session.getAttribute("password"));
 		} catch (Exception e) {
 			userId =  session.getAttribute("id");
@@ -105,7 +105,7 @@
 			<td style="text-align: right">
 				<select name="privacy">
 					<option value="0" <% if (privacy.compareTo("0")==0) { %>selected<% } %>>Public</option>
-					<% if (Utils.getFriendshipBean().friendshipStatus(me, user,
+					<% if (Utils.getFriendshipBean().friendshipStatus(me.getId(), user.getId(),
 							session.getAttribute("id"), session.getAttribute("password")) == 3 || me.equals(user) ){ %>
 						<option value="1" <% if (privacy.compareTo("1")==0) { %>selected<% } %>>Private</option>
 					<% } %>

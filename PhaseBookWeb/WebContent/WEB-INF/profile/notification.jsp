@@ -13,7 +13,7 @@
 	PhasebookUserRemote userBean = Utils.getUserBean();
 	PhasebookUser me = userBean.getUserById(session.getAttribute("id"),
 			session.getAttribute("id"), session.getAttribute("password"));
-	if (Utils.getNumberNotifications(me,
+	if (Utils.getNumberNotifications(me.getId(),
 			session.getAttribute("id"), session.getAttribute("password")) == 0) {
 %>
 		There are no new notifications.
@@ -55,7 +55,7 @@
 <% }} %>
 
 <%
-	List<LotteryBet> bets = (List<LotteryBet>)Utils.getLotteryBetBean().checkUnreadBetResults(me,
+	List<LotteryBet> bets = (List<LotteryBet>)Utils.getLotteryBetBean().checkUnreadBetResults(me.getId(),
 			session.getAttribute("id"), session.getAttribute("password"));
 	if (bets.size() > 0) {
 %>
@@ -64,28 +64,28 @@
 	for (int i=bets.size()-1; i>=0; i--) {
 		LotteryBet bet = bets.get(i);
 %>
-	<% if (bet.getBetNumber() == bet.getLottery().getLotteryNumber()) { %><b><% } %>
+	<% if (bet.getBetNumber() == bet.getLotteryNumber()) { %><b><% } %>
 	Number <%= bet.getBetNumber() %> at
 	<%
 		DateFormat dateFormat = new SimpleDateFormat("HH:mm - dd/MM/yyyy");
-		String date = dateFormat.format(bet.getLottery().getLotteryDate().getTime());
+		String date = dateFormat.format(bet.getLotteryDate().getTime());
 	%>
 	<%= date %>
-	(number <%= bet.getLottery().getLotteryNumber() %> won)
-	<% if (bet.getBetNumber() == bet.getLottery().getLotteryNumber()) { %>
+	(number <%= bet.getLotteryNumber() %> won)
+	<% if (bet.getBetNumber() == bet.getLotteryNumber()) { %>
 		 - You won <%= bet.getValueWon() %> L&euro;!</b>
 	<% } %><br />
 <% }} %>
 
 <%
-	List<Friendship> requests = (List<Friendship>)Utils.getFriendshipBean().getNewFriendshipInvites(me,
+	List<Friendship> requests = (List<Friendship>)Utils.getFriendshipBean().getNewFriendshipInvites(me.getId(),
 			session.getAttribute("id"), session.getAttribute("password"));
 	if (requests.size() > 0) {
 %>
 <h2>New friendship requests</h2>
 <%
 	for (int i=requests.size()-1; i>=0; i--) {
-		PhasebookUser user = requests.get(i).getHostUser();
+		PhasebookUser user = userBean.getUserById(requests.get(i).getHostUserId(), session.getAttribute("id"), session.getAttribute("password"));
 %>
 	<table width="100%">
 		<tr>
@@ -106,14 +106,14 @@
 <% }} %>
 
 <%
-	List<Friendship> confirmations = (List<Friendship>)Utils.getFriendshipBean().getNewFriendshipAcceptances(me,
+	List<Friendship> confirmations = (List<Friendship>)Utils.getFriendshipBean().getNewFriendshipAcceptances(me.getId(),
 			session.getAttribute("id"), session.getAttribute("password"));
 	if (confirmations.size() > 0) {
 %>
 <h2>New friendship confirmations</h2>
 <%
 	for (int i=confirmations.size()-1; i>=0; i--) {
-		PhasebookUser user = confirmations.get(i).getInvitedUser();
+		PhasebookUser user = userBean.getUserById(confirmations.get(i).getInvitedUserId(), session.getAttribute("id"), session.getAttribute("password"));
 %>
 	<table width="100%">
 		<tr>
@@ -136,9 +136,9 @@
 <%
 	Utils.getPostBean().readUnreadPosts(me.getId(),
 			session.getAttribute("id"), session.getAttribute("password"));
-	Utils.getLotteryBetBean().readUnreadBets(me,
+	Utils.getLotteryBetBean().readUnreadBets(me.getId(),
 			session.getAttribute("id"), session.getAttribute("password"));
-	Utils.getFriendshipBean().readUnreadFriendshipAcceptances(me,
+	Utils.getFriendshipBean().readUnreadFriendshipAcceptances(me.getId(),
 			session.getAttribute("id"), session.getAttribute("password"));
 	}
 %>

@@ -2,16 +2,9 @@ package phasebook.user;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import javax.persistence.*;
-
-import phasebook.friendship.Friendship;
-import phasebook.photo.Photo;
-import phasebook.lotterybet.LotteryBet;
-import phasebook.post.Post;
 
 @Entity
 public class PhasebookUser implements Serializable {
@@ -31,32 +24,8 @@ private static final long serialVersionUID = 1L;
 	@Column(name="DELETED_AT")
 	private Timestamp deletedAt = new Timestamp(0);
 	
-	/*@OneToOne
-	@JoinColumn(name="PHOTO_ID", referencedColumnName = "PHOTO_ID")
-	private Photo photo;*/
-	
 	@Column(name="PHOTO_ID")
 	private int photo_id = -1;
-	
-	@ElementCollection
-	@OneToMany(cascade=CascadeType.ALL, mappedBy = "hostUser") 
-	private List<Friendship> sentInvites = new ArrayList<Friendship>();
-	
-	@ElementCollection
-	@OneToMany(cascade=CascadeType.ALL, mappedBy = "invitedUser")
-	private List<Friendship> receivedInvites = new ArrayList<Friendship>();
-	
-	@ElementCollection
-	@OneToMany(cascade=CascadeType.ALL, mappedBy = "user")
-	private List<LotteryBet> lotteryBets = new ArrayList<LotteryBet>();
-	
-	/*@ElementCollection  
-	@OneToMany(cascade=CascadeType.ALL, mappedBy = "fromUser")
-	private List<Post> sentPosts = new ArrayList<Post>();
-	
-	@ElementCollection
-	@OneToMany(cascade=CascadeType.ALL, mappedBy = "toUser")
-	private List<Post> receivedPosts = new ArrayList<Post>();*/
 	
 	public PhasebookUser()
 	{
@@ -146,7 +115,7 @@ private static final long serialVersionUID = 1L;
 		return serialVersionUID;
 	}
 
-	public List<Friendship> getSentInvites() {
+	/*public List<Friendship> getSentInvites() {
 		return sentInvites;
 	}
 
@@ -160,15 +129,15 @@ private static final long serialVersionUID = 1L;
 
 	public void setReceivedInvites(List<Friendship> receivedInvites) {
 		this.receivedInvites = receivedInvites;
-	}
+	}*/
 
-	public List<LotteryBet> getLotteryBets() {
+	/*public List<LotteryBet> getLotteryBets() {
 		return lotteryBets;
 	}
 
 	public void setLotteryBets(List<LotteryBet> lotteryBets) {
 		this.lotteryBets = lotteryBets;
-	}
+	}*/
 
 	/*public List<Post> getReceivedPosts() {
 		return receivedPosts;

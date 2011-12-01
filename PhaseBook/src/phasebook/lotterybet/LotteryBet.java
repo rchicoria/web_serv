@@ -9,11 +9,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-
-import phasebook.lottery.Lottery;
-import phasebook.user.PhasebookUser;
 
 
 @Entity
@@ -25,9 +20,8 @@ public class LotteryBet implements Serializable {
 	@Column(name="BET_ID")
 	private int id;
 	
-	@ManyToOne
-	@JoinColumn(name="PHASEBOOK_USER_ID", referencedColumnName="PHASEBOOK_USER_ID")
-	private PhasebookUser user;
+	@Column(name="PHASEBOOK_USER_ID")
+	private int userId;
 	
 	@Column(name="BET_VALUE")
 	private float betValue;
@@ -44,9 +38,14 @@ public class LotteryBet implements Serializable {
 	@Column(name="READ_")
 	private boolean read_;
 	
-	@ManyToOne
-	@JoinColumn(name="LOTTERY_ID", referencedColumnName="LOTTERY_ID")
-	private Lottery lottery;
+	@Column(name="LOTTERY_ID")
+	private int lotteryId = -1;
+	
+	@Column(name="LOTTERY_NUMBER")
+	private int lotteryNumber;
+	
+	@Column(name="LOTTERY_DATE")
+	private Timestamp lotteryDate = new Timestamp(new Date().getTime());
 	
 	public LotteryBet()
 	{
@@ -67,12 +66,12 @@ public class LotteryBet implements Serializable {
 		this.id = id;
 	}
 
-	public PhasebookUser getUser() {
-		return user;
+	public int getUserId() {
+		return userId;
 	}
 
-	protected void setUser(PhasebookUser user) {
-		this.user = user;
+	protected void setUserId(int userId) {
+		this.userId = userId;
 	}
 
 	public float getBetValue() {
@@ -99,12 +98,12 @@ public class LotteryBet implements Serializable {
 		this.createdAT = createdAT;
 	}
 
-	public Lottery getLottery() {
-		return lottery;
+	public int getLotteryId() {
+		return lotteryId;
 	}
 
-	public void setLottery(Lottery lottery) {
-		this.lottery = lottery;
+	public void setLotteryId(int lotteryId) {
+		this.lotteryId = lotteryId;
 	}
 
 	public float getValueWon() {
@@ -122,7 +121,21 @@ public class LotteryBet implements Serializable {
 	public void setRead_(boolean read_) {
 		this.read_ = read_;
 	}
-	
-	
+
+	public Timestamp getLotteryDate() {
+		return lotteryDate;
+	}
+
+	public void setLotteryDate(Timestamp lotteryDate) {
+		this.lotteryDate = lotteryDate;
+	}
+
+	public int getLotteryNumber() {
+		return lotteryNumber;
+	}
+
+	public void setLotteryNumber(int lotteryNumber) {
+		this.lotteryNumber = lotteryNumber;
+	}
 	
 }

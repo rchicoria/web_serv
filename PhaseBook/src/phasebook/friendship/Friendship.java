@@ -10,10 +10,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-
-import phasebook.user.PhasebookUser;
 
 @Entity
 public class Friendship implements Serializable {	
@@ -24,14 +20,13 @@ public class Friendship implements Serializable {
 	@Column(name="FRIENDSHIP_ID")
 	private int id;
 	
-	@ManyToOne
-	@JoinColumn(name="HOST_PHASEBOOK_USER_ID", referencedColumnName="PHASEBOOK_USER_ID")
-	private PhasebookUser hostUser;
-		
-	@ManyToOne
-	@JoinColumn(name="invited_PHASEBOOK_USER_ID", referencedColumnName="PHASEBOOK_USER_ID")
-	private PhasebookUser invitedUser;
+	@Column(name="HOST_PHASEBOOK_USER_ID")
+	private int hostUserId;
 	
+	@Column(name="INVITED_PHASEBOOK_ID")
+	private int invitedUserId;
+	
+	@Column(name="ACCEPTED_")
 	private boolean accepted_;
 	
 	@Column(name="CREATED_AT")
@@ -48,11 +43,11 @@ public class Friendship implements Serializable {
 		super();
 	}
 	
-	public Friendship(PhasebookUser inviterUser, PhasebookUser inveteeUser) 
+	public Friendship(int inviterUserId, int inveteeUserId) 
 	{
 		super();
-		this.hostUser = inviterUser;
-		this.invitedUser = inveteeUser;
+		this.hostUserId = inviterUserId;
+		this.invitedUserId = inveteeUserId;
 	}
 	
 	private Timestamp getCurrentTime()
@@ -70,20 +65,20 @@ public class Friendship implements Serializable {
 		this.id = id;
 	}
 
-	public PhasebookUser getHostUser() {
-		return hostUser;
+	public int getHostUserId() {
+		return hostUserId;
 	}
 
-	protected void setHostUser(PhasebookUser hostUser) {
-		this.hostUser = hostUser;
+	protected void setHostUserId(int hostUserId) {
+		this.hostUserId = hostUserId;
 	}
 
-	public PhasebookUser getInvitedUser() {
-		return invitedUser;
+	public int getInvitedUserId() {
+		return invitedUserId;
 	}
 
-	protected void setInvitedUser(PhasebookUser invitedUser) {
-		this.invitedUser = invitedUser;
+	protected void setInvitedUserId(int invitedUserId) {
+		this.invitedUserId = invitedUserId;
 	}
 
 	public boolean isAccepted_() {

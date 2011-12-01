@@ -42,10 +42,10 @@ public class GetPostsResponseAction extends AbstractActionLifecycle
 		System.out.println("GET POSTS RESPONSE"+message.getBody().get(Body.DEFAULT_LOCATION));
 		HashMap map = new HashMap();
 		Iterator it = responseMsg.keySet().iterator();
-//		while(it.hasNext()){
-//			
-//			System.out.println(it.next());
-//		}
+		while(it.hasNext()){
+			
+			System.out.println(it.next());
+		}
 		//message.getBody().add(map);
 		//System.out.println(message.getBody().get(Body.DEFAULT_LOCATION));
 		return message;  

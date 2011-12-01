@@ -1,18 +1,14 @@
 package phasebook.controller;
 
 import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.naming.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
 
 import client.artefact.*;
-import phasebook.post.PostRemote;
-import phasebook.user.PhasebookUserRemote;
 
 /**
  * Servlet implementation class CreateUserForm
@@ -59,6 +55,7 @@ public class LoginUserForm extends HttpServlet {
 			
 			AuthInfo object =  m.loginUser(email, password, current);
 			int id = object.getId();
+			System.out.println("\n\n\n\n*********************"+id);
 			String token = object.getToken();
 			long expiration = object.getExpiration();
 			

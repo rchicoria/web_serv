@@ -59,7 +59,7 @@
 			<td class="label">Profile picture</td>
 			<td>
 				<div style="width: 200px; height: 250px; overflow: auto; border: 1px solid black; padding: 6px">
-					<p><input type="radio" name="avatar" id="0" value="0" <% if (user.getPhotoId()==-1) { %>checked<% } %>> <label for="0">No photo</label></p>
+					<p><input type="radio" name="avatar" id="-1" value="-1" <% if (user.getPhotoId()==-1) { %>checked<% } %>> <label for="0">No photo</label></p>
 					<%
 						List<Post> posts = userBean.getUserReceivedPosts(userId,
 								session.getAttribute("id"), session.getAttribute("password"));

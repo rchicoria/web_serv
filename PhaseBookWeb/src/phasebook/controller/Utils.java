@@ -12,7 +12,6 @@ import phasebook.photo.PhotoRemote;
 import phasebook.post.PostRemote;
 import phasebook.lottery.LotteryRemote;
 import phasebook.lotterybet.LotteryBetRemote;
-import phasebook.user.PhasebookUser;
 import phasebook.user.PhasebookUserRemote;
 
 public class Utils {
@@ -152,19 +151,19 @@ public class Utils {
 	}
 	
 	// Get the number of notifications
-	public static int getNumberNotifications(PhasebookUser user,
+	public static int getNumberNotifications(int userId,
 			Object authId, Object authPass)
 	{
 		if (Auth.authenticate(authId, authPass))
 			return -1;
 		int count = 0;
-		count += ((List<Object>)getPostBean().getUnreadPosts(user.getId(),
+		count += ((List<?>)getPostBean().getUnreadPosts(userId,
 				authId, authPass)).size();
-		count += ((List<Object>)getLotteryBetBean().checkUnreadBetResults(user,
+		count += ((List<?>)getLotteryBetBean().checkUnreadBetResults(userId,
 				authId, authPass)).size();
-		count += ((List<Object>)getFriendshipBean().getNewFriendshipInvites(user,
+		count += ((List<?>)getFriendshipBean().getNewFriendshipInvites(userId,
 				authId, authPass)).size();
-		count += ((List<Object>)getFriendshipBean().getNewFriendshipAcceptances(user,
+		count += ((List<?>)getFriendshipBean().getNewFriendshipAcceptances(userId,
 				authId, authPass)).size();
 		return count;
 	}

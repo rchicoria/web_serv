@@ -2,20 +2,13 @@ package phasebook.lottery;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
-
-import phasebook.lotterybet.LotteryBet;
 
 @Entity
 public class Lottery implements Serializable {
@@ -32,9 +25,6 @@ public class Lottery implements Serializable {
 	@Column(name="LOTTERY_DATE")
 	private Timestamp lotteryDate = new Timestamp(new Date().getTime());
 	
-	@ElementCollection  
-	private List<LotteryBet> lotteryBets = new ArrayList<LotteryBet>();
-	
 	public Lottery()
 	{
 		super();
@@ -46,7 +36,7 @@ public class Lottery implements Serializable {
 		this.id=id;
 	}
 
-	protected int getId() {
+	public int getId() {
 		return id;
 	}
 
@@ -69,15 +59,5 @@ public class Lottery implements Serializable {
 	protected void setLotteryDate(Timestamp lotteryDate) {
 		this.lotteryDate = lotteryDate;
 	}
-
-	@OneToMany(cascade=CascadeType.ALL, mappedBy="lottery")
-	public List<LotteryBet> getLotteryBets() {
-		return lotteryBets;
-	}
-	
-	public void setLotteryBets(List<LotteryBet> lotteryBets) {
-		this.lotteryBets = lotteryBets;
-	}
-	
 	
 }
