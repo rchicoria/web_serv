@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<jbossesb parameterReloadSecs="5"
+ xmlns="http://anonsvn.labs.jboss.com/labs/jbossesb/trunk/product/etc/schemas/xml/jbossesb-1.3.0.xsd"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://anonsvn.labs.jboss.com/labs/jbossesb/trunk/product/etc/schemas/xml/jbossesb-1.3.0.xsd http://anonsvn.jboss.org/repos/labs/labs/jbossesb/trunk/product/etc/schemas/xml/jbossesb-1.3.0.xsd">
+ <providers>
+  <jms-provider connection-factory="ConnectionFactory"
+   name="JMS">
+   <jms-bus busid="startGwChannel">
+    <jms-message-filter dest-name="queue/bpm_demo_start_Request_gw"
+     dest-type="QUEUE" />
+   </jms-bus>
+   <jms-bus busid="startEsbChannel">
+    <jms-message-filter dest-name="queue/bpm_demo_start_Request_esb"
+     dest-type="QUEUE" />
+   </jms-bus>
+   <jms-bus busid="HelloEsbChannel">
+    <jms-message-filter dest-name="queue/bpm_hello_Request_esb"
+     dest-type="QUEUE" />
+   </jms-bus>
+  </jms-provider>
+ </providers>
+ <services>
+  <service category="My_Demo_Service"
+   description="BPM Demo Orchestration: Use this service to start a process instance"
+   name="Start">
+   <listeners>
+    <jms-listener busidref="startGwChannel" is-gateway="true"
+     name="JMS-Gateway" />
+    <jms-listener busidref="startEsbChannel" name="ESB-Listener" />
+   </listeners>
+   <actions mep="OneWay">
+    <action class="action.InitializeListenerAction" name="init"
+     process="init" />
+    <action class="org.jboss.soa.esb.services.jbpm.actions.BpmProcessor"
+     name="lottery">
+     <property name="command" value="StartProcessInstanceCommand" />
+     <property name="process-definition-name" value="simple" />
+     <property name="esbToBpmVars">
+      <mapping bpm="myname" esb="userName" />
+      <mapping bpm="theBody" esb="BODY_CONTENT" />
+     </property>
+    </action>
+   </actions>
+  </service>
+  <service category="My_Demo_Service"
+   description="BPM Demo Orchestration: Use this service to invoke the hello"
+   name="Hello">
+   <listeners>
+    <jms-listener busidref="HelloEsbChannel" name="ESB-Listener" />
+   </listeners>
+   <actions>
+    <action class="action.MyListenerAction" name="helloaction" process="hello" />
+   </actions>
+  </service>
+ </services>
+</jbossesb>

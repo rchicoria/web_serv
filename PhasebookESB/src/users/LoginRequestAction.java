@@ -34,21 +34,21 @@ public class LoginRequestAction extends AbstractActionLifecycle
 		 _config = config;
 	 }
 	
-	 public Message process(Message message) {
-		  
-	     Map requestMsg = ((Map)message.getBody().get(Body.DEFAULT_LOCATION));
-	     String email = (String)requestMsg.get("email");
-	     String password = (String)requestMsg.get("password");
-	     System.out.println(requestMsg.get("current"));
-	     long current = ((Long)requestMsg.get("current")).longValue();
-	 
-	     Map send = new HashMap();
-	     send.put("loginUser.email", email);
-	     send.put("loginUser.password", password);
-	     send.put("loginUser.current", current);
-	     message.getBody().add(send);
-	     
-	     return message;  
+	 public Message process(Message message)
+	 {
+		 
+		 
+		System.out.println("---------------------------------- Initialize ----------------------------------");
+		Map requestMsg = ((Map)message.getBody().get(Body.DEFAULT_LOCATION));
+		String email = (String)requestMsg.get("email");
+	    String password = (String)requestMsg.get("password");
+	    long current = ((Long)requestMsg.get("current")).longValue();
+		message.getBody().add("email", email);
+		message.getBody().add("password", password);
+		message.getBody().add("current", current);
+		System.out.println("Initialize got the following data. Email = " + email + ". Pass = " + password);
+		System.out.println("-------------------------------- end initialize --------------------------------");
+		return message;	     
 	 }
 
 }

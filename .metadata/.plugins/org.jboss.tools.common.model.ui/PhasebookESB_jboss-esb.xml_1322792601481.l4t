@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Layout resource="/PhasebookESB/esbcontent/META-INF/jboss-esb.xml">
+ <TreeFormPage>
+  <Memento type="FileESB130">
+   <Memento collapsed="false" type="JBoss ESB"/>
+   <Memento collapsed="false" type="Providers"/>
+   <Memento collapsed="false" type="Services"/>
+  </Memento>
+  <Memento type="ESBService130">
+   <Memento collapsed="false" type="Service"/>
+   <Memento collapsed="false" type="Properties"/>
+   <Memento collapsed="false" type="Advanced"/>
+  </Memento>
+  <Memento type="ESBServices130">
+   <Memento type="Services"/>
+  </Memento>
+ </TreeFormPage>
+</Layout>

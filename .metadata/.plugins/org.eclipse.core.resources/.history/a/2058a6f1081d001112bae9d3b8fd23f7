@@ -1,0 +1,84 @@
+<?xml version="1.0"?>
+<jbossesb parameterReloadSecs="5"
+ xmlns="http://anonsvn.labs.jboss.com/labs/jbossesb/trunk/product/etc/schemas/xml/jbossesb-1.3.0.xsd"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://anonsvn.labs.jboss.com/labs/jbossesb/trunk/product/etc/schemas/xml/jbossesb-1.3.0.xsd http://anonsvn.jboss.org/repos/labs/labs/jbossesb/trunk/product/etc/schemas/xml/jbossesb-1.3.0.xsd">
+ <providers>
+  <jms-provider connection-factory="ConnectionFactory" name="JMS">
+   <jms-bus busid="loginUserEsbChannel">
+    <jms-message-filter dest-name="queue/login_user_Request_esb" dest-type="QUEUE"/>
+   </jms-bus>
+   <jms-bus busid="createUserEsbChannel">
+    <jms-message-filter dest-name="queue/create_user_Request_esb" dest-type="QUEUE"/>
+   </jms-bus>
+   <jms-bus busid="getPostsEsbChannel">
+    <jms-message-filter dest-name="queue/get_posts_Request_esb" dest-type="QUEUE"/>
+   </jms-bus>
+   <jms-bus busid="getUsersEsbChannel">
+    <jms-message-filter dest-name="queue/get_users_Request_esb" dest-type="QUEUE"/>
+   </jms-bus>
+  </jms-provider>
+ </providers>
+ <services>
+  <service category="Login_User_Service"
+   description="BPM Login Orchestration Use this service to login a user" name="Start">
+   <listeners>
+    <jms-listener busidref="loginUserEsbChannel" is-gateway="true" name="JMS-Gateway"/>
+   </listeners>
+   <actions mep="OneWay">
+    <action class="users.LoginRequestAction" name="init" process="init"/>
+    <action class="org.jboss.soa.esb.services.jbpm.actions.BpmProcessor"
+     name="login">
+     <property name="wsdl" value="http://127.0.0.1:8080/PhasebookWS/Users?wsdl"/>
+     <property name="SOAPAction" value="loginUser"/>
+     <property name="responseAsOgnlMap" value="true"/>
+    </action>
+    <action class="users.LoginResponseAction" name="response-mapper"/>
+   </actions>
+  </service>
+  <service category="Create_User_Service"
+   description="Create User Service: Use this service to create a user" name="send">
+   <listeners>
+    <jms-listener busidref="createUserEsbChannel" name="ESB-Listener"/>
+   </listeners>
+   <actions>
+    <action class="users.CreateUserRequestAction" name="request-mapper"/>
+    <action class="org.jboss.soa.esb.actions.soap.SOAPClient" name="soapui-client-action">
+     <property name="wsdl" value="http://127.0.0.1:8080/PhasebookWS/Users?wsdl"/>
+     <property name="SOAPAction" value="createUser"/>
+     <property name="responseAsOgnlMap" value="true"/>
+    </action>
+    <action class="users.CreateUserResponseAction" name="response-mapper"/>
+   </actions>
+  </service>
+  <service category="Get_Posts_Service"
+   description="Get Posts Service: Use this service to user posts" name="send">
+   <listeners>
+    <jms-listener busidref="getPostsEsbChannel" name="ESB-Listener"/>
+   </listeners>
+   <actions>
+    <action class="posts.GetPostsRequestAction" name="request-mapper"/>
+    <action class="org.jboss.soa.esb.actions.soap.SOAPClient" name="soapui-client-action">
+     <property name="wsdl" value="http://127.0.0.1:8080/PhasebookWS/Posts?wsdl"/>
+     <property name="SOAPAction" value="getPosts"/>
+     <property name="responseAsOgnlMap" value="true"/>
+    </action>
+    <action class="posts.GetPostsResponseAction" name="response-mapper"/>
+   </actions>
+  </service>
+  <service category="Get_Users_Service"
+   description="Get Users Service: Use this service to fetch users" name="send">
+   <listeners>
+    <jms-listener busidref="getUsersEsbChannel" name="ESB-Listener"/>
+   </listeners>
+   <actions>
+    <action class="users.GetUsersRequestAction" name="request-mapper"/>
+    <action class="org.jboss.soa.esb.actions.soap.SOAPClient" name="soapui-client-action">
+     <property name="wsdl" value="http://127.0.0.1:8080/PhasebookWS/Users?wsdl"/>
+     <property name="SOAPAction" value="getUsers"/>
+     <property name="responseAsOgnlMap" value="true"/>
+    </action>
+    <action class="users.GetUsersResponseAction" name="response-mapper"/>
+   </actions>
+  </service>
+ </services>
+</jbossesb>

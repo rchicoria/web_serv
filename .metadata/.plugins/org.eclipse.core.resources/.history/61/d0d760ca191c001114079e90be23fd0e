@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<root-container name="simple" width="706" height="388">
+  <node name="start" x="149" y="24" width="140" height="40">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <node name="first" x="152" y="121" width="132" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <node name="end" x="149" y="226" width="140" height="40"/>
+  <deployment graphicalInfoFile="/DemoProcessorOrchestrator/src/main/jpdl/.simple.gpd.xml" imageFile="/DemoProcessorOrchestrator/src/main/jpdl/simple.jpg" serverName="localhost" serverPort="8080" serverDeployer="/gpd-deployer/upload">
+    <classesAndResources>
+      <element type="java" value="/DemoProcessorOrchestrator/src/main/java/com/sample/action/MessageActionHandler.java"/>
+      <element type="java" value="/DemoProcessorOrchestrator/src/main/java/com/sample/action/MessageActionHandler2.java"/>
+    </classesAndResources>
+  </deployment>
+</root-container>
