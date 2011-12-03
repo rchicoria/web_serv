@@ -182,9 +182,10 @@ public class PostBean implements PostRemote {
 		try{
 			Query q = em.createQuery("SELECT u FROM Post u " +
 					"WHERE u.toUserId = :user AND " +
-					"u.private_ = :private_ AND u.deletedAt is NULL");
+					"u.private_ = :private_ AND u.deletedAt = :min");
 			q.setParameter("user",user.getId());
 			q.setParameter("private_",false);
+			q.setParameter("min", new Timestamp(0));
 			
 			em.clear();
 			emf.close();

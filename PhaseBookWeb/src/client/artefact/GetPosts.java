@@ -20,6 +20,8 @@ import javax.xml.bind.annotation.XmlType;
  *         &lt;element name="arg1" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="arg2" type="{http://www.w3.org/2001/XMLSchema}long"/>
  *         &lt;element name="arg3" type="{http://www.w3.org/2001/XMLSchema}long"/>
+ *         &lt;element name="arg4" type="{http://www.w3.org/2001/XMLSchema}int"/>
+ *         &lt;element name="arg5" type="{http://www.w3.org/2001/XMLSchema}int"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -33,7 +35,9 @@ import javax.xml.bind.annotation.XmlType;
     "arg0",
     "arg1",
     "arg2",
-    "arg3"
+    "arg3",
+    "arg4",
+    "arg5"
 })
 public class GetPosts {
 
@@ -41,6 +45,8 @@ public class GetPosts {
     protected String arg1;
     protected long arg2;
     protected long arg3;
+    protected int arg4;
+    protected int arg5;
 
     /**
      * Gets the value of the arg0 property.
@@ -112,6 +118,38 @@ public class GetPosts {
      */
     public void setArg3(long value) {
         this.arg3 = value;
+    }
+
+    /**
+     * Gets the value of the arg4 property.
+     * 
+     */
+    public int getArg4() {
+        return arg4;
+    }
+
+    /**
+     * Sets the value of the arg4 property.
+     * 
+     */
+    public void setArg4(int value) {
+        this.arg4 = value;
+    }
+
+    /**
+     * Gets the value of the arg5 property.
+     * 
+     */
+    public int getArg5() {
+        return arg5;
+    }
+
+    /**
+     * Sets the value of the arg5 property.
+     * 
+     */
+    public void setArg5(int value) {
+        this.arg5 = value;
     }
 
 }

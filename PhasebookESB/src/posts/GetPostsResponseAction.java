@@ -43,17 +43,21 @@ public class GetPostsResponseAction extends AbstractActionLifecycle
 		HashMap map = new HashMap();
 		Iterator it = responseMsg.keySet().iterator();
 		List<HashMap<String, Object>> list = new ArrayList<HashMap<String, Object>>();
-		while(it.hasNext()){
-			HashMap<String, Object> post = new HashMap<String, Object>();
-			post.put("fromUserId", responseMsg.get(it.next()));
-			post.put("id", responseMsg.get(it.next()));
-			post.put("photoId", responseMsg.get(it.next()));
-			post.put("private", responseMsg.get(it.next()));
-			post.put("read", responseMsg.get(it.next()));
-			post.put("text", responseMsg.get(it.next()));
-			post.put("toUserId", responseMsg.get(it.next()));
-			System.out.println(post);
-			list.add(post);
+		try{
+			while(it.hasNext()){
+				HashMap<String, Object> post = new HashMap<String, Object>();
+				post.put("fromUserId", responseMsg.get(it.next()));
+				post.put("id", responseMsg.get(it.next()));
+				post.put("photoId", responseMsg.get(it.next()));
+				post.put("private", responseMsg.get(it.next()));
+				post.put("read", responseMsg.get(it.next()));
+				post.put("text", responseMsg.get(it.next()));
+				post.put("toUserId", responseMsg.get(it.next()));
+				System.out.println(post);
+				list.add(post);
+			}
+		} catch(NoSuchElementException ex){
+			System.out.println("Não há posts");
 		}
 		message.getBody().add(list);
 		//message.getBody().add(map);

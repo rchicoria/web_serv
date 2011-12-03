@@ -93,6 +93,7 @@ public class PhasebookUserBean implements PhasebookUserRemote {
 		} catch(NoResultException ex){
 			em.close();
 			emf.close();
+			System.out.println("EMAIL: "+email+" PASSWORD: "+password);
 			ex.printStackTrace();
 			return -1;
 		} catch(NonUniqueResultException ex){
@@ -143,9 +144,10 @@ public class PhasebookUserBean implements PhasebookUserRemote {
 		try{
 			Query q = em.createQuery("SELECT u FROM Post u " +
 					"WHERE u.toUserId = :user AND " +
-					"u.private_ = :private_ AND u.deletedAt is NULL");
+					"u.private_ = :private_ AND u.deletedAt = :min");
 			q.setParameter("user",user.getId());
 			q.setParameter("private_",false);
+			q.setParameter("min", new Timestamp(0));
 			
 			em.clear();
 			emf.close();
@@ -162,8 +164,6 @@ public class PhasebookUserBean implements PhasebookUserRemote {
 	public PhasebookUser getUserById(Object id,
 			Object authId, Object authPass)
 	{
-		if (Auth.authenticate(authId, authPass))
-			return null;
 		int userId = Integer.parseInt(id.toString());
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("PhaseBook");
 		EntityManager em = emf.createEntityManager();
@@ -189,8 +189,6 @@ public class PhasebookUserBean implements PhasebookUserRemote {
 	public List<PhasebookUser> getUsersFromSearch(Object search,
 			Object authId, Object authPass)
 	{
-		if (Auth.authenticate(authId, authPass))
-			return null;
 		List<PhasebookUser> results = new ArrayList<PhasebookUser>();
 		String s = search.toString().toLowerCase();
 
@@ -200,8 +198,10 @@ public class PhasebookUserBean implements PhasebookUserRemote {
 		try {
 			Query q = em.createQuery("SELECT u FROM PhasebookUser u ");
 			List<?> users = q.getResultList();
+			System.out.println("FUI BUSCAR OS USERS");
 			if (s != null)
 			{
+				System.out.println("A STRING NAO E NULL");
 				Pattern pattern = Pattern.compile(s);
 				for (int i=0; i<users.size(); i++)
 				{
@@ -221,6 +221,7 @@ public class PhasebookUserBean implements PhasebookUserRemote {
 			emf.close();
 			return results;
 		} catch (Exception e) {
+			System.out.println("DEU BODE");
 			em.close();
 			emf.close();
 			return new ArrayList<PhasebookUser>();
@@ -348,9 +349,10 @@ public class PhasebookUserBean implements PhasebookUserRemote {
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("PhaseBook");
 		EntityManager em = emf.createEntityManager();
 		
-		Query q = em.createQuery("SELECT u FROM Post u WHERE u.toUserId = :user AND u.read_ = :status AND u.deletedAt = NULL");
+		Query q = em.createQuery("SELECT u FROM Post u WHERE u.toUserId = :user AND u.read_ = :status AND u.deletedAt = :min");
 		q.setParameter("user",user.getId());
 		q.setParameter("status",false);
+		q.setParameter("min", new Timestamp(0));
 		
 		int result = q.getResultList().size();
 		em.close();

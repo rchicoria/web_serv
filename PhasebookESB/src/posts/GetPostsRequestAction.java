@@ -41,15 +41,19 @@ public class GetPostsRequestAction extends AbstractActionLifecycle
 	     String token = (String)requestMsg.get("token");
 	     long current = ((Long)requestMsg.get("current")).longValue();
 	     long expiration = ((Long)requestMsg.get("expiration")).longValue();
+	     int currentUserId = ((Integer)requestMsg.get("currentUserId")).intValue();
+	     int friend = ((Integer)requestMsg.get("friend")).intValue();
 	 
 	     Map send = new HashMap();
 	     send.put("getPosts.userId", userId);
 	     send.put("getPosts.token", token);
 	     send.put("getPosts.current", current);
 	     send.put("getPosts.expiration", expiration);
+	     send.put("getPosts.currentUserId", currentUserId);
+	     send.put("getPosts.friend", friend);
 	     message.getBody().add(send);
 	     
-	     return message;  
+	     return message;
 	 }
 
 }

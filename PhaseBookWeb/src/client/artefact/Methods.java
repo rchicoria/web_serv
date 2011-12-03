@@ -48,15 +48,20 @@ public interface Methods {
 
     /**
      * 
+     * @param arg5
+     * @param arg4
      * @param arg3
      * @param arg2
      * @param arg1
      * @param arg0
+     * @return
+     *     returns client.artefact.PostsContainer
      */
     @WebMethod
+    @WebResult(targetNamespace = "")
     @RequestWrapper(localName = "getPosts", targetNamespace = "http://main/", className = "client.artefact.GetPosts")
     @ResponseWrapper(localName = "getPostsResponse", targetNamespace = "http://main/", className = "client.artefact.GetPostsResponse")
-    public void getPosts(
+    public PostsContainer getPosts(
         @WebParam(name = "arg0", targetNamespace = "")
         int arg0,
         @WebParam(name = "arg1", targetNamespace = "")
@@ -64,7 +69,11 @@ public interface Methods {
         @WebParam(name = "arg2", targetNamespace = "")
         long arg2,
         @WebParam(name = "arg3", targetNamespace = "")
-        long arg3);
+        long arg3,
+        @WebParam(name = "arg4", targetNamespace = "")
+        int arg4,
+        @WebParam(name = "arg5", targetNamespace = "")
+        int arg5);
 
     /**
      * 

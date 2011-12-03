@@ -65,7 +65,7 @@
 								session.getAttribute("id"), session.getAttribute("password"));
 						for (int i=posts.size()-1; i>=0; i--) {
 							Post post = (Post) posts.get(i);
-							if (post.getPhotoId()!=-1 && post.getDeletedAt()==null) {
+							if (post.getPhotoId()!=-1 && post.getDeletedAt().getTime()==(new Date(0)).getTime()) {
 								PhotoRemote photoBean = Utils.getPhotoBean();
 								String photoURL = Utils.MAIN_PATH+userId.toString()+"/"+photoBean.getPhotoById(""+post.getPhotoId(), session.getAttribute("id"), session.getAttribute("password")).getName();
 								int photoID = post.getPhotoId();

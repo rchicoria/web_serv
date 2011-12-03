@@ -41,13 +41,33 @@ public class GetUsersRequestAction extends AbstractActionLifecycle
 	     String token = (String)requestMsg.get("token");
 	     long current = ((Long)requestMsg.get("current")).longValue();
 	     long expiration = ((Long)requestMsg.get("expiration")).longValue();
+	     List<Integer> userIds = ((List<Integer>)requestMsg.get("userIds"));
+	     
+	     List<Integer> temp = new ArrayList<Integer>();
+	     String userIdsString = ""; 
+	     
+	     Iterator it = userIds.iterator();
+	     while(it.hasNext()){
+	    	 int id = Integer.parseInt((String)it.next());
+	    	 if(!temp.contains(id)){
+	    		 temp.add(id);
+	    		 userIdsString += id+",";
+	    	 }
+	     }
+	     
+	     if(userIdsString.length() != 0)
+	    	 userIdsString = userIdsString.substring(0, userIdsString.length()-1);
 	 
 	     Map send = new HashMap();
 	     send.put("getUsers.userId", userId);
 	     send.put("getUsers.token", token);
 	     send.put("getUsers.current", current);
 	     send.put("getUsers.expiration", expiration);
+	     send.put("getUsers.userIds", userIdsString);
+	     
 	     message.getBody().add(send);
+	     
+	     System.out.println("GET USERS REQUEST"+message.getBody().get(Body.DEFAULT_LOCATION));
 	     
 	     return message;  
 	 }

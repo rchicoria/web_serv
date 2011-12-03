@@ -13,4 +13,7 @@
  <jmsQueue>get_users_Request_esb</jmsQueue>
  <jmsQueue>get_users_Request_esb_reply</jmsQueue>
  
+ <jmsQueue>get_photos_Request_esb</jmsQueue>
+ <jmsQueue>get_photos_Request_esb_reply</jmsQueue>
+ 
 </jbossesb-deployment>

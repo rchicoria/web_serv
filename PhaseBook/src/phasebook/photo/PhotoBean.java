@@ -24,13 +24,13 @@ public class PhotoBean implements PhotoRemote {
     public Photo getPhotoById(String id,
 			Object authId, Object authPass)
 	{
-		if (Auth.authenticate(authId, authPass))
-			return null;
 		int photoId = Integer.parseInt(id);
 		if (photoId == 0)
 			return null;
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("PhaseBook");
 		EntityManager em = emf.createEntityManager();
+		
+		System.out.println("AQUIIIIIIIIIIIIIIIIIIIIIIIIIIIII!");
 		
 		try {
 			Photo photo = em.find(Photo.class, photoId);

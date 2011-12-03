@@ -19,6 +19,15 @@
     <servlet-name>Posts</servlet-name>
     <url-pattern>/Posts</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <display-name>Photos</display-name>
+    <servlet-name>Photos</servlet-name>
+    <servlet-class>photos.Photos</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Photos</servlet-name>
+    <url-pattern>/Photos</url-pattern>
+  </servlet-mapping>
   <welcome-file-list>
     <welcome-file>index.html</welcome-file>
     <welcome-file>index.htm</welcome-file>

@@ -39,24 +39,26 @@ public class GetUsersResponseAction extends AbstractActionLifecycle
 	public Message process(Message message) {
 	  
 		Map responseMsg = (Map) message.getBody().get(Body.DEFAULT_LOCATION);
-		System.out.println("GET POSTS RESPONSE"+message.getBody().get(Body.DEFAULT_LOCATION));
-		HashMap map = new HashMap();
+		System.out.println("GET USERS RESPONSE"+message.getBody().get(Body.DEFAULT_LOCATION));
 		Iterator it = responseMsg.keySet().iterator();
-		List<HashMap<String, Object>> list = new ArrayList<HashMap<String, Object>>();
-		while(it.hasNext()){
-			/*HashMap<String, Object> post = new HashMap<String, Object>();
-			post.put("fromUserId", it.next());
-			post.put("id", it.next());
-			post.put("photoId", it.next());
-			post.put("private", it.next());
-			post.put("read", it.next());
-			post.put("text", it.next());
-			post.put("toUserId", it.next());
-			System.out.println(post);
-			list.add(post);*/
-			System.out.println(it.next());
+		HashMap<String, HashMap<String, Object>> map = new HashMap<String, HashMap<String, Object>>();
+		try{
+			while(it.hasNext()){
+				HashMap<String, Object> user = new HashMap<String, Object>();
+				user.put("email", responseMsg.get(it.next()));
+				String id = (String)responseMsg.get(it.next());
+				user.put("id", id);
+				user.put("money", responseMsg.get(it.next()));
+				user.put("name", responseMsg.get(it.next()));
+				user.put("photoId", responseMsg.get(it.next()));
+				System.out.println(user);
+				map.put(id,user);
+			}
 		}
-		message.getBody().add(list);
+		catch (NoSuchElementException ex){
+			System.out.println("Não há users");
+		}
+		message.getBody().add(map);
 		//message.getBody().add(map);
 		//System.out.println(message.getBody().get(Body.DEFAULT_LOCATION));
 		return message;  

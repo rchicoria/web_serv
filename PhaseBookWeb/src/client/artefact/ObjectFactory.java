@@ -39,11 +39,19 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link CreateUser }
+     * Create an instance of {@link GetPostsResponse }
      * 
      */
-    public CreateUser createCreateUser() {
-        return new CreateUser();
+    public GetPostsResponse createGetPostsResponse() {
+        return new GetPostsResponse();
+    }
+
+    /**
+     * Create an instance of {@link PostDetailsInfo }
+     * 
+     */
+    public PostDetailsInfo createPostDetailsInfo() {
+        return new PostDetailsInfo();
     }
 
     /**
@@ -55,19 +63,19 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link CreateUserResponse }
+     * Create an instance of {@link CreateUser }
      * 
      */
-    public CreateUserResponse createCreateUserResponse() {
-        return new CreateUserResponse();
+    public CreateUser createCreateUser() {
+        return new CreateUser();
     }
 
     /**
-     * Create an instance of {@link AuthInfo }
+     * Create an instance of {@link PostsContainer }
      * 
      */
-    public AuthInfo createAuthInfo() {
-        return new AuthInfo();
+    public PostsContainer createPostsContainer() {
+        return new PostsContainer();
     }
 
     /**
@@ -79,11 +87,19 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link GetPostsResponse }
+     * Create an instance of {@link AuthInfo }
      * 
      */
-    public GetPostsResponse createGetPostsResponse() {
-        return new GetPostsResponse();
+    public AuthInfo createAuthInfo() {
+        return new AuthInfo();
+    }
+
+    /**
+     * Create an instance of {@link CreateUserResponse }
+     * 
+     */
+    public CreateUserResponse createCreateUserResponse() {
+        return new CreateUserResponse();
     }
 
     /**

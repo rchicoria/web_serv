@@ -59,14 +59,23 @@ public class Users
 	public List<UserInfo> getUsers(@WebParam(name = "userId") int userId, 
 			@WebParam(name = "token") String token,
 			@WebParam(name = "current") long current,
-			@WebParam(name = "expiration") long expiration)  
+			@WebParam(name = "expiration") long expiration,
+			@WebParam(name = "userIds") String userIdsString)  
 	{ 
 		System.out.println("\n\n\n\n Cheguei Ao WS de Users \n\n\n\n");
 		
-		List<PhasebookUser> users = userRemote.getUsersFromSearch("", 0, "");
+		List<PhasebookUser> users = new ArrayList<PhasebookUser>();
+		
+		List<String> userIds = Arrays.asList(userIdsString.split(","));
+		
+		Iterator it = userIds.iterator();
+		while(it.hasNext()){
+			users.add(userRemote.getUserById(Integer.parseInt((String)it.next()), 0, ""));
+		}
+		
 		List<UserInfo> result = new ArrayList<UserInfo>();
 		
-		Iterator it = users.iterator();
+		it = users.iterator();
 		while(it.hasNext())
 		{
 			PhasebookUser user = (PhasebookUser) it.next();

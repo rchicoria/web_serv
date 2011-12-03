@@ -16,6 +16,9 @@
    <jms-bus busid="getUsersEsbChannel">
     <jms-message-filter dest-name="queue/get_users_Request_esb" dest-type="QUEUE"/>
    </jms-bus>
+   <jms-bus busid="getPhotosEsbChannel">
+    <jms-message-filter dest-name="queue/get_photos_Request_esb" dest-type="QUEUE"/>
+   </jms-bus>
   </jms-provider>
  </providers>
  <services>
@@ -77,6 +80,21 @@
      <property name="responseAsOgnlMap" value="true"/>
     </action>
     <action class="users.GetUsersResponseAction" name="response-mapper"/>
+   </actions>
+  </service>
+  <service category="Get_Photos_Service"
+   description="Get Photos Service: Use this service to fetch photos" name="send">
+   <listeners>
+    <jms-listener busidref="getPhotosEsbChannel" name="ESB-Listener"/>
+   </listeners>
+   <actions>
+    <action class="photos.GetPhotosRequestAction" name="request-mapper"/>
+    <action class="org.jboss.soa.esb.actions.soap.SOAPClient" name="soapui-client-action">
+     <property name="wsdl" value="http://127.0.0.1:8080/PhasebookWS/Photos?wsdl"/>
+     <property name="SOAPAction" value="getPhotos"/>
+     <property name="responseAsOgnlMap" value="true"/>
+    </action>
+    <action class="photos.GetPhotosResponseAction" name="response-mapper"/>
    </actions>
   </service>
  </services>

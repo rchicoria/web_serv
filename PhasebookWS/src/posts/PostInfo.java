@@ -17,7 +17,7 @@ public class PostInfo {
 		this.setPrivate_(private_);
 		this.setRead_(read_);
 		this.setPhoto_id(photo_id);
-		this.setText(text);
+		this.setText(text+" ");
 	}
 	
 	public PostInfo(){

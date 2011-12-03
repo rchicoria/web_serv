@@ -4,6 +4,7 @@
 <%@ page import="phasebook.post.*" %>
 <%@ page import="phasebook.photo.*" %>
 <%@ page import="phasebook.friendship.*" %>
+<%@ page import="client.artefact.*" %>
 <%@ page import="java.util.*" %>
 
 <% 
@@ -20,7 +21,7 @@
 				session.getAttribute("id"), session.getAttribute("password"));
 	}
 	else{
-		userId =  request.getParameter("id");
+		userId = Integer.parseInt((String)request.getParameter("id"));
 		try {
 			Utils.getUserBean().getUserById(request.getParameter("id"),
 					session.getAttribute("id"), session.getAttribute("password")).getName();
@@ -44,14 +45,16 @@
 		session.removeAttribute("privacy");
 	} catch (Exception e) {}
 	
+	MethodsService cs = new MethodsService();
+	Methods m = cs.getMethodsPort();
 	List<?> posts = null;
+	int friend = 0;
 	if (Utils.getFriendshipBean().friendshipStatus(me.getId(), user.getId(),
 			session.getAttribute("id"), session.getAttribute("password")) == 3 || me.equals(user) )
-		posts = userBean.getUserReceivedPosts(userId,
-				session.getAttribute("id"), session.getAttribute("password"));
-	else
-		posts = userBean.getUserPublicPosts(userId,
-				session.getAttribute("id"), session.getAttribute("password"));
+		friend = 1;
+	posts = m.getPosts(((Integer)session.getAttribute("id")).intValue(),
+			"abcd", ((Long)session.getAttribute("expiration")).longValue(), 
+			((Long)session.getAttribute("current")).longValue(), ((Integer)userId).intValue(), friend).getPosts();
 %>
 <p>
 <%
@@ -65,11 +68,10 @@
 <div id="images">
 <%
 	for (int i=posts.size()-1; i>=0; i--) {
-		Post post = (Post) posts.get(i);
+		PostDetailsInfo post = (PostDetailsInfo) posts.get(i);
 %>
-	<% if (post.getPhotoId()!=-1 && post.getDeletedAt()==null){
-		PhotoRemote photoBean = Utils.getPhotoBean();
-		String photoURL = Utils.MAIN_PATH+userId.toString()+"/"+photoBean.getPhotoById(""+post.getPhotoId(), session.getAttribute("id"), session.getAttribute("password")).getName();
+	<% if (post.getPostPhotoId()!=-1){
+		String photoURL = Utils.MAIN_PATH+userId.toString()+"/"+post.getPostPhotoName();
 	%>
 		<span style="margin: 15px"><%= Utils.aAbsolute(photoURL, Utils.img(photoURL)) %></span>
 	<% } %>

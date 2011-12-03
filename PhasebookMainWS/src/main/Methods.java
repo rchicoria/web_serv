@@ -1,5 +1,6 @@
 package main;
 import info.AuthInfo;
+import info.PostDetailsInfo;
 
 import java.util.*;
 
@@ -17,6 +18,8 @@ import org.jboss.soa.esb.message.Body;
 import org.jboss.soa.esb.message.Message;
 import org.jboss.soa.esb.message.format.MessageFactory;
 import org.jboss.soa.esb.services.registry.RegistryException;
+
+import containers.PostsContainer;
 
 @WebService
 public class Methods {
@@ -98,45 +101,116 @@ public class Methods {
 	}
 	
 	@WebMethod
-	public void getPosts(int userId, String token, long expiration, long current){
+	public PostsContainer getPosts(int userId, String token, long expiration, long current, int currentUserId,int friend){
 		// Setting the ConnectionFactory such that it will use scout
 		System.setProperty("javax.xml.registry.ConnectionFactoryClass","org.apache.ws.scout.registry.ConnectionFactoryImpl");
 
 		Message esbMessage = MessageFactory.getInstance().getMessage();
-		HashMap requestMap = new HashMap();
-		
-		requestMap.put("userId", userId);
-		requestMap.put("token", token);
-		requestMap.put("expiration", expiration);
-		requestMap.put("current", current);
-		
-		esbMessage.getBody().add(requestMap);
 		
 		Message retMessage = null;
 		
 		ServiceInvoker si;
-		List<HashMap<String, Object>> posts;
-		// Get user posts
+		List<HashMap<String, Object>> posts = null;
 		try {
+			// Get user posts
+			HashMap<String, Object> requestMap = new HashMap();
+			
+			requestMap.put("userId", userId);
+			requestMap.put("token", token);
+			requestMap.put("expiration", expiration);
+			requestMap.put("current", current);
+			requestMap.put("currentUserId", currentUserId);
+			requestMap.put("friend", friend);
+			
+			esbMessage.getBody().add(requestMap);
 			si = new ServiceInvoker("Get_Posts_Service", "send");
 			retMessage = si.deliverSync(esbMessage, 10000L);
 			posts = (List<HashMap<String, Object>>)retMessage.getBody().get(Body.DEFAULT_LOCATION);
-		} catch (MessageDeliverException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (FaultMessageException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (RegistryException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		// Get list of users
-		try {
+			
+			// Get users
+			List<String> userIds = new ArrayList<String>();
+			Iterator it = posts.iterator();
+			while(it.hasNext()) {
+				String postUserId = (String)((Map)it.next()).get("fromUserId");
+				if (!userIds.contains(postUserId))
+					userIds.add(postUserId);
+			}
+			requestMap.put("userId", userId);
+			requestMap.put("token", token);
+			requestMap.put("expiration", expiration);
+			requestMap.put("current", current);
+			requestMap.put("userIds", userIds);
+			esbMessage.getBody().add(requestMap);
 			si = new ServiceInvoker("Get_Users_Service", "send");
 			retMessage = si.deliverSync(esbMessage, 10000L);
-			List<HashMap<String, Object>> users = (List<HashMap<String, Object>>)retMessage.getBody().get(Body.DEFAULT_LOCATION);
+			HashMap<String, HashMap<String, Object>> users = (HashMap<String, HashMap<String, Object>>)retMessage.getBody().get(Body.DEFAULT_LOCATION);
 			System.out.println(users);
+			
+			// Get posts photos
+			List<String> photoIds = new ArrayList<String>();
+			it = posts.iterator();
+			while(it.hasNext()) {
+				String postPhotoId = (String)((Map)it.next()).get("photoId");
+				if (!photoIds.contains(postPhotoId) && !postPhotoId.equals("-1"))
+					photoIds.add(postPhotoId);
+			}
+			requestMap.put("userId", userId);
+			requestMap.put("token", token);
+			requestMap.put("expiration", expiration);
+			requestMap.put("current", current);
+			requestMap.put("photoIds", photoIds);
+			esbMessage.getBody().add(requestMap);
+			si = new ServiceInvoker("Get_Photos_Service", "send");
+			retMessage = si.deliverSync(esbMessage, 10000L);
+			HashMap<String, HashMap<String, Object>> photos = (HashMap<String, HashMap<String, Object>>)retMessage.getBody().get(Body.DEFAULT_LOCATION);
+			System.out.println(photos);
+			
+			// Get user photos
+			List<HashMap<String, Object>> temp = new ArrayList<HashMap<String, Object>>(users.values());
+			List<String> userPhotoIds = new ArrayList<String>();
+			it = temp.iterator();
+			while(it.hasNext()) {
+				String userPhotoId = (String)((Map)it.next()).get("photoId");
+				if (!userPhotoIds.contains(userPhotoId) && !userPhotoId.equals("-1"))
+					userPhotoIds.add(userPhotoId);
+			}
+			requestMap.put("userId", userId);
+			requestMap.put("token", token);
+			requestMap.put("expiration", expiration);
+			requestMap.put("current", current);
+			requestMap.put("photoIds", userPhotoIds);
+			esbMessage.getBody().add(requestMap);
+			si = new ServiceInvoker("Get_Photos_Service", "send");
+			retMessage = si.deliverSync(esbMessage, 10000L);
+			HashMap<String, HashMap<String, Object>> usersPhotos = (HashMap<String, HashMap<String, Object>>)retMessage.getBody().get(Body.DEFAULT_LOCATION);
+			
+			List<PostDetailsInfo> list = new ArrayList<PostDetailsInfo>();
+			it = posts.iterator();
+			while(it.hasNext()){
+				HashMap<String,Object> tempPost = (HashMap<String, Object>) it.next();
+				PostDetailsInfo postDetails = new PostDetailsInfo();
+				postDetails.setPostId(Integer.parseInt((String)tempPost.get("id")));
+				postDetails.setPostText((String)tempPost.get("text"));				
+				postDetails.setPostPrivate(Boolean.parseBoolean((String)tempPost.get("private")));
+				int postPhotoId = Integer.parseInt((String)tempPost.get("photoId"));
+				postDetails.setPostPhotoId(postPhotoId);
+				System.out.println("PHOTO:      "+postPhotoId);
+				if(postPhotoId!=-1)
+					postDetails.setPostPhotoName((String)photos.get(postPhotoId+"").get("name"));
+				int postUserId = Integer.parseInt((String)tempPost.get("fromUserId"));
+				postDetails.setUserId(postUserId);
+				postDetails.setUserName((String)users.get(postUserId+"").get("name"));
+				int userPhotoId = Integer.parseInt((String)users.get(postUserId+"").get("photoId"));
+				System.out.println("USER:      "+userPhotoId);
+				postDetails.setUserPhotoId(userPhotoId);
+				if(userPhotoId!=-1){
+					System.out.println("PHOTO:      "+photos.get(userPhotoId+""));
+					postDetails.setUserPhotoName((String)usersPhotos.get(userPhotoId+"").get("name"));
+				}
+				list.add(postDetails);
+			}
+			return new PostsContainer(list);
+			
 		} catch (MessageDeliverException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -147,5 +221,6 @@ public class Methods {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		return null;
 	}
 }
