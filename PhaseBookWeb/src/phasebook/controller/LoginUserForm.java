@@ -65,7 +65,7 @@ public class LoginUserForm extends HttpServlet {
 				session.setAttribute("current", current);
 				session.setAttribute("expiration", expiration);
 				session.setAttribute("token", token);
-				m.getPosts(id, "abcd", expiration, current);
+				//m.getPosts(id, "abcd", expiration, current);
 				response.sendRedirect(Utils.url(""));
 			}
 			else

@@ -1,8 +1,14 @@
 <?xml version="1.0"?>
 <jbossesb-deployment>
 
- <jmsQueue>login_user_Request_esb</jmsQueue>
- <jmsQueue>login_user_Request_esb_reply</jmsQueue>
+ <jmsQueue>login_user_start_Request_esb</jmsQueue>
+ <jmsQueue>login_user_start_Request_esb_reply</jmsQueue>
+
+ <jmsQueue>bpm_login_Request_esb</jmsQueue>
+ <jmsQueue>bpm_login_Request_esb_reply</jmsQueue>
+
+ <jmsQueue>login_return_Request_esb</jmsQueue>
+ <jmsQueue>login_return_Request_esb_reply</jmsQueue>
  
  <jmsQueue>create_user_Request_esb</jmsQueue>
  <jmsQueue>create_user_Request_esb_reply</jmsQueue>

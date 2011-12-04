@@ -23,8 +23,16 @@ public class Methods {
 	
 	@WebMethod
 	public AuthInfo loginUser(String email, String password, long current) {
-		// Setting the ConnectionFactory such that it will use scout
+		
 		System.setProperty("javax.xml.registry.ConnectionFactoryClass","org.apache.ws.scout.registry.ConnectionFactoryImpl");
+		Message esbMessage = MessageFactory.getInstance().getMessage();
+
+		esbMessage.getBody().add("email", email);
+		esbMessage.getBody().add("password", password);
+		esbMessage.getBody().add("current", current);
+		
+		// Setting the ConnectionFactory such that it will use scout
+		/*System.setProperty("javax.xml.registry.ConnectionFactoryClass","org.apache.ws.scout.registry.ConnectionFactoryImpl");
 	
 		Message esbMessage = MessageFactory.getInstance().getMessage();
 		HashMap requestMap = new HashMap();
@@ -32,19 +40,19 @@ public class Methods {
 		requestMap.put("password",password);
 		requestMap.put("current",current);
 		esbMessage.getBody().add(requestMap);
-		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"+current);
+		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"+current);*/
 		
 		Message retMessage = null;
 	
 		ServiceInvoker si;
 		try {
-			si = new ServiceInvoker("Login_User_Service", "send");
+			si = new ServiceInvoker("Login_User_Service", "Start");
 			retMessage = si.deliverSync(esbMessage, 10000L);
-			HashMap map = (HashMap)retMessage.getBody().get(Body.DEFAULT_LOCATION);
-			System.out.println("****************"+retMessage.getBody().get(Body.DEFAULT_LOCATION)+"***************");
+			//HashMap map = (HashMap)retMessage.getBody();
+			System.out.println("****************"+retMessage.getBody().get("id")+"***************");
 
-			AuthInfo temp = new AuthInfo(Integer.parseInt((String)map.get("id")), (String)map.get("token"), 
-				Long.parseLong((String)map.get("expiration")));
+			AuthInfo temp = new AuthInfo(Integer.parseInt((String)retMessage.getBody().get("id")), (String)retMessage.getBody().get("token"), 
+				Long.parseLong((String)retMessage.getBody().get("expiration")));
 			return temp;
 		} catch (MessageDeliverException e) {
 			// TODO Auto-generated catch block

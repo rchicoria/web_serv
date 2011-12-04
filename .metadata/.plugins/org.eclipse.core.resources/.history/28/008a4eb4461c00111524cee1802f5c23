@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<process-definition xmlns="urn:jbpm.org:jpdl-3.2"
+ name="simple">
+ <start-state name="start">
+  <transition name="to_state" to="first">
+   <action name="action" class="com.sample.action.MessageActionHandler">
+    <message>Going to the ESB STATE!</message>
+   </action>
+  </transition>
+ </start-state>
+ 
+ <node name="first">
+  <action name="esbAction"
+   class="org.jboss.soa.esb.services.jbpm.actionhandlers.EsbActionHandler">
+   <esbCategoryName>
+    Auth
+   </esbCategoryName>
+   <esbServiceName>Hello</esbServiceName>
+   <bpmToEsbVars>
+    <mapping bpm="username" esb="username" />
+    <mapping bpm="password" esb="password" />
+    <mapping bpm="theBody" esb="BODY_CONTENT"/>
+   </bpmToEsbVars>
+   <esbToBpmVars>
+    <mapping esb="BODY_CONTENT" bpm="theBody" />
+   </esbToBpmVars>
+  </action>
+  <transition name="to_end" to="end">
+  </transition>
+ </node>
+
+ <end-state name="end">
+  <event type="node-enter">
+   <action name="action" class="com.sample.action.MessageActionHandler2">
+   </action>
+  </event>
+ </end-state>
+
+</process-definition>

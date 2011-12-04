@@ -19,8 +19,15 @@ public class Users
 	public List loginUser(@WebParam(name = "email") String email, 
 			@WebParam(name = "password") String password,
 			@WebParam(name = "current") long current)  
-	{ 
+	{
+		System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n############################################");
+		System.out.println("email: " + email);
+		System.out.println("############################################\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
 		int id = userRemote.login(email, password);
+		System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n############################################");
+		System.out.println("email: " + email);
+		System.out.println("id: " + id);
+		System.out.println("############################################\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
 		Calendar temp = new GregorianCalendar();
 		temp.setTimeInMillis(current);
 		temp.add(Calendar.MINUTE, 1);

@@ -1,13 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <server>
+ 
  <mbean code="org.jboss.jms.server.destination.QueueService"
-  name="jboss.esb.quickstart.destination:service=Queue,name=login_user_Request_esb"
+  name="jboss.esb.quickstart.destination:service=Queue,name=login_user_start_Request_esb"
   xmbean-dd="xmdesc/Queue-xmbean.xml">
   <depends optional-attribute-name="ServerPeer">jboss.messaging:service=ServerPeer
   </depends>
  </mbean>
  <mbean code="org.jboss.jms.server.destination.QueueService"
-  name="jboss.esb.quickstart.destination:service=Queue,name=login_user_Request_esb_reply"
+  name="jboss.esb.quickstart.destination:service=Queue,name=login_user_start_Request_esb_reply"
+  xmbean-dd="xmdesc/Queue-xmbean.xml">
+  <depends optional-attribute-name="ServerPeer">jboss.messaging:service=ServerPeer
+  </depends>
+ </mbean>
+ 
+ <mbean code="org.jboss.jms.server.destination.QueueService"
+  name="jboss.esb.quickstart.destination:service=Queue,name=bpm_login_Request_esb"
+  xmbean-dd="xmdesc/Queue-xmbean.xml">
+  <depends optional-attribute-name="ServerPeer">jboss.messaging:service=ServerPeer
+  </depends>
+ </mbean>
+ <mbean code="org.jboss.jms.server.destination.QueueService"
+  name="jboss.esb.quickstart.destination:service=Queue,name=bpm_login_Request_esb_reply"
+  xmbean-dd="xmdesc/Queue-xmbean.xml">
+  <depends optional-attribute-name="ServerPeer">jboss.messaging:service=ServerPeer
+  </depends>
+ </mbean>
+ 
+ <mbean code="org.jboss.jms.server.destination.QueueService"
+  name="jboss.esb.quickstart.destination:service=Queue,name=login_return_Request_esb"
+  xmbean-dd="xmdesc/Queue-xmbean.xml">
+  <depends optional-attribute-name="ServerPeer">jboss.messaging:service=ServerPeer
+  </depends>
+ </mbean>
+ <mbean code="org.jboss.jms.server.destination.QueueService"
+  name="jboss.esb.quickstart.destination:service=Queue,name=login_return_Request_esb_reply"
   xmbean-dd="xmdesc/Queue-xmbean.xml">
   <depends optional-attribute-name="ServerPeer">jboss.messaging:service=ServerPeer
   </depends>

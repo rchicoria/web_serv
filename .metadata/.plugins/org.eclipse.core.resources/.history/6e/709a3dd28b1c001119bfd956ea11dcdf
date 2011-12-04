@@ -1,0 +1,103 @@
+package users;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
+
+import javax.jms.JMSException;
+import javax.jms.ObjectMessage;
+import javax.jms.Queue;
+import javax.jms.QueueConnection;
+import javax.jms.QueueConnectionFactory;
+import javax.jms.QueueSender;
+import javax.jms.QueueSession;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+
+import org.jboss.soa.esb.actions.AbstractActionLifecycle;
+import org.jboss.soa.esb.helpers.ConfigTree;
+import org.jboss.soa.esb.message.Body;
+import org.jboss.soa.esb.message.Message;
+
+public class LoginRequestAction extends AbstractActionLifecycle
+{
+
+	 protected ConfigTree _config;
+	 
+	 
+	 QueueConnection conn;
+	 QueueSession session;
+	 Queue que;
+	
+	 public LoginRequestAction(ConfigTree config) {
+		 _config = config;
+	 }
+	
+	 public void process(Message message) {
+		  
+	     Map requestMsg = ((Map)message.getBody().get(Body.DEFAULT_LOCATION));
+	     String email = (String)requestMsg.get("email");
+	     String password = (String)requestMsg.get("password");
+	     System.out.println(requestMsg.get("current"));
+	     long current = ((Long)requestMsg.get("current")).longValue();
+	 
+	     HashMap send = new HashMap();
+	     send.put("loginUser.email", email);
+	     send.put("loginUser.password", password);
+	     send.put("loginUser.current", current);
+	     message.getBody().add(send);
+	     
+	     try {
+			setupConnection();
+			sendAMessage(send);
+		    stop();
+		} 
+	    catch (JMSException e)
+		{
+
+			e.printStackTrace();
+		}
+		catch (NamingException e)
+		{
+			e.printStackTrace();
+		}
+	     
+	 }
+	   
+	   
+   public void setupConnection() throws JMSException, NamingException
+   {
+		Properties properties1 = new Properties();
+		properties1.put(Context.INITIAL_CONTEXT_FACTORY,
+					  	"org.jnp.interfaces.NamingContextFactory");
+		properties1.put(Context.URL_PKG_PREFIXES,
+				   "org.jboss.naming:org.jnp.interfaces");
+		properties1.put(Context.PROVIDER_URL, "jnp://localhost:1199");
+		InitialContext iniCtx = new InitialContext(properties1);
+		
+		Object tmp = iniCtx.lookup("ConnectionFactory");
+		QueueConnectionFactory qcf = (QueueConnectionFactory) tmp;
+		conn = qcf.createQueueConnection();
+		que = (Queue) iniCtx.lookup("queue/bpm_demo_start_Request_gw");
+		session = conn.createQueueSession(false, QueueSession.AUTO_ACKNOWLEDGE);
+		conn.start();
+		System.out.println("Connection Started");
+   }
+	   
+	   public void stop() throws JMSException
+	   {
+	       conn.stop();
+	       session.close();
+	       conn.close();
+	   }
+	   
+	   public void sendAMessage(HashMap msg) throws JMSException {
+	    
+	       QueueSender send = session.createSender(que);        
+	       ObjectMessage tm = session.createObjectMessage(msg);
+	       
+	       send.send(tm);        
+	       send.close();
+	   }
+
+}

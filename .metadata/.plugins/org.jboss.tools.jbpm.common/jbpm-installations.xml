@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<installations>
+<installation location="C:\Jbosses\jbpm-3.2.8" name="jBPMRuntime" version="jBPM3"/>
+</installations>

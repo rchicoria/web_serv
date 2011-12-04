@@ -4,8 +4,14 @@
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://anonsvn.labs.jboss.com/labs/jbossesb/trunk/product/etc/schemas/xml/jbossesb-1.3.0.xsd http://anonsvn.jboss.org/repos/labs/labs/jbossesb/trunk/product/etc/schemas/xml/jbossesb-1.3.0.xsd">
  <providers>
   <jms-provider connection-factory="ConnectionFactory" name="JMS">
-   <jms-bus busid="loginUserEsbChannel">
-    <jms-message-filter dest-name="queue/login_user_Request_esb" dest-type="QUEUE"/>
+   <jms-bus busid="startEsbChannel">
+    <jms-message-filter dest-name="queue/login_user_start_Request_esb" dest-type="QUEUE"/>
+   </jms-bus>
+   <jms-bus busid="LoginEsbChannel">
+    <jms-message-filter dest-name="queue/bpm_login_Request_esb" dest-type="QUEUE"/>
+   </jms-bus>
+   <jms-bus busid="LoginReturnEsbChannel">
+    <jms-message-filter dest-name="queue/login_return_Request_esb" dest-type="QUEUE"/>
    </jms-bus>
    <jms-bus busid="createUserEsbChannel">
     <jms-message-filter dest-name="queue/create_user_Request_esb" dest-type="QUEUE"/>
@@ -19,10 +25,31 @@
   </jms-provider>
  </providers>
  <services>
+ 
   <service category="Login_User_Service"
-   description="Login User Service: Use this service to login a user" name="send">
+   description="BPM Login Orchestration Use this service to login a user" name="Start">
    <listeners>
-    <jms-listener busidref="loginUserEsbChannel" name="ESB-Listener"/>
+    <jms-listener busidref="startEsbChannel" name="ESB-Listener"/>
+   </listeners>
+   <actions mep="OneWay">
+    <action class="users.LoginReturnAction" name="response-mapper"/>
+    <action class="org.jboss.soa.esb.services.jbpm.actions.BpmProcessor" name="login">
+     <property name="command" value="StartProcessInstanceCommand"/>
+     <property name="process-definition-name" value="login"/>
+     <property name="esbToBpmVars">
+      <mapping bpm="Eemail" esb="email"/>
+      <mapping bpm="Ppassword" esb="password"/>
+      <mapping bpm="Ccurrent" esb="current"/>
+      <mapping bpm="Rreply" esb="reply" />
+     </property>
+    </action>
+   </actions>
+  </service>
+  
+  <service category="Login_User_Service"
+   description="Login User Service: Use this service to login a user" name="login">
+   <listeners>
+    <jms-listener busidref="LoginEsbChannel" name="ESB-Listener"/>
    </listeners>
    <actions>
     <action class="users.LoginRequestAction" name="request-mapper"/>
@@ -34,6 +61,17 @@
     <action class="users.LoginResponseAction" name="response-mapper"/>
    </actions>
   </service>
+  
+  <service category="Login_User_Service" description=""
+	name="return">
+   <listeners>
+    <jms-listener busidref="LoginReturnEsbChannel" name="ESB-Listener" />
+   </listeners>
+   <actions mep="OneWay">
+	<action class="users.LoginSendToMWSAction" name="response-mapper" />
+   </actions>
+  </service>
+  
   <service category="Create_User_Service"
    description="Create User Service: Use this service to create a user" name="send">
    <listeners>
@@ -50,7 +88,7 @@
    </actions>
   </service>
   <service category="Get_Posts_Service"
-   description="Get Posts Service: Use this service to user posts" name="send">
+   description="Get Posts Service: Use this service to user posts" name="sendPosts">
    <listeners>
     <jms-listener busidref="getPostsEsbChannel" name="ESB-Listener"/>
    </listeners>
@@ -65,7 +103,7 @@
    </actions>
   </service>
   <service category="Get_Users_Service"
-   description="Get Users Service: Use this service to fetch users" name="send">
+   description="Get Users Service: Use this service to fetch users" name="sendUsers">
    <listeners>
     <jms-listener busidref="getUsersEsbChannel" name="ESB-Listener"/>
    </listeners>

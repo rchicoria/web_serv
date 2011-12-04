@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Copy 2 elements to &apos;PhasebookESB/src/action&apos;&#x0D;&#x0A;- Original project: &apos;DemorProcessESB&apos;&#x0D;&#x0A;- Destination element: &apos;PhasebookESB/src/action&apos;&#x0D;&#x0A;- Original elements:&#x0D;&#x0A;     action.InitializeListenerAction.java&#x0D;&#x0A;     action.MyListenerAction.java" description="Copy compilation units" destination="=PhasebookESB/src&lt;action" element1="/src&lt;action{InitializeListenerAction.java" element2="/src&lt;action{MyListenerAction.java" files="0" flags="589830" folders="0" id="org.eclipse.jdt.ui.copy" policy="org.eclipse.jdt.ui.copyResources" stamp="1322762804532" units="2" version="1.0"/>
+</session>
