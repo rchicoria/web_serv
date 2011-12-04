@@ -35,7 +35,6 @@ public class Methods {
 		requestMap.put("password",password);
 		requestMap.put("current",current);
 		esbMessage.getBody().add(requestMap);
-		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"+current);
 		
 		Message retMessage = null;
 	
@@ -44,7 +43,6 @@ public class Methods {
 			si = new ServiceInvoker("Login_User_Service", "send");
 			retMessage = si.deliverSync(esbMessage, 10000L);
 			HashMap map = (HashMap)retMessage.getBody().get(Body.DEFAULT_LOCATION);
-			System.out.println("****************"+retMessage.getBody().get(Body.DEFAULT_LOCATION)+"***************");
 
 			AuthInfo temp = new AuthInfo(Integer.parseInt((String)map.get("id")), (String)map.get("token"), 
 				Long.parseLong((String)map.get("expiration")));
@@ -111,6 +109,7 @@ public class Methods {
 		
 		ServiceInvoker si;
 		List<HashMap<String, Object>> posts = null;
+		List<PostDetailsInfo> list = new ArrayList<PostDetailsInfo>();
 		try {
 			// Get user posts
 			HashMap<String, Object> requestMap = new HashMap();
@@ -121,12 +120,27 @@ public class Methods {
 			requestMap.put("current", current);
 			requestMap.put("currentUserId", currentUserId);
 			requestMap.put("friend", friend);
-			
+						
 			esbMessage.getBody().add(requestMap);
 			si = new ServiceInvoker("Get_Posts_Service", "send");
 			retMessage = si.deliverSync(esbMessage, 10000L);
+			System.out.println("MAIN WS POSTS: "+retMessage.getBody().get(Body.DEFAULT_LOCATION));
 			posts = (List<HashMap<String, Object>>)retMessage.getBody().get(Body.DEFAULT_LOCATION);
-			
+			if(posts.size() == 0){
+				return new PostsContainer(list);
+			}
+			else{
+				// falhou autenticaçao
+				try{
+					if(((Integer)posts.get(0).get("id")).intValue() == 0){
+						list.add(new PostDetailsInfo());
+						return new PostsContainer(list);
+					}
+				}
+				catch(ClassCastException ex){
+					
+				}
+			}
 			// Get users
 			List<String> userIds = new ArrayList<String>();
 			Iterator it = posts.iterator();
@@ -144,8 +158,12 @@ public class Methods {
 			si = new ServiceInvoker("Get_Users_Service", "send");
 			retMessage = si.deliverSync(esbMessage, 10000L);
 			HashMap<String, HashMap<String, Object>> users = (HashMap<String, HashMap<String, Object>>)retMessage.getBody().get(Body.DEFAULT_LOCATION);
-			System.out.println(users);
-			
+			// falhou autenticaçao
+			if(users.containsKey("0")){
+				list.add(new PostDetailsInfo());
+				return new PostsContainer(list);
+			}
+						
 			// Get posts photos
 			List<String> photoIds = new ArrayList<String>();
 			it = posts.iterator();
@@ -163,7 +181,11 @@ public class Methods {
 			si = new ServiceInvoker("Get_Photos_Service", "send");
 			retMessage = si.deliverSync(esbMessage, 10000L);
 			HashMap<String, HashMap<String, Object>> photos = (HashMap<String, HashMap<String, Object>>)retMessage.getBody().get(Body.DEFAULT_LOCATION);
-			System.out.println(photos);
+			// falhou autenticaçao
+			if(photos.containsKey("0")){
+				list.add(new PostDetailsInfo());
+				return new PostsContainer(list);
+			}
 			
 			// Get user photos
 			List<HashMap<String, Object>> temp = new ArrayList<HashMap<String, Object>>(users.values());
@@ -183,8 +205,11 @@ public class Methods {
 			si = new ServiceInvoker("Get_Photos_Service", "send");
 			retMessage = si.deliverSync(esbMessage, 10000L);
 			HashMap<String, HashMap<String, Object>> usersPhotos = (HashMap<String, HashMap<String, Object>>)retMessage.getBody().get(Body.DEFAULT_LOCATION);
-			
-			List<PostDetailsInfo> list = new ArrayList<PostDetailsInfo>();
+			// falhou autenticaçao
+			if(usersPhotos.containsKey("0")){
+				list.add(new PostDetailsInfo());
+				return new PostsContainer(list);
+			}
 			it = posts.iterator();
 			while(it.hasNext()){
 				HashMap<String,Object> tempPost = (HashMap<String, Object>) it.next();
@@ -194,17 +219,14 @@ public class Methods {
 				postDetails.setPostPrivate(Boolean.parseBoolean((String)tempPost.get("private")));
 				int postPhotoId = Integer.parseInt((String)tempPost.get("photoId"));
 				postDetails.setPostPhotoId(postPhotoId);
-				System.out.println("PHOTO:      "+postPhotoId);
 				if(postPhotoId!=-1)
 					postDetails.setPostPhotoName((String)photos.get(postPhotoId+"").get("name"));
 				int postUserId = Integer.parseInt((String)tempPost.get("fromUserId"));
 				postDetails.setUserId(postUserId);
 				postDetails.setUserName((String)users.get(postUserId+"").get("name"));
 				int userPhotoId = Integer.parseInt((String)users.get(postUserId+"").get("photoId"));
-				System.out.println("USER:      "+userPhotoId);
 				postDetails.setUserPhotoId(userPhotoId);
 				if(userPhotoId!=-1){
-					System.out.println("PHOTO:      "+photos.get(userPhotoId+""));
 					postDetails.setUserPhotoName((String)usersPhotos.get(userPhotoId+"").get("name"));
 				}
 				list.add(postDetails);

@@ -66,9 +66,7 @@ public class GetUsersRequestAction extends AbstractActionLifecycle
 	     send.put("getUsers.userIds", userIdsString);
 	     
 	     message.getBody().add(send);
-	     
-	     System.out.println("GET USERS REQUEST"+message.getBody().get(Body.DEFAULT_LOCATION));
-	     
+	     	     
 	     return message;  
 	 }
 

@@ -72,6 +72,7 @@ public class CreateUserForm extends HttpServlet {
 			}
 			else {
 				session.setAttribute("id", id);
+				session.setAttribute("email", email);
 				session.setAttribute("password", password1);
 				session.setAttribute("current", current);
 				session.setAttribute("expiration", expiration);

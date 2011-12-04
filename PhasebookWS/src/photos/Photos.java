@@ -10,6 +10,7 @@ import phasebook.photo.PhotoRemote;
 import phasebook.post.Post;
 import phasebook.user.*;
 import posts.PostInfo;
+import utils.Utils;
 
 @WebService(name = "Photo", targetNamespace = "http://PhasebookWS/Photo")  
 public class Photos  
@@ -23,8 +24,16 @@ public class Photos
 			@WebParam(name = "current") long current,
 			@WebParam(name = "expiration") long expiration,
 			@WebParam(name = "photoIds") String photoIdsString)  
-	{ 
-		System.out.println("\n\n\n\n Cheguei Ao WS de Photos \n\n\n\n");
+	{ 		
+		String myToken = Utils.byteArrayToHexString(Utils.computeHash(userId + "salt"
+				+ expiration));
+		
+		List<PhotoInfo> result = new ArrayList<PhotoInfo>();
+		
+		if(expiration < current || !token.equals(myToken)){
+			result.add(new PhotoInfo());
+			return result;
+		}
 		
 		List<Photo> photos = new ArrayList<Photo>();
 		
@@ -35,8 +44,6 @@ public class Photos
 			photos.add(photoRemote.getPhotoById((String)it.next(), 0, ""));
 		}
 		
-		List<PhotoInfo> result = new ArrayList<PhotoInfo>();
-		
 		it = photos.iterator();
 		while(it.hasNext())
 		{
@@ -44,7 +51,6 @@ public class Photos
 			result.add(new PhotoInfo(photo.getId(), photo.getName()));
 		}
 		
-		System.out.println("\n\n\n\n Vou Sair Do WS de Photos \n\n\n\n");
 		return result;
 	}	
 	

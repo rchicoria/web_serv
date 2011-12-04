@@ -39,9 +39,16 @@
 			session.getAttribute("id"), session.getAttribute("password")) == 3 || me.equals(user) )
 		friend = 1;
 	posts = m.getPosts(((Integer)session.getAttribute("id")).intValue(),
-			"abcd", ((Long)session.getAttribute("expiration")).longValue(), 
-			((Long)session.getAttribute("current")).longValue(), ((Integer)userId).intValue(), friend).getPosts();
-	
+			(String)session.getAttribute("token"), ((Long)session.getAttribute("expiration")).longValue(), 
+			(new Date()).getTime(), ((Integer)userId).intValue(), friend).getPosts();
+	// falhou autenticação
+	if(posts.size()!=0 && ((PostDetailsInfo)posts.get(0)).getPostId()==0){
+		Utils.auth(session, response, request);
+		posts = m.getPosts(((Integer)session.getAttribute("id")).intValue(),
+				(String)session.getAttribute("token"), ((Long)session.getAttribute("expiration")).longValue(), 
+				(new Date()).getTime(), ((Integer)userId).intValue(), friend).getPosts();
+	}
+		
 	if (posts.size() == 0) {
 %>
 		<p>This user has no posts.</p>

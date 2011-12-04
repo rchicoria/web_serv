@@ -1,10 +1,18 @@
 package phasebook.controller;
 
+import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import client.artefact.*;
 
 import phasebook.auth.Auth;
 import phasebook.friendship.FriendshipRemote;
@@ -13,6 +21,8 @@ import phasebook.post.PostRemote;
 import phasebook.lottery.LotteryRemote;
 import phasebook.lotterybet.LotteryBetRemote;
 import phasebook.user.PhasebookUserRemote;
+
+import java.util.*;
 
 public class Utils {
 	
@@ -166,6 +176,28 @@ public class Utils {
 		count += ((List<?>)getFriendshipBean().getNewFriendshipAcceptances(userId,
 				authId, authPass)).size();
 		return count;
+	}
+	
+	public static void auth(HttpSession session, HttpServletResponse response, HttpServletRequest request){
+		MethodsService cs = new MethodsService();
+		Methods m = cs.getMethodsPort();
+		
+		long current = (new Date()).getTime();
+		System.out.println("PASSWORD: "+session.getAttribute("password"));
+		AuthInfo object =  m.loginUser((String)session.getAttribute("email"), (String)session.getAttribute("password"), current);
+		int id = object.getId();
+		String token = object.getToken();
+		long expiration = object.getExpiration();
+		if(id!=-1){
+			session.setAttribute("current", current);
+			session.setAttribute("expiration", expiration);
+			session.setAttribute("token", token);
+		}
+		else
+		{
+			session.setAttribute("id", null);
+			session.setAttribute("password", null);
+		}
 	}
 
 	public static String byteArrayToHexString(byte[] b) {

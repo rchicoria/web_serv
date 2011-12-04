@@ -41,13 +41,10 @@ public class CreateUserResponseAction extends AbstractActionLifecycle
 		Map responseMsg = (Map) message.getBody().get(Body.DEFAULT_LOCATION);
 		HashMap map = new HashMap();
 		Iterator it = responseMsg.keySet().iterator();
-		while(it.hasNext())
-			System.out.println(it.next());
 		map.put("id", responseMsg.get("createUserResponse[0]"));
 		map.put("token", responseMsg.get("createUserResponse[1]"));
 		map.put("expiration", responseMsg.get("createUserResponse[2]"));
 		message.getBody().add(map);
-		System.out.println(message.getBody().get(Body.DEFAULT_LOCATION));
 		return message;  
 	}
 

@@ -39,24 +39,24 @@ public class GetPhotosResponseAction extends AbstractActionLifecycle
 	public Message process(Message message) {
 	  
 		Map responseMsg = (Map) message.getBody().get(Body.DEFAULT_LOCATION);
-		System.out.println("GET PHOTOS RESPONSE"+message.getBody().get(Body.DEFAULT_LOCATION));
 		Iterator it = responseMsg.keySet().iterator();
 		HashMap<String, HashMap<String, Object>> map = new HashMap<String, HashMap<String, Object>>();
+		if(responseMsg.keySet().size()==0){
+			message.getBody().add("");
+		}
 		try{
 			while(it.hasNext()){
 				HashMap<String, Object> photo = new HashMap<String, Object>();
 				String id = (String)responseMsg.get(it.next());
 				photo.put("id", id);
 				photo.put("name", responseMsg.get(it.next()));
-				System.out.println(photo);
 				map.put(id,photo);
 			}
 		} catch(NoSuchElementException ex){
-			System.out.println("Não há photos");
+			map.put("0",new HashMap<String, Object>());
 		}
 		message.getBody().add(map);
 		//message.getBody().add(map);
-		//System.out.println(message.getBody().get(Body.DEFAULT_LOCATION));
 		return message;  
 	}
 

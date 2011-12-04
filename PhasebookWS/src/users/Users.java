@@ -8,6 +8,7 @@ import javax.jws.*;
 import phasebook.post.Post;
 import phasebook.user.*;
 import posts.PostInfo;
+import utils.Utils;
 
 @WebService(name = "User", targetNamespace = "http://PhasebookWS/User")  
 public class Users  
@@ -21,12 +22,10 @@ public class Users
 			@WebParam(name = "current") long current)  
 	{ 
 		int id = userRemote.login(email, password);
-		Calendar temp = new GregorianCalendar();
-		temp.setTimeInMillis(current);
-		temp.add(Calendar.MINUTE, 1);
 		// Time após um minuto
-		long expiration = temp.getTimeInMillis();
-		String token = "12345";
+		long expiration = current + 20*1000;
+		String token = Utils.byteArrayToHexString(Utils.computeHash(id + "salt"
+				+ expiration));
 		List list = new ArrayList();
 		list.add(id);
 		list.add(token);
@@ -61,8 +60,16 @@ public class Users
 			@WebParam(name = "current") long current,
 			@WebParam(name = "expiration") long expiration,
 			@WebParam(name = "userIds") String userIdsString)  
-	{ 
-		System.out.println("\n\n\n\n Cheguei Ao WS de Users \n\n\n\n");
+	{ 		
+		String myToken = Utils.byteArrayToHexString(Utils.computeHash(userId + "salt"
+				+ expiration));
+		
+		List<UserInfo> result = new ArrayList<UserInfo>();
+		
+		if(expiration < current || !token.equals(myToken)){
+			result.add(new UserInfo());
+			return result;
+		}
 		
 		List<PhasebookUser> users = new ArrayList<PhasebookUser>();
 		
@@ -73,8 +80,6 @@ public class Users
 			users.add(userRemote.getUserById(Integer.parseInt((String)it.next()), 0, ""));
 		}
 		
-		List<UserInfo> result = new ArrayList<UserInfo>();
-		
 		it = users.iterator();
 		while(it.hasNext())
 		{
@@ -82,7 +87,6 @@ public class Users
 			result.add(new UserInfo(user.getId(), user.getName(), user.getEmail(), user.getMoney(), user.getPhotoId()));
 		}
 		
-		System.out.println("\n\n\n\n Vou Sair Do WS de Users \n\n\n\n");
 		return result;
 	}	
 	

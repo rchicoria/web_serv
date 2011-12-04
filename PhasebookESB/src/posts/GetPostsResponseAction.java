@@ -37,12 +37,15 @@ public class GetPostsResponseAction extends AbstractActionLifecycle
 	}
 
 	public Message process(Message message) {
-	  
+		System.out.println("POSTS RESPONSE: "+message.getBody().get(Body.DEFAULT_LOCATION));
 		Map responseMsg = (Map) message.getBody().get(Body.DEFAULT_LOCATION);
-		System.out.println("GET POSTS RESPONSE"+message.getBody().get(Body.DEFAULT_LOCATION));
 		HashMap map = new HashMap();
 		Iterator it = responseMsg.keySet().iterator();
 		List<HashMap<String, Object>> list = new ArrayList<HashMap<String, Object>>();
+		// falou autenticaçao
+		if(responseMsg.keySet().size()==0){
+			message.getBody().add("");
+		}
 		try{
 			while(it.hasNext()){
 				HashMap<String, Object> post = new HashMap<String, Object>();
@@ -53,15 +56,17 @@ public class GetPostsResponseAction extends AbstractActionLifecycle
 				post.put("read", responseMsg.get(it.next()));
 				post.put("text", responseMsg.get(it.next()));
 				post.put("toUserId", responseMsg.get(it.next()));
-				System.out.println(post);
 				list.add(post);
 			}
 		} catch(NoSuchElementException ex){
-			System.out.println("Não há posts");
+			HashMap<String, Object> temp = new HashMap<String, Object>();
+			temp.put("id",0);
+			list.add(temp);
+			
+			//list.add(new HashMap<String, Object>());		
 		}
 		message.getBody().add(list);
 		//message.getBody().add(map);
-		//System.out.println(message.getBody().get(Body.DEFAULT_LOCATION));
 		return message;  
 	}
 

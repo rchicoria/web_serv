@@ -59,10 +59,12 @@ public class LoginUserForm extends HttpServlet {
 			String token = object.getToken();
 			long expiration = object.getExpiration();
 			
+			System.out.println("EXP: "+expiration);
+			
 			if(id!=-1){
 				session.setAttribute("id", id);
+				session.setAttribute("email", email);
 				session.setAttribute("password", password);
-				session.setAttribute("current", current);
 				session.setAttribute("expiration", expiration);
 				session.setAttribute("token", token);
 				response.sendRedirect(Utils.url(""));

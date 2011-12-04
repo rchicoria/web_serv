@@ -66,9 +66,7 @@ public class GetPhotosRequestAction extends AbstractActionLifecycle
 	     send.put("getPhotos.photoIds", photoIdsString);
 	     
 	     message.getBody().add(send);
-	     
-	     System.out.println("GET USERS REQUEST"+message.getBody().get(Body.DEFAULT_LOCATION));
-	     
+	     	     
 	     return message;  
 	 }
 

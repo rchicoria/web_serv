@@ -333,8 +333,9 @@ public class PhasebookUserBean implements PhasebookUserRemote {
 			photoId = -1;
 		}
 		user.setPhotoId(photoId);
-		if (password != null && password.length() > 0)
+		if (password != null && password.length() > 0){
 			user.setPassword(password);
+		}
 		em.merge(user);
 		tx.commit();
 		em.close();

@@ -37,9 +37,8 @@ public class GetUsersResponseAction extends AbstractActionLifecycle
 	}
 
 	public Message process(Message message) {
-	  
 		Map responseMsg = (Map) message.getBody().get(Body.DEFAULT_LOCATION);
-		System.out.println("GET USERS RESPONSE"+message.getBody().get(Body.DEFAULT_LOCATION));
+		System.out.println("USERS RESPONSE: "+message.getBody().get(Body.DEFAULT_LOCATION));
 		Iterator it = responseMsg.keySet().iterator();
 		HashMap<String, HashMap<String, Object>> map = new HashMap<String, HashMap<String, Object>>();
 		try{
@@ -51,12 +50,11 @@ public class GetUsersResponseAction extends AbstractActionLifecycle
 				user.put("money", responseMsg.get(it.next()));
 				user.put("name", responseMsg.get(it.next()));
 				user.put("photoId", responseMsg.get(it.next()));
-				System.out.println(user);
 				map.put(id,user);
 			}
 		}
 		catch (NoSuchElementException ex){
-			System.out.println("Não há users");
+			map.put("0",new HashMap<String, Object>());
 		}
 		message.getBody().add(map);
 		//message.getBody().add(map);
