@@ -38,15 +38,17 @@
 	if (Utils.getFriendshipBean().friendshipStatus(me.getId(), user.getId(),
 			session.getAttribute("id"), session.getAttribute("password")) == 3 || me.equals(user) )
 		friend = 1;
-	posts = m.getPosts(((Integer)session.getAttribute("id")).intValue(),
-			(String)session.getAttribute("token"), ((Long)session.getAttribute("expiration")).longValue(), 
-			(new Date()).getTime(), ((Integer)userId).intValue(), friend).getPosts();
+	posts = m.getPosts((new Date()).getTime(), ((Integer)userId).intValue(), friend,
+			((Integer)session.getAttribute("id")).intValue(),
+			(String)session.getAttribute("token"),
+			((Long)session.getAttribute("expiration")).longValue()).getPosts();
 	// falhou autenticação
 	if(posts.size()!=0 && ((PostDetailsInfo)posts.get(0)).getPostId()==0){
 		Utils.auth(session, response, request);
-		posts = m.getPosts(((Integer)session.getAttribute("id")).intValue(),
-				(String)session.getAttribute("token"), ((Long)session.getAttribute("expiration")).longValue(), 
-				(new Date()).getTime(), ((Integer)userId).intValue(), friend).getPosts();
+		posts = m.getPosts((new Date()).getTime(), ((Integer)userId).intValue(), friend,
+				((Integer)session.getAttribute("id")).intValue(),
+				(String)session.getAttribute("token"),
+				((Long)session.getAttribute("expiration")).longValue()).getPosts();
 	}
 		
 	if (posts.size() == 0) {

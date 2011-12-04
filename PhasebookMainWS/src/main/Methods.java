@@ -26,106 +26,76 @@ public class Methods {
 	
 	@WebMethod
 	public AuthInfo loginUser(String email, String password, long current) {
-		// Setting the ConnectionFactory such that it will use scout
 		System.setProperty("javax.xml.registry.ConnectionFactoryClass","org.apache.ws.scout.registry.ConnectionFactoryImpl");
-	
 		Message esbMessage = MessageFactory.getInstance().getMessage();
-		HashMap requestMap = new HashMap();
-		requestMap.put("email",email);
-		requestMap.put("password",password);
-		requestMap.put("current",current);
-		esbMessage.getBody().add(requestMap);
 		
-		Message retMessage = null;
-	
-		ServiceInvoker si;
+		esbMessage.getBody().add("email", email);
+		esbMessage.getBody().add("password", password);
+		esbMessage.getBody().add("current", current);
+		
 		try {
-			si = new ServiceInvoker("Login_User_Service", "send");
-			retMessage = si.deliverSync(esbMessage, 10000L);
-			HashMap map = (HashMap)retMessage.getBody().get(Body.DEFAULT_LOCATION);
+			ServiceInvoker si = new ServiceInvoker("Login_User_Service", "send");
+			Message retMessage = si.deliverSync(esbMessage, 10000L);
 
-			AuthInfo temp = new AuthInfo(Integer.parseInt((String)map.get("id")), (String)map.get("token"), 
-				Long.parseLong((String)map.get("expiration")));
-			return temp;
-		} catch (MessageDeliverException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (FaultMessageException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (RegistryException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			return new AuthInfo(Integer.parseInt((String)retMessage.getBody().get("id")),
+					(String)retMessage.getBody().get("token"), 
+					Long.parseLong((String)retMessage.getBody().get("expiration")));
 		}
+		catch (MessageDeliverException e) {e.printStackTrace();}
+		catch (FaultMessageException e) {e.printStackTrace();}
+		catch (RegistryException e) {e.printStackTrace();}
+		
 		return null;
 	}
 	
 	@WebMethod
 	public AuthInfo createUser(String name, String email, String password, long current) {
-		// Setting the ConnectionFactory such that it will use scout
 		System.setProperty("javax.xml.registry.ConnectionFactoryClass","org.apache.ws.scout.registry.ConnectionFactoryImpl");
-	
 		Message esbMessage = MessageFactory.getInstance().getMessage();
-		HashMap requestMap = new HashMap();
 		
-		requestMap.put("name",name);
-		requestMap.put("email",email);
-		requestMap.put("password",password);
-		requestMap.put("current", current);
-		esbMessage.getBody().add(requestMap);
-		
-		
-		Message retMessage = null;
+		esbMessage.getBody().add("name", name);
+		esbMessage.getBody().add("email", email);
+		esbMessage.getBody().add("password", password);
+		esbMessage.getBody().add("current", current);
 	
-		ServiceInvoker si;
 		try {
-			si = new ServiceInvoker("Create_User_Service", "send");
-			retMessage = si.deliverSync(esbMessage, 10000L);
-			HashMap map = (HashMap)retMessage.getBody().get(Body.DEFAULT_LOCATION);
-			AuthInfo temp = new AuthInfo(Integer.parseInt((String)map.get("id")), (String)map.get("token"), 
-				Long.parseLong((String)map.get("expiration")));
-			return temp;
-		} catch (MessageDeliverException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (FaultMessageException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (RegistryException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			ServiceInvoker si = new ServiceInvoker("Create_User_Service", "send");
+			Message retMessage = si.deliverSync(esbMessage, 10000L);
+			
+			return new AuthInfo(Integer.parseInt((String)retMessage.getBody().get("id")),
+					(String)retMessage.getBody().get("token"), 
+					Long.parseLong((String)retMessage.getBody().get("expiration")));
 		}
+		catch (MessageDeliverException e) {e.printStackTrace();}
+		catch (FaultMessageException e) {e.printStackTrace();}
+		catch (RegistryException e) {e.printStackTrace();}
+		
 		return null;
 	}
 	
 	@WebMethod
-	public PostsContainer getPosts(int userId, String token, long expiration, long current, int currentUserId,int friend){
-		// Setting the ConnectionFactory such that it will use scout
+	public PostsContainer getPosts(long current, int currentUserId, int friend,
+			int userId, String token, long expiration) {
 		System.setProperty("javax.xml.registry.ConnectionFactoryClass","org.apache.ws.scout.registry.ConnectionFactoryImpl");
-
 		Message esbMessage = MessageFactory.getInstance().getMessage();
 		
-		Message retMessage = null;
-		
-		ServiceInvoker si;
 		List<HashMap<String, Object>> posts = null;
 		List<PostDetailsInfo> list = new ArrayList<PostDetailsInfo>();
 		try {
 			// Get user posts
-			HashMap<String, Object> requestMap = new HashMap();
+			esbMessage.getBody().add("userId", userId);
+			esbMessage.getBody().add("token", token);
+			esbMessage.getBody().add("expiration", expiration);
+			esbMessage.getBody().add("current", current);
+			esbMessage.getBody().add("currentUserId", currentUserId);
+			esbMessage.getBody().add("friend", friend);
+			System.out.println(">>>"+esbMessage.getBody());
 			
-			requestMap.put("userId", userId);
-			requestMap.put("token", token);
-			requestMap.put("expiration", expiration);
-			requestMap.put("current", current);
-			requestMap.put("currentUserId", currentUserId);
-			requestMap.put("friend", friend);
-						
-			esbMessage.getBody().add(requestMap);
-			si = new ServiceInvoker("Get_Posts_Service", "send");
-			retMessage = si.deliverSync(esbMessage, 10000L);
-			System.out.println("MAIN WS POSTS: "+retMessage.getBody().get(Body.DEFAULT_LOCATION));
-			posts = (List<HashMap<String, Object>>)retMessage.getBody().get(Body.DEFAULT_LOCATION);
+			ServiceInvoker si = new ServiceInvoker("Get_Posts_Service", "send");
+			Message retMessage = si.deliverSync(esbMessage, 10000L);
+			
+			posts = (List<HashMap<String, Object>>)retMessage.getBody().get("posts");
+			System.out.println(">>>"+posts);
 			if(posts.size() == 0){
 				return new PostsContainer(list);
 			}
@@ -137,9 +107,7 @@ public class Methods {
 						return new PostsContainer(list);
 					}
 				}
-				catch(ClassCastException ex){
-					
-				}
+				catch(ClassCastException e){}
 			}
 			// Get users
 			List<String> userIds = new ArrayList<String>();
@@ -149,15 +117,16 @@ public class Methods {
 				if (!userIds.contains(postUserId))
 					userIds.add(postUserId);
 			}
-			requestMap.put("userId", userId);
-			requestMap.put("token", token);
-			requestMap.put("expiration", expiration);
-			requestMap.put("current", current);
-			requestMap.put("userIds", userIds);
-			esbMessage.getBody().add(requestMap);
+			
+			esbMessage.getBody().add("userId", userId);
+			esbMessage.getBody().add("token", token);
+			esbMessage.getBody().add("expiration", expiration);
+			esbMessage.getBody().add("current", current);
+			esbMessage.getBody().add("userIds", userIds);
+			
 			si = new ServiceInvoker("Get_Users_Service", "send");
 			retMessage = si.deliverSync(esbMessage, 10000L);
-			HashMap<String, HashMap<String, Object>> users = (HashMap<String, HashMap<String, Object>>)retMessage.getBody().get(Body.DEFAULT_LOCATION);
+			HashMap<String, HashMap<String, Object>> users = (HashMap<String, HashMap<String, Object>>)retMessage.getBody().get("users");
 			// falhou autenticaçao
 			if(users.containsKey("0")){
 				list.add(new PostDetailsInfo());
@@ -172,15 +141,16 @@ public class Methods {
 				if (!photoIds.contains(postPhotoId) && !postPhotoId.equals("-1"))
 					photoIds.add(postPhotoId);
 			}
-			requestMap.put("userId", userId);
-			requestMap.put("token", token);
-			requestMap.put("expiration", expiration);
-			requestMap.put("current", current);
-			requestMap.put("photoIds", photoIds);
-			esbMessage.getBody().add(requestMap);
+			
+			esbMessage.getBody().add("userId", userId);
+			esbMessage.getBody().add("token", token);
+			esbMessage.getBody().add("expiration", expiration);
+			esbMessage.getBody().add("current", current);
+			esbMessage.getBody().add("photoIds", photoIds);
+			
 			si = new ServiceInvoker("Get_Photos_Service", "send");
 			retMessage = si.deliverSync(esbMessage, 10000L);
-			HashMap<String, HashMap<String, Object>> photos = (HashMap<String, HashMap<String, Object>>)retMessage.getBody().get(Body.DEFAULT_LOCATION);
+			HashMap<String, HashMap<String, Object>> photos = (HashMap<String, HashMap<String, Object>>)retMessage.getBody().get("photos");
 			// falhou autenticaçao
 			if(photos.containsKey("0")){
 				list.add(new PostDetailsInfo());
@@ -196,15 +166,16 @@ public class Methods {
 				if (!userPhotoIds.contains(userPhotoId) && !userPhotoId.equals("-1"))
 					userPhotoIds.add(userPhotoId);
 			}
-			requestMap.put("userId", userId);
-			requestMap.put("token", token);
-			requestMap.put("expiration", expiration);
-			requestMap.put("current", current);
-			requestMap.put("photoIds", userPhotoIds);
-			esbMessage.getBody().add(requestMap);
+			
+			esbMessage.getBody().add("userId", userId);
+			esbMessage.getBody().add("token", token);
+			esbMessage.getBody().add("expiration", expiration);
+			esbMessage.getBody().add("current", current);
+			esbMessage.getBody().add("photoIds", photoIds);
+			
 			si = new ServiceInvoker("Get_Photos_Service", "send");
 			retMessage = si.deliverSync(esbMessage, 10000L);
-			HashMap<String, HashMap<String, Object>> usersPhotos = (HashMap<String, HashMap<String, Object>>)retMessage.getBody().get(Body.DEFAULT_LOCATION);
+			HashMap<String, HashMap<String, Object>> usersPhotos = (HashMap<String, HashMap<String, Object>>)retMessage.getBody().get("photos");
 			// falhou autenticaçao
 			if(usersPhotos.containsKey("0")){
 				list.add(new PostDetailsInfo());
@@ -233,16 +204,11 @@ public class Methods {
 			}
 			return new PostsContainer(list);
 			
-		} catch (MessageDeliverException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (FaultMessageException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (RegistryException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
+		catch (MessageDeliverException e) {e.printStackTrace();}
+		catch (FaultMessageException e) {e.printStackTrace();}
+		catch (RegistryException e) {e.printStackTrace();}
+		
 		return null;
 	}
 }

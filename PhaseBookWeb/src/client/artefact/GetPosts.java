@@ -16,12 +16,12 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
- *         &lt;element name="arg0" type="{http://www.w3.org/2001/XMLSchema}int"/>
- *         &lt;element name="arg1" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="arg2" type="{http://www.w3.org/2001/XMLSchema}long"/>
- *         &lt;element name="arg3" type="{http://www.w3.org/2001/XMLSchema}long"/>
- *         &lt;element name="arg4" type="{http://www.w3.org/2001/XMLSchema}int"/>
- *         &lt;element name="arg5" type="{http://www.w3.org/2001/XMLSchema}int"/>
+ *         &lt;element name="arg0" type="{http://www.w3.org/2001/XMLSchema}long"/>
+ *         &lt;element name="arg1" type="{http://www.w3.org/2001/XMLSchema}int"/>
+ *         &lt;element name="arg2" type="{http://www.w3.org/2001/XMLSchema}int"/>
+ *         &lt;element name="arg3" type="{http://www.w3.org/2001/XMLSchema}int"/>
+ *         &lt;element name="arg4" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="arg5" type="{http://www.w3.org/2001/XMLSchema}long"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -41,18 +41,18 @@ import javax.xml.bind.annotation.XmlType;
 })
 public class GetPosts {
 
-    protected int arg0;
-    protected String arg1;
-    protected long arg2;
-    protected long arg3;
-    protected int arg4;
-    protected int arg5;
+    protected long arg0;
+    protected int arg1;
+    protected int arg2;
+    protected int arg3;
+    protected String arg4;
+    protected long arg5;
 
     /**
      * Gets the value of the arg0 property.
      * 
      */
-    public int getArg0() {
+    public long getArg0() {
         return arg0;
     }
 
@@ -60,31 +60,23 @@ public class GetPosts {
      * Sets the value of the arg0 property.
      * 
      */
-    public void setArg0(int value) {
+    public void setArg0(long value) {
         this.arg0 = value;
     }
 
     /**
      * Gets the value of the arg1 property.
      * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
      */
-    public String getArg1() {
+    public int getArg1() {
         return arg1;
     }
 
     /**
      * Sets the value of the arg1 property.
      * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
      */
-    public void setArg1(String value) {
+    public void setArg1(int value) {
         this.arg1 = value;
     }
 
@@ -92,7 +84,7 @@ public class GetPosts {
      * Gets the value of the arg2 property.
      * 
      */
-    public long getArg2() {
+    public int getArg2() {
         return arg2;
     }
 
@@ -100,7 +92,7 @@ public class GetPosts {
      * Sets the value of the arg2 property.
      * 
      */
-    public void setArg2(long value) {
+    public void setArg2(int value) {
         this.arg2 = value;
     }
 
@@ -108,7 +100,7 @@ public class GetPosts {
      * Gets the value of the arg3 property.
      * 
      */
-    public long getArg3() {
+    public int getArg3() {
         return arg3;
     }
 
@@ -116,23 +108,31 @@ public class GetPosts {
      * Sets the value of the arg3 property.
      * 
      */
-    public void setArg3(long value) {
+    public void setArg3(int value) {
         this.arg3 = value;
     }
 
     /**
      * Gets the value of the arg4 property.
      * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
      */
-    public int getArg4() {
+    public String getArg4() {
         return arg4;
     }
 
     /**
      * Sets the value of the arg4 property.
      * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
      */
-    public void setArg4(int value) {
+    public void setArg4(String value) {
         this.arg4 = value;
     }
 
@@ -140,7 +140,7 @@ public class GetPosts {
      * Gets the value of the arg5 property.
      * 
      */
-    public int getArg5() {
+    public long getArg5() {
         return arg5;
     }
 
@@ -148,7 +148,7 @@ public class GetPosts {
      * Sets the value of the arg5 property.
      * 
      */
-    public void setArg5(int value) {
+    public void setArg5(long value) {
         this.arg5 = value;
     }
 

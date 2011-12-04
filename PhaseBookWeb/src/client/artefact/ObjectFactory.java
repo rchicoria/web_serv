@@ -39,6 +39,46 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link PostsContainer }
+     * 
+     */
+    public PostsContainer createPostsContainer() {
+        return new PostsContainer();
+    }
+
+    /**
+     * Create an instance of {@link GetPosts }
+     * 
+     */
+    public GetPosts createGetPosts() {
+        return new GetPosts();
+    }
+
+    /**
+     * Create an instance of {@link LoginUserResponse }
+     * 
+     */
+    public LoginUserResponse createLoginUserResponse() {
+        return new LoginUserResponse();
+    }
+
+    /**
+     * Create an instance of {@link CreateUserResponse }
+     * 
+     */
+    public CreateUserResponse createCreateUserResponse() {
+        return new CreateUserResponse();
+    }
+
+    /**
+     * Create an instance of {@link CreateUser }
+     * 
+     */
+    public CreateUser createCreateUser() {
+        return new CreateUser();
+    }
+
+    /**
      * Create an instance of {@link GetPostsResponse }
      * 
      */
@@ -63,51 +103,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link CreateUser }
-     * 
-     */
-    public CreateUser createCreateUser() {
-        return new CreateUser();
-    }
-
-    /**
-     * Create an instance of {@link PostsContainer }
-     * 
-     */
-    public PostsContainer createPostsContainer() {
-        return new PostsContainer();
-    }
-
-    /**
-     * Create an instance of {@link GetPosts }
-     * 
-     */
-    public GetPosts createGetPosts() {
-        return new GetPosts();
-    }
-
-    /**
      * Create an instance of {@link AuthInfo }
      * 
      */
     public AuthInfo createAuthInfo() {
         return new AuthInfo();
-    }
-
-    /**
-     * Create an instance of {@link CreateUserResponse }
-     * 
-     */
-    public CreateUserResponse createCreateUserResponse() {
-        return new CreateUserResponse();
-    }
-
-    /**
-     * Create an instance of {@link LoginUserResponse }
-     * 
-     */
-    public LoginUserResponse createLoginUserResponse() {
-        return new LoginUserResponse();
     }
 
     /**

@@ -28,13 +28,13 @@
     <jms-listener busidref="loginUserEsbChannel" name="ESB-Listener"/>
    </listeners>
    <actions>
-    <action class="users.LoginRequestAction" name="request-mapper"/>
+    <action class="users.LoginAction" name="request-mapper" process="request"/>
     <action class="org.jboss.soa.esb.actions.soap.SOAPClient" name="soapui-client-action">
      <property name="wsdl" value="http://127.0.0.1:8080/PhasebookWS/Users?wsdl"/>
      <property name="SOAPAction" value="loginUser"/>
      <property name="responseAsOgnlMap" value="true"/>
     </action>
-    <action class="users.LoginResponseAction" name="response-mapper"/>
+    <action class="users.LoginAction" name="response-mapper" process="response"/>
    </actions>
   </service>
   <service category="Create_User_Service"
@@ -43,13 +43,13 @@
     <jms-listener busidref="createUserEsbChannel" name="ESB-Listener"/>
    </listeners>
    <actions>
-    <action class="users.CreateUserRequestAction" name="request-mapper"/>
+    <action class="users.RegisterAction" name="request-mapper" process="request"/>
     <action class="org.jboss.soa.esb.actions.soap.SOAPClient" name="soapui-client-action">
      <property name="wsdl" value="http://127.0.0.1:8080/PhasebookWS/Users?wsdl"/>
      <property name="SOAPAction" value="createUser"/>
      <property name="responseAsOgnlMap" value="true"/>
     </action>
-    <action class="users.CreateUserResponseAction" name="response-mapper"/>
+    <action class="users.RegisterAction" name="response-mapper" process="response"/>
    </actions>
   </service>
   <service category="Get_Posts_Service"
@@ -58,13 +58,13 @@
     <jms-listener busidref="getPostsEsbChannel" name="ESB-Listener"/>
    </listeners>
    <actions>
-    <action class="posts.GetPostsRequestAction" name="request-mapper"/>
+    <action class="posts.GetPostsAction" name="request-mapper" process="request"/>
     <action class="org.jboss.soa.esb.actions.soap.SOAPClient" name="soapui-client-action">
      <property name="wsdl" value="http://127.0.0.1:8080/PhasebookWS/Posts?wsdl"/>
      <property name="SOAPAction" value="getPosts"/>
      <property name="responseAsOgnlMap" value="true"/>
     </action>
-    <action class="posts.GetPostsResponseAction" name="response-mapper"/>
+    <action class="posts.GetPostsAction" name="response-mapper" process="response"/>
    </actions>
   </service>
   <service category="Get_Users_Service"
@@ -73,13 +73,13 @@
     <jms-listener busidref="getUsersEsbChannel" name="ESB-Listener"/>
    </listeners>
    <actions>
-    <action class="users.GetUsersRequestAction" name="request-mapper"/>
+    <action class="users.GetUsersByIdAction" name="request-mapper" process="request"/>
     <action class="org.jboss.soa.esb.actions.soap.SOAPClient" name="soapui-client-action">
      <property name="wsdl" value="http://127.0.0.1:8080/PhasebookWS/Users?wsdl"/>
      <property name="SOAPAction" value="getUsers"/>
      <property name="responseAsOgnlMap" value="true"/>
     </action>
-    <action class="users.GetUsersResponseAction" name="response-mapper"/>
+    <action class="users.GetUsersByIdAction" name="response-mapper" process="response"/>
    </actions>
   </service>
   <service category="Get_Photos_Service"
@@ -88,13 +88,13 @@
     <jms-listener busidref="getPhotosEsbChannel" name="ESB-Listener"/>
    </listeners>
    <actions>
-    <action class="photos.GetPhotosRequestAction" name="request-mapper"/>
+    <action class="photos.GetPhotosByIdAction" name="request-mapper" process="request"/>
     <action class="org.jboss.soa.esb.actions.soap.SOAPClient" name="soapui-client-action">
      <property name="wsdl" value="http://127.0.0.1:8080/PhasebookWS/Photos?wsdl"/>
      <property name="SOAPAction" value="getPhotos"/>
      <property name="responseAsOgnlMap" value="true"/>
     </action>
-    <action class="photos.GetPhotosResponseAction" name="response-mapper"/>
+    <action class="photos.GetPhotosByIdAction" name="response-mapper" process="response"/>
    </actions>
   </service>
  </services>
