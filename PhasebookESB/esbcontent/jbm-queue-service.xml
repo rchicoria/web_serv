@@ -40,26 +40,26 @@
  </mbean>
  
  <mbean code="org.jboss.jms.server.destination.QueueService"
-  name="jboss.esb.quickstart.destination:service=Queue,name=get_users_Request_esb"
+  name="jboss.esb.quickstart.destination:service=Queue,name=get_users_by_id_Request_esb"
   xmbean-dd="xmdesc/Queue-xmbean.xml">
   <depends optional-attribute-name="ServerPeer">jboss.messaging:service=ServerPeer
   </depends>
  </mbean>
  <mbean code="org.jboss.jms.server.destination.QueueService"
-  name="jboss.esb.quickstart.destination:service=Queue,name=get_users_Request_esb_reply"
+  name="jboss.esb.quickstart.destination:service=Queue,name=get_users_by_id_Request_esb_reply"
   xmbean-dd="xmdesc/Queue-xmbean.xml">
   <depends optional-attribute-name="ServerPeer">jboss.messaging:service=ServerPeer
   </depends>
  </mbean>
  
  <mbean code="org.jboss.jms.server.destination.QueueService"
-  name="jboss.esb.quickstart.destination:service=Queue,name=get_photos_Request_esb"
+  name="jboss.esb.quickstart.destination:service=Queue,name=get_photos_by_id_Request_esb"
   xmbean-dd="xmdesc/Queue-xmbean.xml">
   <depends optional-attribute-name="ServerPeer">jboss.messaging:service=ServerPeer
   </depends>
  </mbean>
  <mbean code="org.jboss.jms.server.destination.QueueService"
-  name="jboss.esb.quickstart.destination:service=Queue,name=get_photos_Request_esb_reply"
+  name="jboss.esb.quickstart.destination:service=Queue,name=get_photos_by_id_Request_esb_reply"
   xmbean-dd="xmdesc/Queue-xmbean.xml">
   <depends optional-attribute-name="ServerPeer">jboss.messaging:service=ServerPeer
   </depends>

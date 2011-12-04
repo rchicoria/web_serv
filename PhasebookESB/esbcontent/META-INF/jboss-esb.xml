@@ -13,11 +13,11 @@
    <jms-bus busid="getPostsEsbChannel">
     <jms-message-filter dest-name="queue/get_posts_Request_esb" dest-type="QUEUE"/>
    </jms-bus>
-   <jms-bus busid="getUsersEsbChannel">
-    <jms-message-filter dest-name="queue/get_users_Request_esb" dest-type="QUEUE"/>
+   <jms-bus busid="getUsersByIdEsbChannel">
+    <jms-message-filter dest-name="queue/get_users_by_id_Request_esb" dest-type="QUEUE"/>
    </jms-bus>
-   <jms-bus busid="getPhotosEsbChannel">
-    <jms-message-filter dest-name="queue/get_photos_Request_esb" dest-type="QUEUE"/>
+   <jms-bus busid="getPhotosByIdEsbChannel">
+    <jms-message-filter dest-name="queue/get_photos_by_id_Request_esb" dest-type="QUEUE"/>
    </jms-bus>
   </jms-provider>
  </providers>
@@ -70,7 +70,7 @@
   <service category="Get_Users_Service"
    description="Get Users Service: Use this service to fetch users" name="send">
    <listeners>
-    <jms-listener busidref="getUsersEsbChannel" name="ESB-Listener"/>
+    <jms-listener busidref="getUsersByIdEsbChannel" name="ESB-Listener"/>
    </listeners>
    <actions>
     <action class="users.GetUsersByIdAction" name="request-mapper" process="request"/>
@@ -85,7 +85,7 @@
   <service category="Get_Photos_Service"
    description="Get Photos Service: Use this service to fetch photos" name="send">
    <listeners>
-    <jms-listener busidref="getPhotosEsbChannel" name="ESB-Listener"/>
+    <jms-listener busidref="getPhotosByIdEsbChannel" name="ESB-Listener"/>
    </listeners>
    <actions>
     <action class="photos.GetPhotosByIdAction" name="request-mapper" process="request"/>
