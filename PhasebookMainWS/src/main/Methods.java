@@ -89,13 +89,11 @@ public class Methods {
 			esbMessage.getBody().add("current", current);
 			esbMessage.getBody().add("currentUserId", currentUserId);
 			esbMessage.getBody().add("friend", friend);
-			System.out.println(">>>"+esbMessage.getBody());
 			
 			ServiceInvoker si = new ServiceInvoker("Get_Posts_Service", "send");
 			Message retMessage = si.deliverSync(esbMessage, 10000L);
 			
 			posts = (List<HashMap<String, Object>>)retMessage.getBody().get("posts");
-			System.out.println(">>>"+posts);
 			if(posts.size() == 0){
 				return new PostsContainer(list);
 			}

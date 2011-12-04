@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<datasources>
+  <xa-datasource>
+    <jndi-name>JbpmDS</jndi-name>
+
+    <xa-datasource-class>org.postgresql.xa.PGXADataSource</xa-datasource-class>
+    <xa-datasource-property name="ServerName">localhost</xa-datasource-property>
+    <xa-datasource-property name="PortNumber">5432</xa-datasource-property>
+    <xa-datasource-property name="DatabaseName">jbpmtest</xa-datasource-property>
+    <user-name>jbpmtest</user-name>
+    <password>jbpmtest</password>
+
+    <!-- disable transaction interleaving -->
+    <track-connection-by-tx />
+
+    <!-- corresponding type-mapping in conf/standardjbosscmp-jdbc.xml -->
+    <type-mapping>PostgreSQL 8.0</type-mapping>
+  </xa-datasource>
+</datasources>

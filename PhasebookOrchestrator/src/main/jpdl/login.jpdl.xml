@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<process-definition xmlns="urn:jbpm.org:jpdl-3.2"
+ name="login">
+ <start-state name="start">
+  <transition name="to_state" to="Login">
+   <action name="action" class="com.sample.action.MessageActionHandler">
+    <message>Going to the ESB STATE!</message>
+   </action>
+  </transition>
+ </start-state>
+ 
+ <node name="Login">
+  <action name="esbAction"
+   class="org.jboss.soa.esb.services.jbpm.actionhandlers.EsbActionHandler">
+   <esbCategoryName>
+    Login_User_Service
+   </esbCategoryName>
+   <esbServiceName>login</esbServiceName>
+   <bpmToEsbVars>
+    <mapping bpm="Eemail" esb="email" />
+    <mapping bpm="Ppassword" esb="password" />
+    <mapping bpm="Ccurrent" esb="current"/>
+   </bpmToEsbVars>
+   <esbToBpmVars>
+    <mapping esb="id" bpm="Iid"/>
+    <mapping esb="token" bpm="Ttoken" />
+    <mapping esb="expiration" bpm="Eexpiration"/>
+   </esbToBpmVars>
+  </action>
+  <transition name="to_next" to="ReturnLogin">
+  </transition>
+ </node>
+ 
+ <node name="ReturnLogin">
+  <action name="esbAction"
+   class="org.jboss.soa.esb.services.jbpm.actionhandlers.EsbActionHandler">
+   <esbCategoryName>
+    Login_User_Service
+   </esbCategoryName>
+   <esbServiceName>return</esbServiceName>
+   <bpmToEsbVars>
+    <mapping bpm="Iid" esb="id" />
+    <mapping bpm="Ttoken" esb="token" />
+    <mapping bpm="Eexpiration" esb="expiration" />
+    <mapping bpm="Rreply" esb="reply" />
+   </bpmToEsbVars>
+  </action>
+  <transition name="to_end" to="end">
+  </transition>
+ </node>
+
+ <end-state name="end">
+  <event type="node-enter">
+   <action name="action" class="com.sample.action.MessageActionHandler2">
+   </action>
+  </event>
+ </end-state>
+
+</process-definition>

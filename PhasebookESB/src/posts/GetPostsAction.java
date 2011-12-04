@@ -35,7 +35,6 @@ public class GetPostsAction extends AbstractActionLifecycle
 		requestMap.put("getPosts.friend", friend);
 
 		message.getBody().add(requestMap);
-		System.out.println(requestMap);
 	    
 	    return message;  
 	}
@@ -66,7 +65,6 @@ public class GetPostsAction extends AbstractActionLifecycle
 			temp.put("id",0);
 			list.add(temp);
 		}
-		System.out.println(list);
 		message.getBody().add("posts", list);
 		
 		return message;  
