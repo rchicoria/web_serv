@@ -1,8 +1,8 @@
 package phasebook.post;
 
-import java.util.List;
+import info.UserInfo;
 
-import javax.ejb.Remote;
+import java.util.List;
 
 import javax.ejb.Remote;
 
@@ -17,7 +17,7 @@ public interface PostRemote {
 	public Post getPostById(Object id, Object authId, Object authPass);
 	public List<Post> getUserReceivedPosts(Object userId, Object authId, Object authPass);
 	public List getUserPublicPosts(Object userId, Object authId, Object authPass);
-	public void addPost(PhasebookUser from, PhasebookUser to, String text, String privacy, Object authId, Object authPass);
-	public void addPost(PhasebookUser from, PhasebookUser to, String text, String photoLink, String privacy, Object authId, Object authPass);
-	public int getNUnreadUserPosts(PhasebookUser user, Object authId, Object authPass);
+	public void addPost(UserInfo from, UserInfo to, String text, String privacy);
+	//public void addPost(PhasebookUser from, PhasebookUser to, String text, String photoLink, String privacy, Object authId, Object authPass);
+	public int getNUnreadUserPosts(UserInfo user, Object authId, Object authPass);
 }

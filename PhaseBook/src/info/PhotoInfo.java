@@ -1,6 +1,8 @@
-package photos;
+package info;
 
-public class PhotoInfo {
+import java.io.Serializable;
+
+public class PhotoInfo implements Serializable {
 
 	private int id;
 	private String name;	

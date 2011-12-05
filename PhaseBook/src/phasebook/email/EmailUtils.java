@@ -1,5 +1,7 @@
 package phasebook.email;
 
+import info.UserInfo;
+
 import java.util.Properties;
 
 import javax.mail.Message;
@@ -65,7 +67,67 @@ public class EmailUtils {
 
 	}
 	
+	public static void notifyUser(UserInfo user, String subject, String body){
+		Properties props = new Properties();
+
+        props.put("mail.transport.protocol", "smtps");
+        props.put("mail.smtps.host", SMTP_HOST_NAME);
+        props.put("mail.smtps.auth", "true");
+        // props.put("mail.smtps.quitwait", "false");
+
+        Session mailSession = Session.getDefaultInstance(props);
+        mailSession.setDebug(true);
+        Transport transport = null;
+		try {
+			transport = mailSession.getTransport();
+		} catch (NoSuchProviderException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+        MimeMessage message = new MimeMessage(mailSession);
+        try {
+			message.setSubject(subject);
+		} catch (MessagingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        try {
+    		message.setContent(body, "text/html");
+			message.addRecipient(Message.RecipientType.TO,
+		             new InternetAddress(user.getEmail()));
+			transport.connect
+	          (SMTP_HOST_NAME, SMTP_HOST_PORT, SMTP_AUTH_USER, SMTP_AUTH_PWD);
+
+	        transport.sendMessage(message,
+	            message.getRecipients(Message.RecipientType.TO));
+	        transport.close();
+		} catch (MessagingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+	
 	public static void postSent(PhasebookUser to, PhasebookUser from, String text, Photo photo, int unread)
+	{
+		String subject = "PHASEBOOK: You have a new post";
+		String body = "";
+		if(!text.equals(""))
+			body = from.getName()+" posted a message on your wall:<br><br>\""+text+"\"<br><br>";
+		else
+			body = from.getName()+" posted a photo on your wall:<br><br>";
+		if(photo != null)
+			body += img(photo.getName(), to.getId())+"<br><br>";
+		if(unread-1 == 1)
+			body += "You have also "+(unread-1)+" more post to read.<br><br>";
+		else if(unread-1 > 1)
+			body += "You have also "+(unread-1)+" more posts to read.<br><br>";
+		body += EmailUtils.a("","You wall");
+		notifyUser(to, subject, body);
+	}
+	
+	public static void postSent(UserInfo to, UserInfo from, String text, Photo photo, int unread)
 	{
 		String subject = "PHASEBOOK: You have a new post";
 		String body = "";

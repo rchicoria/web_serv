@@ -1,7 +1,9 @@
 package phasebook.controller;
 
+import client.artefact.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import javax.naming.InitialContext;
@@ -17,6 +19,9 @@ import org.apache.tomcat.util.http.fileupload.FileItem;
 import org.apache.tomcat.util.http.fileupload.FileUploadException;
 import org.apache.tomcat.util.http.fileupload.disk.DiskFileItemFactory;
 import org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload;
+
+import client.artefact.Methods;
+import client.artefact.MethodsService;
 
 import phasebook.user.PhasebookUser;
 import phasebook.user.PhasebookUserRemote;
@@ -150,12 +155,24 @@ public class CreatePostForm extends HttpServlet {
 						}
 					}
 				}
+				
+				MethodsService cs = new MethodsService();
+				Methods m = cs.getMethodsPort();
+
 				if(hasFile)
 					userBean.addPost(fromUser, toUser, text, time+ext, privacy,
 							session.getAttribute("id"), session.getAttribute("password"));
-				else
-					userBean.addPost(fromUser, toUser, text, privacy,
-							session.getAttribute("id"), session.getAttribute("password"));
+				else{
+					if(m.createPost(fromUser.getId(), toUser.getId(), text, privacy,  "",
+						(new Date()).getTime(), fromUser.getId(), (String)session.getAttribute("token"), 
+						((Long)session.getAttribute("expiration")).longValue()) == -1){
+						Utils.auth(session, response, request);
+						System.out.println("CHEGOU A FORM: "+m.createPost(fromUser.getId(), toUser.getId(), text, privacy,  "",
+								(new Date()).getTime(), fromUser.getId(), (String)session.getAttribute("token"), 
+								((Long)session.getAttribute("expiration")).longValue()));
+					}
+				}
+						
 				response.sendRedirect(Utils.url("user&id="+toUser.getId()));
 			}catch(FileUploadException ex) {
 				log("Error encountered while parsing the request",ex);

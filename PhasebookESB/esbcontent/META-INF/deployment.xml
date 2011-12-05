@@ -16,4 +16,7 @@
  <jmsQueue>get_photos_by_id_Request_esb</jmsQueue>
  <jmsQueue>get_photos_by_id_Request_esb_reply</jmsQueue>
  
+ <jmsQueue>create_post_Request_esb</jmsQueue>
+ <jmsQueue>create_post_Request_esb_reply</jmsQueue>
+ 
 </jbossesb-deployment>

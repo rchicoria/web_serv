@@ -1,6 +1,8 @@
 package posts;
 
 import utils.*;
+import info.*;
+
 import java.util.*;
 
 import javax.ejb.EJB;
@@ -47,5 +49,43 @@ public class Posts
 		}
 		
 		return result;
-	}	
+	}
+	
+	@WebMethod
+	public int addPost(@WebParam(name = "userId") int userId, 
+			@WebParam(name = "token") String token,
+			@WebParam(name = "current") long current,
+			@WebParam(name = "expiration") long expiration,
+			@WebParam(name = "fromId") int fromId,
+			@WebParam(name = "fromName") String fromName,
+			@WebParam(name = "fromEmail") String fromEmail,
+			@WebParam(name = "fromMoney") float fromMoney,
+			@WebParam(name = "fromPhotoId") int fromPhotoId,
+			@WebParam(name = "toId") int toId,
+			@WebParam(name = "toName") String toName,
+			@WebParam(name = "toEmail") String toEmail,
+			@WebParam(name = "toMoney") float toMoney,
+			@WebParam(name = "toPhotoId") int toPhotoId,
+			@WebParam(name = "text") String text,
+			@WebParam(name = "privacy") String privacy,
+			@WebParam(name = "photoLink") String photoLink)
+	{
+		System.out.println("ALGO DE ERRADO SE PASSOU");
+		
+		String myToken = Utils.byteArrayToHexString(Utils.computeHash(userId + "salt"
+				+ expiration));
+		
+		if(expiration < current || !token.equals(myToken)){
+			return -1;
+		}
+		
+		UserInfo from = new UserInfo(fromId, fromName, fromEmail, fromMoney, fromPhotoId);
+		UserInfo to = new UserInfo(toId, toName, toEmail, toMoney, toPhotoId);
+		
+		if(photoLink.equals("") || photoLink==null){
+			System.out.println("Vai Adicionar a Mensagem");
+			postRemote.addPost(from, to, text, privacy);
+		}
+		return 0;
+	}
 }

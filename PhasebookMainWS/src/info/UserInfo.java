@@ -1,4 +1,4 @@
-package users;
+package info;
 
 public class UserInfo {
 

@@ -1,6 +1,9 @@
 package photos;
+
 import java.sql.Timestamp;
 import java.util.*;
+
+import info.*;
 
 import javax.ejb.EJB;
 import javax.jws.*;
@@ -9,7 +12,6 @@ import phasebook.photo.Photo;
 import phasebook.photo.PhotoRemote;
 import phasebook.post.Post;
 import phasebook.user.*;
-import posts.PostInfo;
 import utils.Utils;
 
 @WebService(name = "Photo", targetNamespace = "http://PhasebookWS/Photo")  

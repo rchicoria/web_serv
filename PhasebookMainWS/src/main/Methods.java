@@ -1,6 +1,7 @@
 package main;
 import info.AuthInfo;
 import info.PostDetailsInfo;
+import info.UserInfo;
 
 import java.util.*;
 
@@ -208,5 +209,142 @@ public class Methods {
 		catch (RegistryException e) {e.printStackTrace();}
 		
 		return null;
+	}
+
+	@WebMethod
+	public UserInfo getUserById(long current, int currentUserId,
+			int userId, String token, long expiration) {
+		System.setProperty("javax.xml.registry.ConnectionFactoryClass","org.apache.ws.scout.registry.ConnectionFactoryImpl");
+		Message esbMessage = MessageFactory.getInstance().getMessage();
+		List<String> userIds = new ArrayList<String>();
+		
+		userIds.add(currentUserId+"");
+		
+		ServiceInvoker si;
+		try {
+			
+			esbMessage.getBody().add("userId", userId);
+			esbMessage.getBody().add("token", token);
+			esbMessage.getBody().add("expiration", expiration);
+			esbMessage.getBody().add("current", current);
+			esbMessage.getBody().add("userIds", userIds);
+			
+			si = new ServiceInvoker("Get_Users_Service", "send");
+			Message retMessage = si.deliverSync(esbMessage, 10000L);
+
+			HashMap<String, HashMap<String, Object>> users = (HashMap<String, HashMap<String, Object>>)retMessage.getBody().get("users");
+			System.out.println("Saio daqui com este user: "+retMessage.getBody().get("users"));
+			if(users.containsKey("0")){
+				return new UserInfo();
+			}
+			HashMap temp = (HashMap<String, Object>)users.get(users.keySet().iterator().next());
+			return new UserInfo(Integer.parseInt((String)temp.get("id")), 
+					(String)temp.get("name"), (String)temp.get("email"), Float.parseFloat((String)temp.get("money")),
+					Integer.parseInt((String)temp.get("photoId")));
+		} catch (MessageDeliverException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (FaultMessageException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (RegistryException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+		
+	}
+	
+	@WebMethod
+	public int createPost(int from, int to, String text, String privacy, String photoLink,
+			long current, int userId, String token, long expiration) {
+		System.setProperty("javax.xml.registry.ConnectionFactoryClass","org.apache.ws.scout.registry.ConnectionFactoryImpl");
+		Message esbMessage = MessageFactory.getInstance().getMessage();
+		List<String> userIds = new ArrayList<String>();
+		
+		ServiceInvoker si;
+		try {
+			
+			userIds.add(from+"");
+			userIds.add(to+"");
+			
+			esbMessage.getBody().add("userId", userId);
+			esbMessage.getBody().add("token", token);
+			esbMessage.getBody().add("expiration", expiration);
+			esbMessage.getBody().add("current", current);
+			esbMessage.getBody().add("userIds", userIds);
+			
+			si = new ServiceInvoker("Get_Users_Service", "send");
+			Message retMessage = si.deliverSync(esbMessage, 10000L);
+			
+			System.out.println("Vou Buscar Users");
+
+			HashMap<String, HashMap<String, Object>> users = (HashMap<String, HashMap<String, Object>>)retMessage.getBody().get("users");
+			if(users.containsKey("0")){
+				return -1;
+			}
+			
+			UserInfo fromUser = null, toUser = null;
+			
+			HashMap temp = (HashMap<String, Object>)users.get(users.keySet().iterator().next());
+			if(Integer.parseInt((String)temp.get("id")) == from){
+				fromUser = new UserInfo(Integer.parseInt((String)temp.get("id")), 
+					(String)temp.get("name"), (String)temp.get("email"), Float.parseFloat((String)temp.get("money")),
+					Integer.parseInt((String)temp.get("photoId")));
+				temp = (HashMap<String, Object>)users.get(users.keySet().iterator().next());
+				
+				toUser = new UserInfo(Integer.parseInt((String)temp.get("id")), 
+						(String)temp.get("name"), (String)temp.get("email"), Float.parseFloat((String)temp.get("money")),
+						Integer.parseInt((String)temp.get("photoId")));
+			}
+			else {
+				toUser = new UserInfo(Integer.parseInt((String)temp.get("id")), 
+					(String)temp.get("name"), (String)temp.get("email"), Float.parseFloat((String)temp.get("money")),
+					Integer.parseInt((String)temp.get("photoId")));
+				temp = (HashMap<String, Object>)users.get(users.keySet().iterator().next());
+				
+				fromUser = new UserInfo(Integer.parseInt((String)temp.get("id")), 
+						(String)temp.get("name"), (String)temp.get("email"), Float.parseFloat((String)temp.get("money")),
+						Integer.parseInt((String)temp.get("photoId")));
+			}
+			
+			System.out.println("NOMES "+toUser.getName()+" "+fromUser.getName());
+			
+			esbMessage.getBody().add("userId", userId);
+			esbMessage.getBody().add("token", token);
+			esbMessage.getBody().add("expiration", expiration);
+			esbMessage.getBody().add("current", current);
+			esbMessage.getBody().add("fromId", fromUser.getId());
+			esbMessage.getBody().add("fromName", fromUser.getName());
+			esbMessage.getBody().add("fromEmail", fromUser.getEmail());
+			esbMessage.getBody().add("fromMoney", fromUser.getMoney());
+			esbMessage.getBody().add("fromPhotoId", fromUser.getPhotoId());
+			esbMessage.getBody().add("toId", toUser.getId());
+			esbMessage.getBody().add("toName", toUser.getName());
+			esbMessage.getBody().add("toEmail", toUser.getEmail());
+			esbMessage.getBody().add("toMoney", toUser.getMoney());
+			esbMessage.getBody().add("toPhotoId", toUser.getPhotoId());
+			esbMessage.getBody().add("text", text);
+			esbMessage.getBody().add("privacy", privacy);
+			esbMessage.getBody().add("photoLink", photoLink);
+			
+			si = new ServiceInvoker("Create_Post_Service", "send");
+			System.out.println("Vai enviar esta msg para o ESB: "+esbMessage.getBody());
+			retMessage = si.deliverSync(esbMessage, 10000L);
+
+			return Integer.parseInt((String)retMessage.getBody().get("resp"));
+
+		} catch (MessageDeliverException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (FaultMessageException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (RegistryException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return -1;
+		
 	}
 }

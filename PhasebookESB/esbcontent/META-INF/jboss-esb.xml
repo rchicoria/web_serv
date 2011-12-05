@@ -19,6 +19,9 @@
    <jms-bus busid="getPhotosByIdEsbChannel">
     <jms-message-filter dest-name="queue/get_photos_by_id_Request_esb" dest-type="QUEUE"/>
    </jms-bus>
+   <jms-bus busid="createPostEsbChannel">
+    <jms-message-filter dest-name="queue/create_post_Request_esb" dest-type="QUEUE"/>
+   </jms-bus>
   </jms-provider>
  </providers>
  <services>
@@ -95,6 +98,21 @@
      <property name="responseAsOgnlMap" value="true"/>
     </action>
     <action class="photos.GetPhotosByIdAction" name="response-mapper" process="response"/>
+   </actions>
+  </service>
+  <service category="Create_Post_Service"
+   description="Create Post Service: Use this service create a post" name="send">
+   <listeners>
+    <jms-listener busidref="createPostEsbChannel" name="ESB-Listener"/>
+   </listeners>
+   <actions>
+    <action class="posts.CreatePostAction" name="request-mapper" process="request"/>
+    <action class="org.jboss.soa.esb.actions.soap.SOAPClient" name="soapui-client-action">
+     <property name="wsdl" value="http://127.0.0.1:8080/PhasebookWS/Posts?wsdl"/>
+     <property name="SOAPAction" value="addPost"/>
+     <property name="responseAsOgnlMap" value="true"/>
+    </action>
+    <action class="posts.CreatePostAction" name="response-mapper" process="response"/>
    </actions>
   </service>
  </services>

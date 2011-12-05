@@ -1,9 +1,9 @@
 package phasebook.post;
 
+import info.UserInfo;
+
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -199,32 +199,9 @@ public class PostBean implements PostRemote {
 		}
 	}
 
-	@Override
-	public void addPost(PhasebookUser from, PhasebookUser to, String text,
-			String privacy, Object authId, Object authPass) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void addPost(PhasebookUser from, PhasebookUser to, String text,
-			String photoLink, String privacy, Object authId, Object authPass) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public int getNUnreadUserPosts(PhasebookUser user, Object authId,
-			Object authPass) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-	
-/*	public void addPost(PhasebookUser from, PhasebookUser to, String text, String privacy,
-			Object authId, Object authPass)
+	public void addPost(UserInfo from, UserInfo to, String text, String privacy)
 	{
-		if (Auth.authenticate(authId, authPass))
-			return;
+
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("PhaseBook");
 		EntityManager em = emf.createEntityManager();
 		EntityTransaction tx = em.getTransaction();
@@ -236,37 +213,38 @@ public class PostBean implements PostRemote {
 		tx.commit();
 		em.close();
 		emf.close();
-		if(!from.equals(to))
-			EmailUtils.postSent(to, from, text, null, getNUnreadUserPosts(to, authId, authPass));
+		
+		if(from!=to)
+			EmailUtils.postSent(to, from, text, null, getNUnreadUserPosts(to, 0, ""));
 	}
 	
-	public void addPost(PhasebookUser from, PhasebookUser to, String text, String photoLink, String privacy,
-			Object authId, Object authPass)
-	{
-		if (Auth.authenticate(authId, authPass))
-			return;
-		EntityManagerFactory emf = Persistence.createEntityManagerFactory("PhaseBook");
-		EntityManager em = emf.createEntityManager();
-		EntityTransaction tx = em.getTransaction();
-		
-		tx.begin();
-		//TODO isto ainda depende das photos
-		Photo photo = new Photo(photoLink); 
-		em.persist(photo);
-		em.refresh(photo);
-		
-    	Post post = new Post(from.getId(), to.getId(), text, photo.getId(), privacy);
-		em.persist(post);
-		em.refresh(post);
-		
-		tx.commit();
-		if(!from.equals(to))
-			EmailUtils.postSent(to, from, text, photo, getNUnreadUserPosts(to, authId, authPass));
-		em.close();
-		emf.close();
-	}
+//	public void addPost(PhasebookUser from, PhasebookUser to, String text, String photoLink, String privacy,
+//			Object authId, Object authPass)
+//	{
+//		if (Auth.authenticate(authId, authPass))
+//			return;
+//		EntityManagerFactory emf = Persistence.createEntityManagerFactory("PhaseBook");
+//		EntityManager em = emf.createEntityManager();
+//		EntityTransaction tx = em.getTransaction();
+//		
+//		tx.begin();
+//		//TODO isto ainda depende das photos
+//		Photo photo = new Photo(photoLink); 
+//		em.persist(photo);
+//		em.refresh(photo);
+//		
+//    	Post post = new Post(from.getId(), to.getId(), text, photo.getId(), privacy);
+//		em.persist(post);
+//		em.refresh(post);
+//		
+//		tx.commit();
+//		if(!from.equals(to))
+//			EmailUtils.postSent(to, from, text, photo, getNUnreadUserPosts(to, authId, authPass));
+//		em.close();
+//		emf.close();
+//	}
 	
-	public int getNUnreadUserPosts(PhasebookUser user,
+	public int getNUnreadUserPosts(UserInfo user,
 			Object authId, Object authPass)
 	{
 		if (Auth.authenticate(authId, authPass))
@@ -284,6 +262,6 @@ public class PostBean implements PostRemote {
 		em.close();
 		emf.close();
 		return result;
-	}*/
+	}
 	
 }

@@ -1,4 +1,4 @@
-package posts;
+package info;
 
 public class PostInfo {
 

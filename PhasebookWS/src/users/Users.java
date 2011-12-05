@@ -1,4 +1,6 @@
 package users;
+
+import info.*;
 import java.sql.Timestamp;
 import java.util.*;
 
@@ -7,7 +9,7 @@ import javax.jws.*;
 
 import phasebook.post.Post;
 import phasebook.user.*;
-import posts.PostInfo;
+
 import utils.Utils;
 
 @WebService(name = "User", targetNamespace = "http://PhasebookWS/User")  
