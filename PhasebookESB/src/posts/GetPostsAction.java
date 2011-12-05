@@ -2,7 +2,15 @@ package posts;
 
 import java.util.*;
 
+import org.jboss.internal.soa.esb.addressing.helpers.EPRHelper;
+import org.jboss.soa.esb.MarshalException;
+import org.jboss.soa.esb.UnmarshalException;
 import org.jboss.soa.esb.actions.AbstractActionLifecycle;
+import org.jboss.soa.esb.addressing.EPR;
+import org.jboss.soa.esb.addressing.MalformedEPRException;
+import org.jboss.soa.esb.couriers.Courier;
+import org.jboss.soa.esb.couriers.CourierException;
+import org.jboss.soa.esb.couriers.CourierFactory;
 import org.jboss.soa.esb.helpers.ConfigTree;
 import org.jboss.soa.esb.message.Body;
 import org.jboss.soa.esb.message.Message;
@@ -35,6 +43,8 @@ public class GetPostsAction extends AbstractActionLifecycle
 		requestMap.put("getPosts.friend", friend);
 
 		message.getBody().add(requestMap);
+		
+		System.out.println("\n\n\n\nGetPostsAction request\n\n\n");
 	    
 	    return message;  
 	}
@@ -44,6 +54,7 @@ public class GetPostsAction extends AbstractActionLifecycle
 		Map responseMsg = (Map) message.getBody().get(Body.DEFAULT_LOCATION);
 		Iterator it = responseMsg.keySet().iterator();
 		List<HashMap<String, Object>> list = new ArrayList<HashMap<String, Object>>();
+		List<String> postsPhotosIds = new ArrayList<String>();
 		// falhou autenticaçao
 		if(responseMsg.keySet().size()==0){
 			message.getBody().add("");
@@ -53,7 +64,10 @@ public class GetPostsAction extends AbstractActionLifecycle
 				HashMap<String, Object> post = new HashMap<String, Object>();
 				post.put("fromUserId", responseMsg.get(it.next()));
 				post.put("id", responseMsg.get(it.next()));
-				post.put("photoId", responseMsg.get(it.next()));
+				Object photoId = responseMsg.get(it.next());
+				post.put("photoId", photoId);
+				if (!postsPhotosIds.contains(photoId) && !photoId.toString().equals("-1"))
+					postsPhotosIds.add(photoId.toString());
 				post.put("private", responseMsg.get(it.next()));
 				post.put("read", responseMsg.get(it.next()));
 				post.put("text", responseMsg.get(it.next()));
@@ -66,8 +80,44 @@ public class GetPostsAction extends AbstractActionLifecycle
 			list.add(temp);
 		}
 		message.getBody().add("posts", list);
+		message.getBody().add("postsPhotosIds", postsPhotosIds);
+		
+		/*List<String> postsPhotosIds = new ArrayList<String>();
+		it = list.iterator();
+		while(it.hasNext()) {
+			String postPhotoId = (String)((Map)it.next()).get("photoId");
+			if (!postsPhotosIds.contains(postPhotoId) && !postPhotoId.equals("-1"))
+				postsPhotosIds.add(postPhotoId);
+		}
+		message.getBody().add("postsPhotosIds", postsPhotosIds);*/
 		
 		return message;  
+	}
+	
+	public Message xml(Message message) {
+		String xmlEPR;
+		try {
+			xmlEPR = EPRHelper.toXMLString(message.getHeader().getCall().getReplyTo());
+			message.getBody().add("reply", xmlEPR);
+		}
+		catch (MarshalException e) {e.printStackTrace();}
+		return message; 
+	}
+
+	public Message sendToMWS(Message message) {
+		String xml = (String) message.getBody().get("reply");
+		EPR jmsepr;
+		try {
+			jmsepr = (EPR) EPRHelper.fromXMLString(xml);
+			message.getHeader().getCall().setTo(jmsepr);
+			Courier courier;
+			courier = CourierFactory.getCourier(jmsepr);
+			courier.deliver(message);
+		}
+		catch (UnmarshalException e) {e.printStackTrace();}
+		catch (CourierException e) {e.printStackTrace();} 
+		catch (MalformedEPRException e) {e.printStackTrace();}
+		return null;
 	}
 
 }

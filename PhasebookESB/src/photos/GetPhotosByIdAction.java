@@ -24,11 +24,11 @@ public class GetPhotosByIdAction extends AbstractActionLifecycle
 	    String token = (String)message.getBody().get("token");
 	    long current = ((Long)message.getBody().get("current")).longValue();
 	    long expiration = ((Long)message.getBody().get("expiration")).longValue();
-	    List<Integer> photoIds = ((List<Integer>)message.getBody().get("photoIds"));
+	    List<Integer> photoIds = ((List<Integer>)message.getBody().get("postsPhotosIds"));
 	     
 	    List<Integer> temp = new ArrayList<Integer>();
 	    String photoIdsString = ""; 
-	     
+	    
 	    Iterator it = photoIds.iterator();
 	    while(it.hasNext()){
 	    	int id = Integer.parseInt((String)it.next());
@@ -45,7 +45,7 @@ public class GetPhotosByIdAction extends AbstractActionLifecycle
 		requestMap.put("getPhotos.token", token);
 		requestMap.put("getPhotos.current", current);
 		requestMap.put("getPhotos.expiration", expiration);
-		requestMap.put("getPhotos.photoIds", photoIdsString);
+		requestMap.put("getPhotos.postsPhotosIds", photoIdsString);
 
 		message.getBody().add(requestMap);
 	    
@@ -73,7 +73,7 @@ public class GetPhotosByIdAction extends AbstractActionLifecycle
 			map.put("0",new HashMap<String, Object>());
 		}
 		
-		message.getBody().add("photos", map);
+		message.getBody().add("postsPhotos", map);
 		
 		return message;  
 	}

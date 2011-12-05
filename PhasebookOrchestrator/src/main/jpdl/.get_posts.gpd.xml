@@ -1,3 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<root-container name="get_posts" width="882" height="419"/>
+<root-container name="get_posts" width="882" height="389">
+  <node name="start" x="62" y="23" width="132" height="36">
+    <edge>
+      <label x="-49" y="-17"/>
+    </edge>
+  </node>
+  <node name="GetUserPosts" x="322" y="13" width="132" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <node name="GetPostsPhotos" x="334" y="151" width="132" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <node name="ReturnPosts" x="336" y="300" width="132" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <node name="end" x="21" y="296" width="132" height="36"/>
+  <deployment graphicalInfoFile="/PhasebookOrchestrator/src/main/jpdl/get_posts.jpdl.xml" imageFile="/PhasebookOrchestrator/src/main/jpdl/get_posts.jpg" serverName="localhost" serverPort="8180" serverDeployer="/gpd-deployer/upload">
+    <classesAndResources>
+      <element type="java" value="/PhasebookOrchestrator/src/main/java/com/sample/action/MessageActionHandler.java"/>
+      <element type="java" value="/PhasebookOrchestrator/src/main/java/com/sample/action/MessageActionHandler2.java"/>
+    </classesAndResources>
+  </deployment>
+</root-container>

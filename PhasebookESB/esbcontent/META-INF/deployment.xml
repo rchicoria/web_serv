@@ -7,6 +7,9 @@
  <jmsQueue>create_user_Request_esb</jmsQueue>
  <jmsQueue>create_user_Request_esb_reply</jmsQueue>
  
+ <jmsQueue>start_get_posts_Request_esb</jmsQueue>
+ <jmsQueue>start_get_posts_Request_esb_reply</jmsQueue>
+ 
  <jmsQueue>get_posts_Request_esb</jmsQueue>
  <jmsQueue>get_posts_Request_esb_reply</jmsQueue>
  
@@ -15,5 +18,8 @@
  
  <jmsQueue>get_photos_by_id_Request_esb</jmsQueue>
  <jmsQueue>get_photos_by_id_Request_esb_reply</jmsQueue>
+ 
+ <jmsQueue>get_posts_return_Request_esb</jmsQueue>
+ <jmsQueue>get_posts_return_Request_esb_reply</jmsQueue>
  
 </jbossesb-deployment>
