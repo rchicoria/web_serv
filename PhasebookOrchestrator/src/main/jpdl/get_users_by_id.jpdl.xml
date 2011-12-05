@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<process-definition  xmlns=""  name="get_users_by_id">
+
+
+	<start-state name="start">
+		<transition to="GetUsers" name="to GetUSers"></transition>
+	</start-state>
+
+
+	<node name="GetUsers">
+		<action class="org.jboss.soa.esb.services.jbpm.actionhandlers.EsbActionHandler">
+			<esbCategoryName>Get_Users_Service</esbCategoryName>
+			<esbServiceName>send</esbServiceName>
+			<bpmToEsbVars>
+				<mapping bpm="UuserId" esb="userId"/>
+				<mapping bpm="Ttoken" esb="token"/>
+				<mapping bpm="Eexpiration" esb="expiration"/>
+				<mapping bpm="Ccurrent" esb="current"/>
+				<mapping bpm="UusersIds" esb="usersIds"/>
+			</bpmToEsbVars>
+			<esbToBpmVars>
+				<mapping esb="users" bpm="Uusers"/>
+			</esbToBpmVars>
+		</action>
+		<transition to="ReturnUsers" name="to ReturnUsers"></transition>
+	</node>
+
+	<node name="ReturnUsers">
+		<action class="org.jboss.soa.esb.services.jbpm.actionhandlers.EsbActionHandler">
+			<esbCategoryName>Get_Users_Service</esbCategoryName>
+			<esbServiceName>return</esbServiceName>
+			<bpmToEsbVars>
+				<mapping bpm="Uusers" esb="users"/>
+				<mapping bpm="Rreply" esb="reply"/>
+			</bpmToEsbVars>
+		</action>
+		<transition to="end" name="to end"></transition>
+	</node>
+
+
+	<end-state name="end"></end-state>
+
+
+</process-definition>

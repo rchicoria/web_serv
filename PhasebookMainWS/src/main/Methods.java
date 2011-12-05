@@ -157,7 +157,7 @@ public class Methods {
 			}
 			
 			// Get user photos
-			List<HashMap<String, Object>> temp = new ArrayList<HashMap<String, Object>>(users.values());
+			/*List<HashMap<String, Object>> temp = new ArrayList<HashMap<String, Object>>(users.values());
 			List<String> userPhotoIds = new ArrayList<String>();
 			Iterator it = temp.iterator();
 			while(it.hasNext()) {
@@ -173,14 +173,14 @@ public class Methods {
 			esbMessage.getBody().add("postsPhotosIds", userPhotoIds);
 			
 			si = new ServiceInvoker("Get_Photos_Service", "send");
-			retMessage = si.deliverSync(esbMessage, 10000L);
-			HashMap<String, HashMap<String, Object>> usersPhotos = (HashMap<String, HashMap<String, Object>>)retMessage.getBody().get("postsPhotos");
+			retMessage = si.deliverSync(esbMessage, 10000L);*/
+			HashMap<String, HashMap<String, Object>> usersPhotos = (HashMap<String, HashMap<String, Object>>)retMessage.getBody().get("postsUsersPhotos");
 			// falhou autenticaçao
 			if(usersPhotos.containsKey("0")){
 				list.add(new PostDetailsInfo());
 				return new PostsContainer(list);
 			}
-			it = posts.iterator();
+			Iterator it = posts.iterator();
 			while(it.hasNext()){
 				HashMap<String,Object> tempPost = (HashMap<String, Object>) it.next();
 				PostDetailsInfo postDetails = new PostDetailsInfo();

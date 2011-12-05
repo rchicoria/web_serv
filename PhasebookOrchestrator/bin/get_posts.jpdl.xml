@@ -68,19 +68,33 @@
 			</bpmToEsbVars>
 			<esbToBpmVars>
 				<mapping esb="postsUsers" bpm="PpostsUsers"/>
+				<mapping esb="postsUsersPhotosIds" bpm="PpostsUsersPhotosIds"/>
 			</esbToBpmVars>
 		</action>
 		<transition to="join" name="to join"></transition>
 	</node>
 
-	<!-- <node name="GetPostsUsersPhotos">
-		<action class="org.jboss.soa.esb.services.jbpm.actionhandlers.EsbActionHandler"></action>
-		<transition to="join"></transition>
-	</node> -->
-
 	<join name="join">
-		<transition to="ReturnPosts" name="to ReturnPosts"></transition>
+		<transition to="GetPostsUsersPhotos" name="to GetPostsUsersPhotos"></transition>
 	</join>
+
+	<node name="GetPostsUsersPhotos">
+		<action class="org.jboss.soa.esb.services.jbpm.actionhandlers.EsbActionHandler">
+			<esbCategoryName>Get_Photos_Service</esbCategoryName>
+			<esbServiceName>send</esbServiceName>
+			<bpmToEsbVars>
+				<mapping bpm="UuserId" esb="userId"/>
+				<mapping bpm="Ttoken" esb="token"/>
+				<mapping bpm="Eexpiration" esb="expiration"/>
+				<mapping bpm="Ccurrent" esb="current"/>
+				<mapping bpm="PpostsUsersPhotosIds" esb="postsPhotosIds"/>
+			</bpmToEsbVars>
+			<esbToBpmVars>
+				<mapping esb="postsPhotos" bpm="PpostsUsersPhotos"/>
+			</esbToBpmVars>
+		</action>
+		<transition to="ReturnPosts" name="to ReturnPosts"></transition>
+	</node>
 
 	<node name="ReturnPosts">
 		<action name="esbAction" class="org.jboss.soa.esb.services.jbpm.actionhandlers.EsbActionHandler">
@@ -90,6 +104,7 @@
 				<mapping bpm="Pposts" esb="posts"/>
 				<mapping bpm="PpostsPhotos" esb="postsPhotos"/>
 				<mapping bpm="PpostsUsers" esb="postsUsers"/>
+				<mapping bpm="PpostsUsersPhotos" esb="postsUsersPhotos"/>
 				<mapping bpm="Rreply" esb="reply"/>
 			</bpmToEsbVars>
 		</action>
