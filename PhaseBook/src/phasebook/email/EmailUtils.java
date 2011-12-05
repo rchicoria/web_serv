@@ -108,8 +108,8 @@ public class EmailUtils {
 		}
 
 	}
-	
-	public static void postSent(PhasebookUser to, PhasebookUser from, String text, Photo photo, int unread)
+		
+	public static void postSent(UserInfo to, UserInfo from, String text, String photoName, int unread)
 	{
 		String subject = "PHASEBOOK: You have a new post";
 		String body = "";
@@ -117,26 +117,8 @@ public class EmailUtils {
 			body = from.getName()+" posted a message on your wall:<br><br>\""+text+"\"<br><br>";
 		else
 			body = from.getName()+" posted a photo on your wall:<br><br>";
-		if(photo != null)
-			body += img(photo.getName(), to.getId())+"<br><br>";
-		if(unread-1 == 1)
-			body += "You have also "+(unread-1)+" more post to read.<br><br>";
-		else if(unread-1 > 1)
-			body += "You have also "+(unread-1)+" more posts to read.<br><br>";
-		body += EmailUtils.a("","You wall");
-		notifyUser(to, subject, body);
-	}
-	
-	public static void postSent(UserInfo to, UserInfo from, String text, Photo photo, int unread)
-	{
-		String subject = "PHASEBOOK: You have a new post";
-		String body = "";
-		if(!text.equals(""))
-			body = from.getName()+" posted a message on your wall:<br><br>\""+text+"\"<br><br>";
-		else
-			body = from.getName()+" posted a photo on your wall:<br><br>";
-		if(photo != null)
-			body += img(photo.getName(), to.getId())+"<br><br>";
+		if(photoName != null)
+			body += img(photoName, to.getId())+"<br><br>";
 		if(unread-1 == 1)
 			body += "You have also "+(unread-1)+" more post to read.<br><br>";
 		else if(unread-1 > 1)

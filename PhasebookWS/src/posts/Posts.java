@@ -68,7 +68,8 @@ public class Posts
 			@WebParam(name = "toPhotoId") int toPhotoId,
 			@WebParam(name = "text") String text,
 			@WebParam(name = "privacy") String privacy,
-			@WebParam(name = "photoLink") String photoLink)
+			@WebParam(name = "photoLink") String photoLink,
+			@WebParam(name = "photoId") int photoId)
 	{
 		System.out.println("ALGO DE ERRADO SE PASSOU");
 		
@@ -86,6 +87,8 @@ public class Posts
 			System.out.println("Vai Adicionar a Mensagem");
 			postRemote.addPost(from, to, text, privacy);
 		}
+		else
+			postRemote.addPost(from, to, text, photoLink, photoId, privacy);
 		return 0;
 	}
 }

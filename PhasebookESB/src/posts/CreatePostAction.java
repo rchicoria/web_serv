@@ -39,6 +39,7 @@ public class CreatePostAction extends AbstractActionLifecycle
 	    String privacy = (String)message.getBody().get("privacy");
 	    String text = (String)message.getBody().get("text");
 	    String photoLink = (String)message.getBody().get("photoLink");
+	    int photoId = ((Integer)message.getBody().get("photoId")).intValue();
 
 		requestMap.put("addPost.userId", userId);
 		requestMap.put("addPost.token", token);
@@ -57,6 +58,7 @@ public class CreatePostAction extends AbstractActionLifecycle
 		requestMap.put("addPost.toPhotoId", toPhotoId);
 		requestMap.put("addPost.privacy", privacy);
 		requestMap.put("addPost.photoLink", photoLink);
+		requestMap.put("addPost.photoId", photoId);
 
 		message.getBody().add(requestMap);
 		

@@ -53,8 +53,6 @@ public class PhotoBean implements PhotoRemote {
 	public int addPhoto(String photoLink,
 			Object authId, Object authPass)
 	{
-		if (Auth.authenticate(authId, authPass))
-			return -1;
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("PhaseBook");
 		EntityManager em = emf.createEntityManager();
 		EntityTransaction tx = em.getTransaction();

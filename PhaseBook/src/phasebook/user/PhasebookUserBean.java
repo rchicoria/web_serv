@@ -228,51 +228,51 @@ public class PhasebookUserBean implements PhasebookUserRemote {
 		}
 	}
 	
-	public void addPost(PhasebookUser from, PhasebookUser to, String text, String privacy,
-			Object authId, Object authPass)
-	{
-		if (Auth.authenticate(authId, authPass))
-			return;
-		EntityManagerFactory emf = Persistence.createEntityManagerFactory("PhaseBook");
-		EntityManager em = emf.createEntityManager();
-		EntityTransaction tx = em.getTransaction();
-		
-		tx.begin();
-    	Post post = new Post(from.getId(), to.getId(), text, privacy);
-		em.persist(post);
-		em.refresh(post);
-		tx.commit();
-		em.close();
-		emf.close();
-		if(!from.equals(to))
-			EmailUtils.postSent(to, from, text, null, getNUnreadUserPosts(to, authId, authPass));
-	}
-	
-	public void addPost(PhasebookUser from, PhasebookUser to, String text, String photoLink, String privacy,
-			Object authId, Object authPass)
-	{
-		if (Auth.authenticate(authId, authPass))
-			return;
-		EntityManagerFactory emf = Persistence.createEntityManagerFactory("PhaseBook");
-		EntityManager em = emf.createEntityManager();
-		EntityTransaction tx = em.getTransaction();
-		
-		tx.begin();
-		//TODO isto ainda depende das photos
-		Photo photo = new Photo(photoLink); 
-		em.persist(photo);
-		em.refresh(photo);
-		
-    	Post post = new Post(from.getId(), to.getId(), text, photo.getId(), privacy);
-		em.persist(post);
-		em.refresh(post);
-		
-		tx.commit();
-		if(!from.equals(to))
-			EmailUtils.postSent(to, from, text, photo, getNUnreadUserPosts(to, authId, authPass));
-		em.close();
-		emf.close();
-	}
+//	public void addPost(PhasebookUser from, PhasebookUser to, String text, String privacy,
+//			Object authId, Object authPass)
+//	{
+//		if (Auth.authenticate(authId, authPass))
+//			return;
+//		EntityManagerFactory emf = Persistence.createEntityManagerFactory("PhaseBook");
+//		EntityManager em = emf.createEntityManager();
+//		EntityTransaction tx = em.getTransaction();
+//		
+//		tx.begin();
+//    	Post post = new Post(from.getId(), to.getId(), text, privacy);
+//		em.persist(post);
+//		em.refresh(post);
+//		tx.commit();
+//		em.close();
+//		emf.close();
+//		if(!from.equals(to))
+//			EmailUtils.postSent(to, from, text, null, getNUnreadUserPosts(to, authId, authPass));
+//	}
+//	
+//	public void addPost(PhasebookUser from, PhasebookUser to, String text, String photoLink, String privacy,
+//			Object authId, Object authPass)
+//	{
+//		if (Auth.authenticate(authId, authPass))
+//			return;
+//		EntityManagerFactory emf = Persistence.createEntityManagerFactory("PhaseBook");
+//		EntityManager em = emf.createEntityManager();
+//		EntityTransaction tx = em.getTransaction();
+//		
+//		tx.begin();
+//		//TODO isto ainda depende das photos
+//		Photo photo = new Photo(photoLink); 
+//		em.persist(photo);
+//		em.refresh(photo);
+//		
+//    	Post post = new Post(from.getId(), to.getId(), text, photo.getId(), privacy);
+//		em.persist(post);
+//		em.refresh(post);
+//		
+//		tx.commit();
+//		if(!from.equals(to))
+//			EmailUtils.postSent(to, from, text, photo, getNUnreadUserPosts(to, authId, authPass));
+//		em.close();
+//		emf.close();
+//	}
 	
 	public void setProfilePicture(PhasebookUser user, int photo_id,
 			Object authId, Object authPass)

@@ -158,10 +158,18 @@ public class CreatePostForm extends HttpServlet {
 				
 				MethodsService cs = new MethodsService();
 				Methods m = cs.getMethodsPort();
-
+				System.out.println("CHEGUEI CA 2   "+hasFile);
 				if(hasFile)
-					userBean.addPost(fromUser, toUser, text, time+ext, privacy,
-							session.getAttribute("id"), session.getAttribute("password"));
+				{
+					if(m.createPost(fromUser.getId(), toUser.getId(), text, privacy,  time+ext,
+							(new Date()).getTime(), fromUser.getId(), (String)session.getAttribute("token"), 
+							((Long)session.getAttribute("expiration")).longValue()) == -1){
+							Utils.auth(session, response, request);
+							System.out.println("CHEGOU A FORM: "+m.createPost(fromUser.getId(), toUser.getId(), text, privacy,  time+ext,
+									(new Date()).getTime(), fromUser.getId(), (String)session.getAttribute("token"), 
+									((Long)session.getAttribute("expiration")).longValue()));
+						}
+				}
 				else{
 					if(m.createPost(fromUser.getId(), toUser.getId(), text, privacy,  "",
 						(new Date()).getTime(), fromUser.getId(), (String)session.getAttribute("token"), 

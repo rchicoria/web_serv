@@ -308,7 +308,22 @@ public class Methods {
 						Integer.parseInt((String)temp.get("photoId")));
 			}
 			
-			System.out.println("NOMES "+toUser.getName()+" "+fromUser.getName());
+			int photoId = -1;
+			
+			if(photoLink!= null && !photoLink.equals("")){
+				esbMessage.getBody().add("userId", userId);
+				esbMessage.getBody().add("token", token);
+				esbMessage.getBody().add("expiration", expiration);
+				esbMessage.getBody().add("current", current);
+				esbMessage.getBody().add("photoLink", photoLink);
+				
+				si = new ServiceInvoker("Create_Photo_Service", "send");
+				System.out.println("Vai enviar esta msg para o ESB: "+esbMessage.getBody());
+				retMessage = si.deliverSync(esbMessage, 10000L);
+				photoId = Integer.parseInt((String)retMessage.getBody().get("resp"));
+				if(photoId == -1)
+					return -1;
+			}
 			
 			esbMessage.getBody().add("userId", userId);
 			esbMessage.getBody().add("token", token);
@@ -326,6 +341,7 @@ public class Methods {
 			esbMessage.getBody().add("toPhotoId", toUser.getPhotoId());
 			esbMessage.getBody().add("text", text);
 			esbMessage.getBody().add("privacy", privacy);
+			esbMessage.getBody().add("photoId", photoId);
 			esbMessage.getBody().add("photoLink", photoLink);
 			
 			si = new ServiceInvoker("Create_Post_Service", "send");

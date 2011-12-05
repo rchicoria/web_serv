@@ -18,6 +18,6 @@ public interface PostRemote {
 	public List<Post> getUserReceivedPosts(Object userId, Object authId, Object authPass);
 	public List getUserPublicPosts(Object userId, Object authId, Object authPass);
 	public void addPost(UserInfo from, UserInfo to, String text, String privacy);
-	//public void addPost(PhasebookUser from, PhasebookUser to, String text, String photoLink, String privacy, Object authId, Object authPass);
+	public void addPost(UserInfo from, UserInfo to, String text, String photoLink, int photoId, String privacy);
 	public int getNUnreadUserPosts(UserInfo user, Object authId, Object authPass);
 }

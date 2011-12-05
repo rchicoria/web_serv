@@ -11,8 +11,8 @@ public interface PhasebookUserRemote {
 	public PhasebookUser getUserById(Object id, Object authId, Object authPass);
 	public List<PhasebookUser> getUsersFromSearch(Object search, Object authId, Object authPass);
 	public List<?> getUserReceivedPosts(Object userId, Object authId, Object authPass);
-	public void addPost(PhasebookUser from, PhasebookUser to, String text, String privacy, Object authId, Object authPass);
-	public void addPost(PhasebookUser from, PhasebookUser to, String text, String photoLink, String privacy, Object authId, Object authPass);
+//	public void addPost(PhasebookUser from, PhasebookUser to, String text, String privacy, Object authId, Object authPass);
+//	public void addPost(PhasebookUser from, PhasebookUser to, String text, String photoLink, String privacy, Object authId, Object authPass);
 	public List<?> getUserPublicPosts(Object userId, Object authId, Object authPass);
 	public void setProfilePicture(PhasebookUser user, int photo_id, Object authId, Object authPass);
 	public void deposit(Object id, Float money, Object authId, Object authPass);

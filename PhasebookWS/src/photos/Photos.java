@@ -54,6 +54,23 @@ public class Photos
 		}
 		
 		return result;
-	}	
+	}
 	
+	@WebMethod
+	public int addPhoto(@WebParam(name = "userId") int userId, 
+			@WebParam(name = "token") String token,
+			@WebParam(name = "current") long current,
+			@WebParam(name = "expiration") long expiration,
+			@WebParam(name = "photoLink") String photoLink)  
+	{ 		
+		String myToken = Utils.byteArrayToHexString(Utils.computeHash(userId + "salt"
+				+ expiration));
+		
+		if(expiration < current || !token.equals(myToken)){
+			return -1;
+		}
+		
+		int id = photoRemote.addPhoto(photoLink, 0, "");
+		return id;
+	}
 }
