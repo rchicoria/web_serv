@@ -23,7 +23,7 @@ public class Users
 	{ 
 		int id = userRemote.login(email, password);
 		// Time após um minuto
-		long expiration = current + 20*1000;
+		long expiration = current + 5*60*1000;
 		String token = Utils.byteArrayToHexString(Utils.computeHash(id + "salt"
 				+ expiration));
 		List list = new ArrayList();

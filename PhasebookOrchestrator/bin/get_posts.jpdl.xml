@@ -3,11 +3,7 @@
 <process-definition xmlns="urn:jbpm.org:jpdl-3.2" name="get_posts">
 
 	<start-state name="start">
-		<transition name="to getUserPosts" to="GetUserPosts">
-			<action name="action" class="com.sample.action.MessageActionHandler">
-				<message>Going to the ESB STATE!</message>
-			</action>
-		</transition>
+		<transition name="to getUserPosts" to="GetUserPosts"></transition>
 	</start-state>
 
 	<node name="GetUserPosts">
@@ -34,7 +30,6 @@
 	<fork name="fork">
 		<transition to="GetPostsPhotos" name="to GetPostsPhotos"></transition>
 		<transition to="GetPostsUsers" name="to GetPostsUsers"></transition>
-		<!-- <transition to="GetPostsUsersPhotos" name="to GetPostsUsersPhotos"></transition>-->
 	</fork>
 
 	<node name="GetPostsPhotos">
@@ -111,12 +106,6 @@
 		<transition name="to end" to="end"></transition>
 	</node>
 
-	<end-state name="end">
-		<event type="node-enter">
-			<action name="action" class="com.sample.action.MessageActionHandler2">
-				<message>Exiting the ESB STATE!</message>
-			</action>
-		</event>
-	</end-state>
+	<end-state name="end"></end-state>
 
 </process-definition>
