@@ -55,6 +55,7 @@ public class GetPostsAction extends AbstractActionLifecycle
 		Iterator it = responseMsg.keySet().iterator();
 		List<HashMap<String, Object>> list = new ArrayList<HashMap<String, Object>>();
 		List<String> postsPhotosIds = new ArrayList<String>();
+		List<String> postsUsersIds = new ArrayList<String>();
 		// falhou autenticaçao
 		if(responseMsg.keySet().size()==0){
 			message.getBody().add("");
@@ -66,12 +67,15 @@ public class GetPostsAction extends AbstractActionLifecycle
 				post.put("id", responseMsg.get(it.next()));
 				Object photoId = responseMsg.get(it.next());
 				post.put("photoId", photoId);
-				if (!postsPhotosIds.contains(photoId) && !photoId.toString().equals("-1"))
+				if (!postsPhotosIds.contains(photoId.toString()) && !photoId.toString().equals("-1"))
 					postsPhotosIds.add(photoId.toString());
 				post.put("private", responseMsg.get(it.next()));
 				post.put("read", responseMsg.get(it.next()));
 				post.put("text", responseMsg.get(it.next()));
-				post.put("toUserId", responseMsg.get(it.next()));
+				Object toUserId = responseMsg.get(it.next());
+				post.put("toUserId", toUserId);
+				if (!postsUsersIds.contains(toUserId.toString()) && !toUserId.toString().equals("-1"))
+					postsUsersIds.add(toUserId.toString());
 				list.add(post);
 			}
 		} catch(NoSuchElementException ex){
@@ -81,6 +85,7 @@ public class GetPostsAction extends AbstractActionLifecycle
 		}
 		message.getBody().add("posts", list);
 		message.getBody().add("postsPhotosIds", postsPhotosIds);
+		message.getBody().add("postsUsersIds", postsUsersIds);
 		
 		/*List<String> postsPhotosIds = new ArrayList<String>();
 		it = list.iterator();

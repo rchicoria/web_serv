@@ -133,7 +133,7 @@ public class Methods {
 			}
 			
 			// Get users
-			List<String> userIds = new ArrayList<String>();
+			/*List<String> userIds = new ArrayList<String>();
 			Iterator it = posts.iterator();
 			while(it.hasNext()) {
 				String postUserId = (String)((Map)it.next()).get("fromUserId");
@@ -148,8 +148,8 @@ public class Methods {
 			esbMessage.getBody().add("userIds", userIds);
 			
 			si = new ServiceInvoker("Get_Users_Service", "send");
-			retMessage = si.deliverSync(esbMessage, 10000L);
-			HashMap<String, HashMap<String, Object>> users = (HashMap<String, HashMap<String, Object>>)retMessage.getBody().get("users");
+			retMessage = si.deliverSync(esbMessage, 10000L);*/
+			HashMap<String, HashMap<String, Object>> users = (HashMap<String, HashMap<String, Object>>)retMessage.getBody().get("postsUsers");
 			// falhou autenticaçao
 			if(users.containsKey("0")){
 				list.add(new PostDetailsInfo());
@@ -159,7 +159,7 @@ public class Methods {
 			// Get user photos
 			List<HashMap<String, Object>> temp = new ArrayList<HashMap<String, Object>>(users.values());
 			List<String> userPhotoIds = new ArrayList<String>();
-			it = temp.iterator();
+			Iterator it = temp.iterator();
 			while(it.hasNext()) {
 				String userPhotoId = (String)((Map)it.next()).get("photoId");
 				if (!userPhotoIds.contains(userPhotoId) && !userPhotoId.equals("-1"))

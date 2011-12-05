@@ -12,9 +12,7 @@
 
 	<node name="GetUserPosts">
 		<action name="esbAction" class="org.jboss.soa.esb.services.jbpm.actionhandlers.EsbActionHandler">
-			<esbCategoryName>
-				Get_Posts_Service
-			</esbCategoryName>
+			<esbCategoryName>Get_Posts_Service</esbCategoryName>
 			<esbServiceName>posts</esbServiceName>
 			<bpmToEsbVars>
 				<mapping bpm="UuserId" esb="userId"/>
@@ -27,24 +25,21 @@
 			<esbToBpmVars>
 				<mapping esb="posts" bpm="Pposts"/>
 				<mapping esb="postsPhotosIds" bpm="PpostsPhotosIds"/>
+				<mapping esb="postsUsersIds" bpm="PpostsUsersIds"/>
 			</esbToBpmVars>
 		</action>
-		<transition name="to fork" to="GetPostsPhotos"><action name="action" class="com.sample.action.MessageActionHandler">
-				<message>Going to GetPostsPhotos</message>
-			</action></transition>
+		<transition name="to fork" to="fork"></transition>
 	</node>
 
-	<!-- <fork name="fork">
+	<fork name="fork">
 		<transition to="GetPostsPhotos" name="to GetPostsPhotos"></transition>
 		<transition to="GetPostsUsers" name="to GetPostsUsers"></transition>
-		<transition to="GetPostsUsersPhotos" name="to GetPostsUsersPhotos"></transition>
-	</fork>-->
+		<!-- <transition to="GetPostsUsersPhotos" name="to GetPostsUsersPhotos"></transition>-->
+	</fork>
 
 	<node name="GetPostsPhotos">
 		<action class="org.jboss.soa.esb.services.jbpm.actionhandlers.EsbActionHandler">
-			<esbCategoryName>
-				Get_Photos_Service
-			</esbCategoryName>
+			<esbCategoryName>Get_Photos_Service</esbCategoryName>
 			<esbServiceName>send</esbServiceName>
 			<bpmToEsbVars>
 				<mapping bpm="UuserId" esb="userId"/>
@@ -57,40 +52,48 @@
 				<mapping esb="postsPhotos" bpm="PpostsPhotos"/>
 			</esbToBpmVars>
 		</action>
-		<transition to="ReturnPosts" name="to join"><action name="action" class="com.sample.action.MessageActionHandler">
-				<message>Going to ReturnPosts</message>
-			</action></transition>
+		<transition to="join" name="to join"></transition>
 	</node>
 
-	<!-- <node name="GetPostsUsers">
-		<action class="org.jboss.soa.esb.services.jbpm.actionhandlers.EsbActionHandler"></action>
-		<transition to="join"></transition>
+	<node name="GetPostsUsers">
+		<action class="org.jboss.soa.esb.services.jbpm.actionhandlers.EsbActionHandler">
+			<esbCategoryName>Get_Users_Service</esbCategoryName>
+			<esbServiceName>send</esbServiceName>
+			<bpmToEsbVars>
+				<mapping bpm="UuserId" esb="userId"/>
+				<mapping bpm="Ttoken" esb="token"/>
+				<mapping bpm="Eexpiration" esb="expiration"/>
+				<mapping bpm="Ccurrent" esb="current"/>
+				<mapping bpm="PpostsUsersIds" esb="postsUsersIds"/>
+			</bpmToEsbVars>
+			<esbToBpmVars>
+				<mapping esb="postsUsers" bpm="PpostsUsers"/>
+			</esbToBpmVars>
+		</action>
+		<transition to="join" name="to join"></transition>
 	</node>
 
-	<node name="GetPostsUsersPhotos">
+	<!-- <node name="GetPostsUsersPhotos">
 		<action class="org.jboss.soa.esb.services.jbpm.actionhandlers.EsbActionHandler"></action>
 		<transition to="join"></transition>
-	</node>
+	</node> -->
 
 	<join name="join">
 		<transition to="ReturnPosts" name="to ReturnPosts"></transition>
-	</join> -->
+	</join>
 
 	<node name="ReturnPosts">
 		<action name="esbAction" class="org.jboss.soa.esb.services.jbpm.actionhandlers.EsbActionHandler">
-			<esbCategoryName>
-				Get_Posts_Service
-			</esbCategoryName>
+			<esbCategoryName>Get_Posts_Service</esbCategoryName>
 			<esbServiceName>return</esbServiceName>
 			<bpmToEsbVars>
 				<mapping bpm="Pposts" esb="posts"/>
 				<mapping bpm="PpostsPhotos" esb="postsPhotos"/>
+				<mapping bpm="PpostsUsers" esb="postsUsers"/>
 				<mapping bpm="Rreply" esb="reply"/>
 			</bpmToEsbVars>
 		</action>
-		<transition name="to end" to="end"><action name="action" class="com.sample.action.MessageActionHandler">
-				<message>Going to end</message>
-			</action></transition>
+		<transition name="to end" to="end"></transition>
 	</node>
 
 	<end-state name="end">
