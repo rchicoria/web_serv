@@ -193,6 +193,7 @@ public class Methods {
 					postDetails.setPostPhotoName((String)photos.get(postPhotoId+"").get("name"));
 				int postUserId = Integer.parseInt((String)tempPost.get("fromUserId"));
 				postDetails.setUserId(postUserId);
+				System.out.println(users.get(postUserId+""));
 				postDetails.setUserName((String)users.get(postUserId+"").get("name"));
 				int userPhotoId = Integer.parseInt((String)users.get(postUserId+"").get("photoId"));
 				postDetails.setUserPhotoId(userPhotoId);

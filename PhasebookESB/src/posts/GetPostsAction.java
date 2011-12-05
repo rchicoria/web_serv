@@ -63,7 +63,10 @@ public class GetPostsAction extends AbstractActionLifecycle
 		try{
 			while(it.hasNext()){
 				HashMap<String, Object> post = new HashMap<String, Object>();
-				post.put("fromUserId", responseMsg.get(it.next()));
+				Object fromUserId = responseMsg.get(it.next());
+				post.put("fromUserId", fromUserId);
+				if (!postsUsersIds.contains(fromUserId.toString()) && !fromUserId.toString().equals("-1"))
+					postsUsersIds.add(fromUserId.toString());
 				post.put("id", responseMsg.get(it.next()));
 				Object photoId = responseMsg.get(it.next());
 				post.put("photoId", photoId);
@@ -72,10 +75,7 @@ public class GetPostsAction extends AbstractActionLifecycle
 				post.put("private", responseMsg.get(it.next()));
 				post.put("read", responseMsg.get(it.next()));
 				post.put("text", responseMsg.get(it.next()));
-				Object toUserId = responseMsg.get(it.next());
-				post.put("toUserId", toUserId);
-				if (!postsUsersIds.contains(toUserId.toString()) && !toUserId.toString().equals("-1"))
-					postsUsersIds.add(toUserId.toString());
+				post.put("toUserId", responseMsg.get(it.next()));
 				list.add(post);
 			}
 		} catch(NoSuchElementException ex){
@@ -84,6 +84,7 @@ public class GetPostsAction extends AbstractActionLifecycle
 			list.add(temp);
 		}
 		message.getBody().add("posts", list);
+		System.out.println("\n\n"+postsUsersIds+"\n\n");
 		message.getBody().add("postsPhotosIds", postsPhotosIds);
 		message.getBody().add("postsUsersIds", postsUsersIds);
 		
