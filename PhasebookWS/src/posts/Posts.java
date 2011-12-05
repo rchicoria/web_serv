@@ -48,6 +48,8 @@ public class Posts
 			result.add(new PostInfo(post.getId(), post.getFromUserId(), post.getToUserId(), post.isPrivate_(), post.isRead_(), post.getPhotoId(), post.getText()));
 		}
 		
+		System.out.println("\n\n\n\n"+result+"\n\n\n\n");
+		
 		return result;
 	}
 	

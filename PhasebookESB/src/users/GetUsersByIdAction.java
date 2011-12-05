@@ -24,8 +24,8 @@ public class GetUsersByIdAction extends AbstractActionLifecycle
 	    String token = (String)message.getBody().get("token");
 	    long current = ((Long)message.getBody().get("current")).longValue();
 	    long expiration = ((Long)message.getBody().get("expiration")).longValue();
-	    List<Integer> userIds = ((List<Integer>)message.getBody().get("userIds"));
-	     
+	    List<Integer> userIds = ((List<Integer>)message.getBody().get("postsUsersIds"));
+	    
 	    List<Integer> temp = new ArrayList<Integer>();
 	    String userIdsString = ""; 
 	     
@@ -57,6 +57,7 @@ public class GetUsersByIdAction extends AbstractActionLifecycle
 		Map responseMsg = (Map) message.getBody().get(Body.DEFAULT_LOCATION);
 		Iterator it = responseMsg.keySet().iterator();
 		HashMap<String, HashMap<String, Object>> map = new HashMap<String, HashMap<String, Object>>();
+		List<String> photosIds = new ArrayList<String>();
 		if(responseMsg.keySet().size()==0){
 			message.getBody().add("");
 		}
@@ -68,7 +69,10 @@ public class GetUsersByIdAction extends AbstractActionLifecycle
 				user.put("id", id);
 				user.put("money", responseMsg.get(it.next()));
 				user.put("name", responseMsg.get(it.next()));
-				user.put("photoId", responseMsg.get(it.next()));
+				Object photoId = responseMsg.get(it.next());
+				user.put("photoId", photoId);
+				if (!photosIds.contains(photoId.toString()) && !photoId.toString().equals("-1"))
+					photosIds.add(photoId.toString());
 				map.put(id,user);
 			}
 		}
@@ -76,7 +80,8 @@ public class GetUsersByIdAction extends AbstractActionLifecycle
 			map.put("0",new HashMap<String, Object>());
 		}
 		
-		message.getBody().add("users", map);
+		message.getBody().add("postsUsers", map);
+		message.getBody().add("postsUsersPhotosIds", photosIds);
 		
 		return message;  
 	}

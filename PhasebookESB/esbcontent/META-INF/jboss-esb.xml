@@ -10,6 +10,10 @@
    <jms-bus busid="createUserEsbChannel">
     <jms-message-filter dest-name="queue/create_user_Request_esb" dest-type="QUEUE"/>
    </jms-bus>
+   
+   <jms-bus busid="startGetPostsEsbChannel">
+    <jms-message-filter dest-name="queue/start_get_posts_Request_esb" dest-type="QUEUE"/>
+   </jms-bus>
    <jms-bus busid="getPostsEsbChannel">
     <jms-message-filter dest-name="queue/get_posts_Request_esb" dest-type="QUEUE"/>
    </jms-bus>
@@ -25,6 +29,10 @@
    <jms-bus busid="createPhotoEsbChannel">
     <jms-message-filter dest-name="queue/create_photo_Request_esb" dest-type="QUEUE"/>
    </jms-bus>
+   <jms-bus busid="GetPostsReturnEsbChannel">
+    <jms-message-filter dest-name="queue/get_posts_return_Request_esb" dest-type="QUEUE"/>
+   </jms-bus>
+   
   </jms-provider>
  </providers>
  <services>
@@ -58,8 +66,32 @@
     <action class="users.RegisterAction" name="response-mapper" process="response"/>
    </actions>
   </service>
+  
   <service category="Get_Posts_Service"
-   description="Get Posts Service: Use this service to user posts" name="send">
+   description="BPM Login Orchestration Use this service to login a user" name="Start">
+   <listeners>
+    <jms-listener busidref="startGetPostsEsbChannel" name="ESB-Listener"/>
+   </listeners>
+   <actions mep="OneWay">
+    <action class="posts.GetPostsAction" name="response-mapper" process="xml"/>
+    <action class="org.jboss.soa.esb.services.jbpm.actions.BpmProcessor" name="get_posts">
+     <property name="command" value="StartProcessInstanceCommand"/>
+     <property name="process-definition-name" value="get_posts"/>
+     <property name="esbToBpmVars">
+      <mapping esb="userId" bpm="UuserId"/>
+      <mapping esb="token" bpm="Ttoken"/>
+      <mapping esb="expiration" bpm="Eexpiration"/>
+      <mapping esb="current" bpm="Ccurrent"/>
+      <mapping esb="currentUserId" bpm="CcurrentUserId"/>
+      <mapping esb="friend" bpm="Ffriend"/>
+      <mapping esb="reply" bpm="Rreply"/>
+     </property>
+    </action>
+   </actions>
+  </service>
+  
+  <service category="Get_Posts_Service"
+   description="Get Posts Service: Use this service to user posts" name="posts">
    <listeners>
     <jms-listener busidref="getPostsEsbChannel" name="ESB-Listener"/>
    </listeners>
@@ -73,6 +105,7 @@
     <action class="posts.GetPostsAction" name="response-mapper" process="response"/>
    </actions>
   </service>
+  
   <service category="Get_Users_Service"
    description="Get Users Service: Use this service to fetch users" name="send">
    <listeners>
@@ -88,6 +121,7 @@
     <action class="users.GetUsersByIdAction" name="response-mapper" process="response"/>
    </actions>
   </service>
+  
   <service category="Get_Photos_Service"
    description="Get Photos Service: Use this service to fetch photos" name="send">
    <listeners>
@@ -103,6 +137,7 @@
     <action class="photos.GetPhotosByIdAction" name="response-mapper" process="response"/>
    </actions>
   </service>
+  
   <service category="Create_Post_Service"
    description="Create Post Service: Use this service create a post" name="send">
    <listeners>
@@ -118,6 +153,7 @@
     <action class="posts.CreatePostAction" name="response-mapper" process="response"/>
    </actions>
   </service>
+  
   <service category="Create_Photo_Service"
    description="Create Photo Service: Use this service create a photo" name="send">
    <listeners>
@@ -133,5 +169,14 @@
     <action class="photos.CreatePhotoAction" name="response-mapper" process="response"/>
    </actions>
   </service>
- </services>
+  
+  <service category="Get_Posts_Service" description="" name="return">
+   <listeners>
+    <jms-listener busidref="GetPostsReturnEsbChannel" name="ESB-Listener" />
+   </listeners>
+   <actions mep="OneWay">
+	<action class="posts.GetPostsAction" name="response-mapper" process="sendToMWS" />
+   </actions>
+  </service>
+   </services>
 </jbossesb>

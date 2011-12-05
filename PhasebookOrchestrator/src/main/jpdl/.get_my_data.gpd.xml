@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<root-container name="get_my_data" width="882" height="389">
+  <node name="start" x="114" y="29" width="132" height="36">
+    <edge>
+      <label x="-29" y="-18"/>
+    </edge>
+  </node>
+  <node name="end" x="119" y="299" width="132" height="36"/>
+  <node name="GetUser" x="373" y="30" width="132" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <node name="GetUserPhoto" x="374" y="164" width="132" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <node name="ReturnUser" x="374" y="299" width="132" height="36">
+    <edge>
+      <label x="-6" y="-19"/>
+    </edge>
+  </node>
+</root-container>

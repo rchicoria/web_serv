@@ -25,7 +25,7 @@ public class Photos
 			@WebParam(name = "token") String token,
 			@WebParam(name = "current") long current,
 			@WebParam(name = "expiration") long expiration,
-			@WebParam(name = "photoIds") String photoIdsString)  
+			@WebParam(name = "postsPhotosIds") String photoIdsString)  
 	{ 		
 		String myToken = Utils.byteArrayToHexString(Utils.computeHash(userId + "salt"
 				+ expiration));

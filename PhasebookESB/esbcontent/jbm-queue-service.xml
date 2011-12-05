@@ -27,6 +27,19 @@
  </mbean>
  
  <mbean code="org.jboss.jms.server.destination.QueueService"
+  name="jboss.esb.quickstart.destination:service=Queue,name=start_get_posts_Request_esb"
+  xmbean-dd="xmdesc/Queue-xmbean.xml">
+  <depends optional-attribute-name="ServerPeer">jboss.messaging:service=ServerPeer
+  </depends>
+ </mbean>
+ <mbean code="org.jboss.jms.server.destination.QueueService"
+  name="jboss.esb.quickstart.destination:service=Queue,name=start_get_posts_Request_esb_reply"
+  xmbean-dd="xmdesc/Queue-xmbean.xml">
+  <depends optional-attribute-name="ServerPeer">jboss.messaging:service=ServerPeer
+  </depends>
+ </mbean>
+ 
+ <mbean code="org.jboss.jms.server.destination.QueueService"
   name="jboss.esb.quickstart.destination:service=Queue,name=get_posts_Request_esb"
   xmbean-dd="xmdesc/Queue-xmbean.xml">
   <depends optional-attribute-name="ServerPeer">jboss.messaging:service=ServerPeer
@@ -66,6 +79,19 @@
  </mbean>
  
  <mbean code="org.jboss.jms.server.destination.QueueService"
+  name="jboss.esb.quickstart.destination:service=Queue,name=get_posts_return_Request_esb"
+  xmbean-dd="xmdesc/Queue-xmbean.xml">
+  <depends optional-attribute-name="ServerPeer">jboss.messaging:service=ServerPeer
+  </depends>
+ </mbean>
+ <mbean code="org.jboss.jms.server.destination.QueueService"
+  name="jboss.esb.quickstart.destination:service=Queue,name=get_posts_return_Request_esb_reply"
+  xmbean-dd="xmdesc/Queue-xmbean.xml">
+  <depends optional-attribute-name="ServerPeer">jboss.messaging:service=ServerPeer
+  </depends>
+ </mbean>
+ 
+ <mbean code="org.jboss.jms.server.destination.QueueService"
   name="jboss.esb.quickstart.destination:service=Queue,name=create_post_Request_esb"
   xmbean-dd="xmdesc/Queue-xmbean.xml">
   <depends optional-attribute-name="ServerPeer">jboss.messaging:service=ServerPeer
@@ -90,5 +116,5 @@
   <depends optional-attribute-name="ServerPeer">jboss.messaging:service=ServerPeer
   </depends>
  </mbean>
- 
+
 </server>
