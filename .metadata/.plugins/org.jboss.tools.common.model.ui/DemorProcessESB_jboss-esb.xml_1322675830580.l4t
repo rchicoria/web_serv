@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Layout resource="/DemorProcessESB/esbcontent/META-INF/jboss-esb.xml">
+ <TreeFormPage>
+  <Memento type="FileESB130">
+   <Memento collapsed="false" type="JBoss ESB"/>
+   <Memento collapsed="false" type="Providers"/>
+   <Memento collapsed="false" type="Services"/>
+  </Memento>
+  <Memento type="ESBJMSBus101">
+   <Memento collapsed="false" type="Channel"/>
+   <Memento collapsed="false" type="Properties"/>
+  </Memento>
+  <Memento type="ESBServices130">
+   <Memento collapsed="false" type="Services"/>
+  </Memento>
+  <Memento type="ESBJMSMessageFilter101">
+   <Memento collapsed="false" type="JMS Message Filter"/>
+   <Memento collapsed="false" type="Advanced"/>
+  </Memento>
+  <Memento type="ESBProviders130">
+   <Memento type="Providers"/>
+  </Memento>
+ </TreeFormPage>
+</Layout>

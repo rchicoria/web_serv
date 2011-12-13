@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<root-container name="simple" width="631" height="426">
+  <node name="start" x="212" y="65" width="132" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <node name="first" x="213" y="190" width="132" height="36">
+    <edge>
+      <label x="5" y="-14"/>
+    </edge>
+  </node>
+  <node name="end" x="210" y="311" width="132" height="36"/>
+  <deployment graphicalInfoFile="/PhasebookOrchestrator/src/main/jpdl/.login.gpd.xml" imageFile="/PhasebookOrchestrator/src/main/jpdl/login.jpg" serverName="localhost" serverPort="8180" serverDeployer="/gpd-deployer/upload"/>
+</root-container>

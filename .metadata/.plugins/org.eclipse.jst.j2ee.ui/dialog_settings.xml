@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<item value="true" key="J2EE_EXPORT_OVERWRITE"/>
+	<item value="false" key="J2EE_EXPORT_SOURCE"/>
+	<list key="J2EE_EXPORT_JST_JBOSS_ESB">
+		<item value="C:\Jbosses\jbossesb-server4.10\server\default\deploy\DemorProcessESB.esb"/>
+		<item value="C:\Jbosses\jbossesb-server4.10\server\default\deploy\PhasebookESB.esb"/>
+	</list>
+	<list key="J2EE_EXPORT_JST_WEB">
+		<item value="C:\Jbosses\jbossesb-server4.10\server\default\deploy\PhasebookMainWS.war"/>
+	</list>
+	<list key="MRU_RUNTIME_STORE">
+		<item value="JBoss v5.0"/>
+	</list>
+</section>

@@ -1,13 +1,10 @@
 package users;
-import java.sql.Timestamp;
 import java.util.*;
 
 import javax.ejb.EJB;
 import javax.jws.*;
 
-import phasebook.post.Post;
 import phasebook.user.*;
-import posts.PostInfo;
 
 @WebService(name = "User", targetNamespace = "http://PhasebookWS/User")  
 public class Users  
